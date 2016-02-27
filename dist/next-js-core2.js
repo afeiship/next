@@ -71,32 +71,32 @@ var nx = {
   };
 
 
-  nx.isNumber = function (obj) {
-    return !isNaN(obj) && typeof(obj) == 'number';
+  nx.isNumber = function (inObj) {
+    return !isNaN(inObj) && typeof(inObj) == 'number';
   };
 
-  nx.isBoolean = function (obj) {
-    return typeof(obj) == 'boolean';
+  nx.isBoolean = function (inObj) {
+    return typeof(inObj) == 'boolean';
   };
 
-  nx.isString = function (obj) {
-    return typeof(obj) == 'string';
+  nx.isString = function (inObj) {
+    return typeof(inObj) == 'string';
   };
 
-  nx.isArray = Array.isArray || function (obj) {
-      return obj instanceof Array;
+  nx.isArray = Array.isArray || function (inObj) {
+      return inObj instanceof Array;
     };
 
-  nx.isArrayLike = function (obj) {
-    return typeof obj.length == 'number';
+  nx.isArrayLike = function (inObj) {
+    return typeof inObj.length == 'number';
   };
 
-  nx.isFunction = function (obj) {
-    return typeof(obj) == 'function';
+  nx.isFunction = function (inObj) {
+    return typeof(inObj) == 'function';
   };
 
-  nx.isObject = function (obj) {
-    return nx.type(obj) == 'object';
+  nx.isObject = function (inObj) {
+    return nx.type(inObj) == 'object';
   };
 
   nx.isDocument = function (inObj) {
@@ -113,8 +113,8 @@ var nx = {
 
   nx.has = function (inTarget, inName) {
     if (inTarget) {
-      if (inTarget.__has__) {
-        return inTarget.__has__(inName);
+      if (inTarget.has) {
+        return inTarget.has(inName);
       } else {
         return inName in inTarget;
       }
@@ -124,8 +124,8 @@ var nx = {
 
   nx.get = function (inTarget, inName) {
     if (inTarget) {
-      if (inTarget.__get__) {
-        return inTarget.__get__(inName);
+      if (inTarget.get) {
+        return inTarget.get(inName);
       } else {
         return inTarget[inName];
       }
@@ -134,8 +134,8 @@ var nx = {
 
   nx.set = function (inTarget, inName, inValue) {
     if (inTarget) {
-      if (inTarget.__set__) {
-        return inTarget.__set__(inName, inValue);
+      if (inTarget.set) {
+        return inTarget.set(inName, inValue);
       } else {
         return inTarget[inName] = inValue;
       }
@@ -144,8 +144,8 @@ var nx = {
 
   nx.gets = function (inTarget) {
     if (inTarget) {
-      if (inTarget.__gets__) {
-        return inTarget.__gets__();
+      if (inTarget.gets) {
+        return inTarget.gets();
       } else {
         return nx.mix({}, inTarget);
       }
@@ -154,8 +154,8 @@ var nx = {
 
   nx.sets = function (inTarget, inObject) {
     if (inTarget) {
-      if (inTarget.__sets__) {
-        return inTarget.__sets__(inObject);
+      if (inTarget.sets) {
+        return inTarget.sets(inObject);
       } else {
         return nx.mix(inTarget, inObject);
       }
@@ -164,8 +164,8 @@ var nx = {
 
 
   nx.is = function (inTarget, inType) {
-    if (inTarget && inTarget.__is__) {
-      return inTarget.__is__(inType);
+    if (inTarget && inTarget.is) {
+      return inTarget.is(inType);
     } else {
       if (typeof inType === 'string') {
         switch (inType) {
