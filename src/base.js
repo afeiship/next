@@ -196,11 +196,19 @@ var nx = {
   };
 
   nx.parse = function (inValue) {
-    return JSON.parse(inValue);
+    try {
+      return JSON.parse(inValue);
+    } catch (_) {
+    }
+    return inValue;
   };
 
-  nx.stringify = function (inValue, inReplacer, inSpace) {
-    return JSON.stringify(inValue, inReplacer, inSpace);
+  nx.stringify = function () {
+    try {
+      return JSON.stringify(arguments);
+    } catch (_) {
+    }
+    return inValue;
   };
 
 }(nx, nx.GLOBAL));
