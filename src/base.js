@@ -269,6 +269,12 @@ var nx = {
     return result;
   };
 
+  nx.toArray = function (obj) {
+    if (!obj) return [];
+    if (nx.isArrayLike(obj)) return slice.call(obj);
+    return [obj];
+  };
+
   nx.parse = function (inValue) {
     try {
       return JSON.parse(inValue);
