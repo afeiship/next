@@ -13,12 +13,15 @@ var nx = {
   var toString = class2type.toString;
   var rPath = /(?:{)([\w.]+?)(?:})/gm;
   var javascriptType = 'Boolean Number String Function Array Date RegExp Object Error';
+  var emptyArray = [],
+    filter = emptyArray.filter,
+    slice = emptyArray.slice,
+    concat = emptyArray.concat;
 
   //populate class2type map:
   javascriptType.split(' ').forEach(function (inName) {
-    class2type["[object " + inName + "]"] = inName.toLowerCase()
+    class2type['[object ' + inName + ']'] = inName.toLowerCase()
   });
-
 
   nx.noop = function () {
   };
@@ -54,13 +57,79 @@ var nx = {
   };
 
   nx.type = function (inObj) {
-    if (inObj && inObj.__type__) {
-      return inObj.__type__;
+    if (inObj && inObj.type) {
+      return inObj.type();
     }
     return inObj == null ? String(inObj) :
     class2type[toString.call(inObj)] || 'object';
   };
 
+  nx.camelCase = function (inStr) {
+    return inStr.replace(/[-_]+(.)?/g, function (match, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
+  };
+
+  nx.trim = function (inStr) {
+    return inStr == null ? '' : String.prototype.trim.call(inStr)
+  };
+
+  nx.deserializeValue = function (inValue) {
+    try {
+      return inValue ?
+      inValue == 'true' ||
+      ( inValue == 'false' ? false :
+        inValue == 'null' ? null :
+          +inValue + '' == inValue ? +inValue :
+            /^[\[\{]/.test(inValue) ? nx.parse(inValue) :
+              inValue )
+        : inValue;
+    } catch (e) {
+      return inValue;
+    }
+  };
+
+  nx.dasherize = function (inStr) {
+    return inStr.replace(/::/g, '/')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
+      .replace(/([a-z\d])([A-Z])/g, '$1_$2')
+      .replace(/_/g, '-')
+      .toLowerCase()
+  };
+
+  nx.clone = function (inTarget, inSource, inDeep) {
+    var isPlainObject = nx.isPlainObject,
+      isArray = nx.isArray;
+    var key;
+    for (key in inSource) {
+      if (inDeep) {
+        if (isPlainObject(inSource[key]) || isArray(inSource[key])) {
+          if (isPlainObject(inSource[key]) && !isPlainObject(inTarget[key])) {
+            inTarget[key] = {};
+          }
+          if (isArray(inSource[key]) && !isArray(inTarget[key])) {
+            inTarget[key] = [];
+          }
+          nx.clone(inTarget[key], inSource[key], inDeep);
+        }
+      }
+      else if (inSource[key] !== undefined) {
+        inTarget[key] = inSource[key];
+      }
+    }
+  };
+
+  nx.mix = function (inTarget) {
+    var deep, args = slice.call(arguments, 1);
+    if (typeof inTarget == 'boolean') {
+      deep = inTarget;
+      inTarget = args.shift();
+    }
+    args.forEach(function (arg) {
+      nx.clone(inTarget, arg, deep);
+    });
+    return inTarget;
+  };
 
   nx.isNumber = function (inObj) {
     return !isNaN(inObj) && typeof(inObj) == 'number';
@@ -100,6 +169,12 @@ var nx = {
 
   nx.isPlainObject = function (inObj) {
     return nx.isObject(inObj) && !nx.isWindow(inObj) && Object.getPrototypeOf(inObj) == Object.prototype;
+  };
+
+  nx.isEmptyObject = function (obj) {
+    var key;
+    for (key in obj) return false;
+    return true;
   };
 
   nx.has = function (inTarget, inName) {
@@ -152,7 +227,6 @@ var nx = {
       }
     }
   };
-
 
   nx.is = function (inTarget, inType) {
     if (inTarget && inTarget.is) {
