@@ -137,14 +137,17 @@
           properties: {
             prop1: {
               set: function (inValue) {
-                this.base(inValue) + 'fei';
+                this.base(inValue + 100)
               }
             }
           }
         });
+        var cls1 = new Class1();
         var cls2 = new Class2();
+        cls1.prop1 = 2;
         cls2.prop1 = 2;
-        assert.equal('4fei', cls2.prop1);
+        assert.equal(4, cls1.prop1);
+        assert.equal(204, cls2.prop1);
       });
 
 
