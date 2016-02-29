@@ -1,0 +1,26 @@
+{
+  "name": "next-js-core2",
+  "description": "A javascript OOP toolkit for mobile.",
+  "main": "index.js",
+  "authors": [
+    "afei"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "OOP",
+    "next"
+  ],
+  "homepage": "https://github.com/afeiship/next-js-core2",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src",
+    "test",
+    "tests"
+  ]
+}
