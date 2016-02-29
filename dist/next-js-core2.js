@@ -670,7 +670,6 @@ var nx = {
     },
     copyAtProps: function (inClassMeta) {
       var prototype = this.$base;
-      debugger;
       nx.each(prototype, function (name, prop) {
         if (name.indexOf('@') > -1) {
           this.__Class__.prototype[name] = prop;
