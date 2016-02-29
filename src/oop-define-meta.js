@@ -27,9 +27,10 @@
       };
 
     } else {
-      getter = inMeta.get || nx.noop;
-      setter = inMeta.set || nx.noop;
+      getter = inMeta.get || inTarget[key].get || nx.noop;
+      setter = inMeta.set || inTarget[key].set || nx.noop;
     }
+
     //remain base setter/getter:
     if (key in inTarget) {
       getter.__base__ = inTarget[key].get;

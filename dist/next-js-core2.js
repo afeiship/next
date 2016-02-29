@@ -517,8 +517,8 @@ var nx = {
       };
 
     } else {
-      getter = inMeta.get || nx.noop;
-      setter = inMeta.set || nx.noop;
+      getter = inMeta.get || inTarget[key].get || nx.noop;
+      setter = inMeta.set || inTarget[key].set || nx.noop;
     }
 
     //remain base setter/getter:
@@ -663,9 +663,19 @@ var nx = {
     },
     inheritProcessor: function () {
       var classMeta = this.__classMeta__;
+      this.copyAtProps(classMeta);
       this.defineMethods(classMeta);
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
+    },
+    copyAtProps: function (inClassMeta) {
+      var prototype = this.$base;
+      debugger;
+      nx.each(prototype, function (name, prop) {
+        if (name.indexOf('@') > -1) {
+          this.__Class__.prototype[name] = prop;
+        }
+      }, this);
     },
     defineMethods: function (inClassMeta) {
       var metaMethods = this.meta.methods || {};

@@ -16,12 +16,10 @@ var Class2 = nx.declare({
   properties: {
     prop1: {
       set: function (inValue) {
-        this.base(inValue);
-        this.prop1 += 'fei';
+        this.base(inValue + 100);
       }
     }
   }
 });
 var cls2 = new Class2();
 cls2.prop1 = 2;
-assert.equal('4fei', cls2.prop1);

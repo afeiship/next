@@ -95,9 +95,18 @@
     },
     inheritProcessor: function () {
       var classMeta = this.__classMeta__;
+      this.copyAtProps(classMeta);
       this.defineMethods(classMeta);
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
+    },
+    copyAtProps: function (inClassMeta) {
+      var prototype = this.$base;
+      nx.each(prototype, function (name, prop) {
+        if (name.indexOf('@') > -1) {
+          this.__Class__.prototype[name] = prop;
+        }
+      }, this);
     },
     defineMethods: function (inClassMeta) {
       var metaMethods = this.meta.methods || {};
