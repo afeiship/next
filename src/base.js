@@ -1,6 +1,7 @@
 var nx = {
   BREAKER: {},
   VERSION: '1.0.0',
+  DEBUG: false,
   GLOBAL: (function () {
     return this;
   }).call(null)
@@ -256,6 +257,29 @@ var nx = {
         return inTarget instanceof inType;
       }
     }
+  };
+
+  nx.path = function (inTarget, inPath, inValue) {
+    if (typeof inPath !== 'string') {
+      nx.error('Path must be a string!');
+    }
+
+    var paths = inPath.split('.'),
+      result = inTarget || nx.global,
+      last;
+
+    if (undefined === inValue) {
+      nx.each(paths, function (path) {
+        result = nx.get(result, path);
+      });
+    } else {
+      last = paths.pop();
+      paths.forEach(function (path) {
+        result = result[path] = result[path] || {};
+      });
+      nx.set(result, last, inValue);
+    }
+    return result;
   };
 
   nx.format = function (inString, inArgs) {
