@@ -9,7 +9,7 @@
 }(this, function() {
 var nx = {
   BREAKER: {},
-  VERSION: '1.0.7',
+  VERSION: '1.0.7.1',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -559,7 +559,7 @@ var nx = {
       __name__: inName,
       __type__: 'static'
     };
-    nx.mix(inMeta, descriptor);
+    nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };
