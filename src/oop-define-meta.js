@@ -69,7 +69,7 @@
       __name__: inName,
       __type__: 'static'
     };
-    nx.mix(inMeta, descriptor);
+    nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };
