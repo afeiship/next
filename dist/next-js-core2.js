@@ -454,11 +454,11 @@ var nx = {
     },
     memberMeta: function (inName) {
       var member = this.member(inName);
-      return member.__meta__;
+      return member && member.__meta__;
     },
     memberType: function (inName) {
       var member = this.member(inName);
-      return member.__type__;
+      return member && member.__type__;
     },
     init: function () {
       //will be implement
@@ -547,13 +547,11 @@ var nx = {
 
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
-    var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
-    inTarget[key] = descriptor;
     nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
