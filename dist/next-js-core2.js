@@ -450,24 +450,15 @@ var nx = {
       }, this);
     },
     member: function (inName) {
-      return this['@' + inName] || this[inName];
+      return this['@' + inName];
     },
     memberMeta: function (inName) {
       var member = this.member(inName);
-      return member ? member.__meta__ : member;
+      return member.__meta__;
     },
     memberType: function (inName) {
-      var meta = this.memberMeta(inName);
-      switch (typeof meta) {
-        case 'object':
-          return 'property';
-        case 'string':
-          return 'event';
-        case 'function':
-          return 'method';
-        case 'undefined':
-          return 'undefined';
-      }
+      var member = this.member(inName);
+      return member.__type__;
     },
     init: function () {
       //will be implement
@@ -542,11 +533,13 @@ var nx = {
   };
 
   nx.defineMethod = function (inTarget, inName, inMeta) {
+    var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'method'
     };
+    inTarget[key] = descriptor;
     nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
@@ -554,11 +547,13 @@ var nx = {
 
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
+    var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
+    inTarget[key] = descriptor;
     nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;

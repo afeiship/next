@@ -80,11 +80,11 @@
     },
     memberMeta: function (inName) {
       var member = this.member(inName);
-      return member.__meta__;
+      return member && member.__meta__;
     },
     memberType: function (inName) {
       var member = this.member(inName);
-      return member.__type__;
+      return member && member.__type__;
     },
     init: function () {
       //will be implement
