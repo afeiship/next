@@ -76,7 +76,7 @@
       }, this);
     },
     member: function (inName) {
-      return this[inName] || this['@on' + inName];
+      return this['@' + inName] || this[inName];
     },
     memberMeta: function (inName) {
       var member = this.member(inName);
