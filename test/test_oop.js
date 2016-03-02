@@ -4,6 +4,31 @@
   describe('src/oop.js', function () {
 
     describe('#Normal Class', function () {
+      it('Class-memeber', function () {
+        nx.declare('Class1', {
+          statics: {
+            static1: 1233,
+            status: 'loading'
+          },
+          properties: {
+            prop1: 1234,
+            prop2: {
+              value: {
+                name: 'fei'
+              }
+            }
+          },
+          methods: {
+            init: function () {
+              console.log('method init!');
+            }
+          }
+        });
+
+
+
+      })
+
       it('Class-methods-init', function () {
         var num1 = 1;
         var num2 = 0;

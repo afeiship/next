@@ -52,11 +52,13 @@
   };
 
   nx.defineMethod = function (inTarget, inName, inMeta) {
+    var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'method'
     };
+    inTarget[key] = descriptor;
     nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
@@ -64,11 +66,13 @@
 
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
+    var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
+    inTarget[key] = descriptor;
     nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;

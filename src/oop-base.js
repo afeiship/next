@@ -76,24 +76,15 @@
       }, this);
     },
     member: function (inName) {
-      return this['@' + inName] || this[inName];
+      return this['@' + inName];
     },
     memberMeta: function (inName) {
       var member = this.member(inName);
-      return member ? member.__meta__ : member;
+      return member.__meta__;
     },
     memberType: function (inName) {
-      var meta = this.memberMeta(inName);
-      switch (typeof meta) {
-        case 'object':
-          return 'property';
-        case 'string':
-          return 'event';
-        case 'function':
-          return 'method';
-        case 'undefined':
-          return 'undefined';
-      }
+      var member = this.member(inName);
+      return member.__type__;
     },
     init: function () {
       //will be implement

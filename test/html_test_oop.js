@@ -1,25 +1,21 @@
-var Class1 = nx.declare({
+nx.declare('Class1', {
+  statics: {
+    static1: 1233,
+    status: 'loading'
+  },
   properties: {
-    prop1: {
-      get: function () {
-        return this._prop1;
-      },
-      set: function (inValue) {
-        this._prop1 = inValue * 2;
+    prop1: 1234,
+    prop2: {
+      value: {
+        name: 'fei'
       }
+    }
+  },
+  methods: {
+    init: function () {
+      console.log('method init!');
     }
   }
 });
 
-var Class2 = nx.declare({
-  extend: Class1,
-  properties: {
-    prop1: {
-      set: function (inValue) {
-        this.base(inValue + 100);
-      }
-    }
-  }
-});
-var cls2 = new Class2();
-cls2.prop1 = 2;
+var cls1=new Class1();
