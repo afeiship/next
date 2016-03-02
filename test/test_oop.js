@@ -25,11 +25,15 @@
           }
         });
 
+        var cls1=new Class1();
+        var prop_member=cls1.member('prop1');
+        var method_member=cls1.member('init');
 
+        assert.equal(prop_member.__type__, 'property');
+        assert.equal(prop_member.__meta__, '1234');
+        assert.equal(method_member.__type__, 'method');
 
-
-
-      })
+      });
 
       it('Class-methods-init', function () {
         var num1 = 1;
