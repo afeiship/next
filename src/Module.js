@@ -114,13 +114,11 @@
       require: function (callback) {
         var status = this.get('status');
 
-        if (status === STATUS_RESOLVED) {
-          if (callback) {
+        if (callback) {
+          if (status === STATUS_RESOLVED) {
             callback(this.get('value'));
           }
-        }
-        else {
-          if (callback) {
+          else {
             this._callbacks.push(callback);
           }
         }
@@ -146,8 +144,7 @@
             });
 
             this._callbacks = [];
-          }
-          else {
+          } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
@@ -217,8 +214,7 @@
   nx.require = function (path, callback, owner) {
     if (nx.is(path, 'nx.Module')) {
       path.require(callback);
-    }
-    else if (nx.isString(path)) {
+    } else if (nx.isString(path)) {
       var currentPath = path,
         currentModule,
         ownerPath,
@@ -248,8 +244,7 @@
 
       if (currentModule) {
         return currentModule.require(callback);
-      }
-      else {
+      } else {
         currentModule = Module.all[currentPath] = new Module(currentPath);
         if (doc) { // Browser Environment
           var head = doc.head || doc.getElementsByTagName('head')[0];
@@ -281,8 +276,7 @@
               scriptNode.onload = function () {
                 handler(null);
               };
-            }
-            else {
+            } else {
               scriptNode.onreadystatechange = function (e) {
                 var state = scriptNode.readyState;
                 if (state === 'loaded' || state === 'complete') {

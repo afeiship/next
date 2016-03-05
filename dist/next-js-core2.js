@@ -887,7 +887,7 @@ var nx = {
             this._callbacks.push(callback);
           }
         }
-
+console.log(this.status,callback.toString());
         if (status === STATUS_LOADING) {
           var path = this.get('path');
           var deps = this.get('dependencies');
@@ -980,8 +980,7 @@ var nx = {
   nx.require = function (path, callback, owner) {
     if (nx.is(path, 'nx.Module')) {
       path.require(callback);
-    }
-    else if (nx.isString(path)) {
+    } else if (nx.isString(path)) {
       var currentPath = path,
         currentModule,
         ownerPath,
@@ -1011,8 +1010,7 @@ var nx = {
 
       if (currentModule) {
         return currentModule.require(callback);
-      }
-      else {
+      } else {
         currentModule = Module.all[currentPath] = new Module(currentPath);
         if (doc) { // Browser Environment
           var head = doc.head || doc.getElementsByTagName('head')[0];
@@ -1044,8 +1042,7 @@ var nx = {
               scriptNode.onload = function () {
                 handler(null);
               };
-            }
-            else {
+            } else {
               scriptNode.onreadystatechange = function (e) {
                 var state = scriptNode.readyState;
                 if (state === 'loaded' || state === 'complete') {
