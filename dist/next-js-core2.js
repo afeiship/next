@@ -9,7 +9,7 @@
 }(this, function() {
 var nx = {
   BREAKER: {},
-  VERSION: '1.0.8',
+  VERSION: '1.0.9',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
