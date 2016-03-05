@@ -1,13 +1,4 @@
-;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof exports === 'object') {
-    module.exports = factory();
-  } else {
-    root.nx = factory();
-  }
-}(this, function() {
-var nx = {
+nx = {
   BREAKER: {},
   VERSION: '1.0.9',
   DEBUG: false,
@@ -325,6 +316,11 @@ var nx = {
   };
 
 }(nx, nx.GLOBAL));
+
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = nx;
+}
 
 (function (nx, global) {
 
@@ -877,17 +873,15 @@ var nx = {
       require: function (callback) {
         var status = this.get('status');
 
-        if (status === STATUS_RESOLVED) {
-          if (callback) {
+        if (callback) {
+          if (status === STATUS_RESOLVED) {
             callback(this.get('value'));
           }
-        }
-        else {
-          if (callback) {
+          else {
             this._callbacks.push(callback);
           }
         }
-console.log(this.status,callback.toString());
+
         if (status === STATUS_LOADING) {
           var path = this.get('path');
           var deps = this.get('dependencies');
@@ -909,8 +903,7 @@ console.log(this.status,callback.toString());
             });
 
             this._callbacks = [];
-          }
-          else {
+          } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
@@ -978,12 +971,11 @@ console.log(this.status,callback.toString());
 
 
   nx.require = function (path, callback, owner) {
-    if (nx.is(path, 'nx.Module')) {
-      path.require(callback);
-    } else if (nx.isString(path)) {
+    if (nx.isString(path)) {
       var currentPath = path,
         currentModule,
         ownerPath,
+        result = {},
         ext = getExt(path),
         scheme = null;
 
@@ -1077,24 +1069,34 @@ console.log(this.status,callback.toString());
           else {
             nx.error('The scheme ' + scheme + ' is not supported.');
           }
-        }
-        else {
+        } else {
           // NodeJS environment
-          require(currentPath);
+
+          result = require(currentPath);
           currentModule.sets({
+            value: result,
             path: currentPath,
             dependencies: Module.current.get('dependencies'),
             factory: Module.current.get('factory'),
             status: STATUS_LOADING
           });
           currentModule.require(callback);
+
         }
       }
     }
   };
 
+  //For nodejs env
+  if (!doc) {
+    module.exports = function (inModule, inSysRequire) {
+      nx.require = function (path, callback, owner) {
+        console.log(path);
+        var result = inSysRequire(path);
+        console.log(result);
+        return inModule.exports = callback.call(owner || global, result);
+      }
+    };
+  }
 
 }(nx, nx.GLOBAL));
-
-return nx;
-}));

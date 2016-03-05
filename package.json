@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/afeiship/next-js-core2#readme",
   "devDependencies": {
+    "amdrequire": "0.0.3",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",

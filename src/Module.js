@@ -212,12 +212,11 @@
 
 
   nx.require = function (path, callback, owner) {
-    if (nx.is(path, 'nx.Module')) {
-      path.require(callback);
-    } else if (nx.isString(path)) {
+    if (nx.isString(path)) {
       var currentPath = path,
         currentModule,
         ownerPath,
+        result = {},
         ext = getExt(path),
         scheme = null;
 
@@ -311,21 +310,33 @@
           else {
             nx.error('The scheme ' + scheme + ' is not supported.');
           }
-        }
-        else {
+        } else {
           // NodeJS environment
-          require(currentPath);
+
+          result = require(currentPath);
+          console.log('require');
           currentModule.sets({
+            value: result,
             path: currentPath,
             dependencies: Module.current.get('dependencies'),
             factory: Module.current.get('factory'),
             status: STATUS_LOADING
           });
           currentModule.require(callback);
+
         }
       }
     }
   };
 
+  //For nodejs env
+  if (!doc) {
+    module.exports = function (inModule, inSysRequire) {
+      nx.require = function (path, callback, owner) {
+        var result = inSysRequire(path);
+        return inModule.exports = callback.call(owner || global, result);
+      }
+    };
+  }
 
 }(nx, nx.GLOBAL));

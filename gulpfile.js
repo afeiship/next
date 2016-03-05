@@ -62,6 +62,6 @@
       .pipe(gulp.dest('dist'));
   });
 
-  gulp.task('default', ['umd']);
+  gulp.task('default', ['uglify']);
 
 }());

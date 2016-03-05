@@ -1,4 +1,4 @@
-var nx = {
+nx = {
   BREAKER: {},
   VERSION: '1.0.9',
   DEBUG: false,
@@ -316,3 +316,8 @@ var nx = {
   };
 
 }(nx, nx.GLOBAL));
+
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = nx;
+}
