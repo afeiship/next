@@ -20,7 +20,8 @@
       conf.src + '/event.js',
       conf.src + '/oop-base.js',
       conf.src + '/oop-define-meta.js',
-      conf.src + '/oop.js'
+      conf.src + '/oop.js',
+      conf.src + '/Module.js'
     ],
     dist: 'next-js-core2.js',
     mini: 'next-js-core2.min.js'
