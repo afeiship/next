@@ -1,8 +1,8 @@
 {
   "name": "next-js-core2",
-  "version": "1.0.7.2",
+  "version": "1.0.7.3",
   "description": "A javascript OOP toolkit for mobile.",
-  "main": "index.js",
+  "main": "dist/next-js-core2.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
