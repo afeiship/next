@@ -761,9 +761,6 @@ var nx = {
 
 }(nx, nx.GLOBAL));
 
-/**
- * Module Mechanism
- */
 (function (nx, global) {
 
   var DOT = '.',
@@ -775,10 +772,9 @@ var nx = {
     STATUS_RESOLVED = 3,
     doc = global.document;
 
-
   // Normalize the path. e.g. "./aa/bb/.././cc" -> "./aa/cc"
-  var normalizePath = function (path) {
-    var tokens = path.split(SLASH);
+  var normalizePath = function (inPath) {
+    var tokens = inPath.split(SLASH);
     var normalized = [], token, count = 0;
 
     for (var i = 0, len = tokens.length; i < len; i++) {
@@ -855,8 +851,7 @@ var nx = {
     }
   };
 
-
-  var Module = nx.Module = nx.declare({
+  var Module = nx.declare('nx.Module', {
     statics: {
       all: {},
       current: null
@@ -879,7 +874,7 @@ var nx = {
 
         this._callbacks = [];
       },
-      load: function (callback) {
+      require: function (callback) {
         var status = this.get('status');
 
         if (status === STATUS_RESOLVED) {
@@ -909,8 +904,8 @@ var nx = {
             this.set('value', value);
             this.set('status', STATUS_RESOLVED);
 
-            nx.each(this._callbacks, function (_, callback) {
-              callback(value);
+            nx.each(this._callbacks, function (_, c) {
+              c(value);
             });
 
             this._callbacks = [];
@@ -950,12 +945,10 @@ var nx = {
     if (nArgs === 2) {
       deps = arg0;
       factory = arguments[1];
-    }
-    else if (nArgs === 1) {
-      if (nx.is(arg0, 'function')) {
+    } else if (nArgs === 1) {
+      if (nx.isFunction(arg0)) {
         factory = arg0;
-      }
-      else if (nx.is(arg0, 'array')) {
+      } else if (nx.isArray(arg0)) {
         deps = arg0;
         factory = function () {
           var result = {length: arguments.length};
@@ -969,15 +962,13 @@ var nx = {
 
           return result;
         };
-      }
-      else {
+      } else {
         factory = function () {
           return arg0;
         };
       }
-    }
-    else {
-      throw new Error('Invalid arguments.');
+    } else {
+      nx.error('Invalid arguments.');
     }
 
     Module.current = new Module('', deps, factory);
@@ -985,19 +976,19 @@ var nx = {
     return Module.current;
   };
 
+
   nx.require = function (path, callback, owner) {
-    if (nx.is(path, Module)) {
+    if (nx.is(path, 'nx.Module')) {
       path.require(callback);
     }
-    else if (nx.is(path, 'string')) {
+    else if (nx.isString(path)) {
       var currentPath = path,
         currentModule,
-        result = {},
         ownerPath,
         ext = getExt(path),
         scheme = null;
 
-      // If PATH does not have a value, assign the first load module path to it
+      // If PATH does not have a value, assign the first loaded module path to it
       if (!nx.PATH) {
         nx.PATH = parentPath(path) || (DOT + SLASH);
         currentPath = lastPath(path);
@@ -1013,16 +1004,9 @@ var nx = {
           break;
       }
 
-      if (path.indexOf('node:') === 0) {
-        scheme = 'node';
-        currentPath = path.slice(5);
-      }
-      else {
-        // If original path does not contain a SLASH, it should be the library path
-        ownerPath = owner ? parentPath(owner.get('path')) : nx.PATH;
-        currentPath = normalizePath(ownerPath + currentPath);
-      }
-
+      // If original path does not contain a SLASH, it should be the library path
+      ownerPath = owner ? parentPath(owner.get('path')) : nx.PATH;
+      currentPath = normalizePath(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
       if (currentModule) {
@@ -1040,7 +1024,7 @@ var nx = {
               scriptNode.onerror = null;
 
               if (err) {
-                throw new Error('Failed to load module:' + currentPath);
+                nx.error('Failed to load module:' + currentPath);
               }
               else {
                 currentModule.sets({
@@ -1056,7 +1040,6 @@ var nx = {
             scriptNode.src = appendExt(currentPath, 'js');
             scriptNode.async = true;
             head.appendChild(scriptNode);
-
             if ('onload' in scriptNode) {
               scriptNode.onload = function () {
                 handler(null);
@@ -1095,13 +1078,13 @@ var nx = {
 
           }
           else {
-            throw new Error('The scheme ' + scheme + ' is not supported.');
+            nx.error('The scheme ' + scheme + ' is not supported.');
           }
         }
-        else { // NodeJS environment
-          result = require(currentPath);
+        else {
+          // NodeJS environment
+          require(currentPath);
           currentModule.sets({
-            value: result,
             path: currentPath,
             dependencies: Module.current.get('dependencies'),
             factory: Module.current.get('factory'),
@@ -1113,7 +1096,8 @@ var nx = {
     }
   };
 
-})(nx, nx.GLOBAL);
+
+}(nx, nx.GLOBAL));
 
 return nx;
 }));
