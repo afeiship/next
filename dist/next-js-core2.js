@@ -1091,9 +1091,7 @@ if (typeof module !== 'undefined' && module.exports) {
   if (!doc) {
     module.exports = function (inModule, inSysRequire) {
       nx.require = function (path, callback, owner) {
-        console.log(path);
         var result = inSysRequire(path);
-        console.log(result);
         return inModule.exports = callback.call(owner || global, result);
       }
     };

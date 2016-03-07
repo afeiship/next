@@ -314,7 +314,6 @@
           // NodeJS environment
 
           result = require(currentPath);
-          console.log('require');
           currentModule.sets({
             value: result,
             path: currentPath,
