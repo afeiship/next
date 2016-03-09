@@ -39,7 +39,7 @@
 
     descriptor = inTarget[key] = {
       __meta__: inMeta,
-      __name__: inName,
+      //__name__: inName,
       __type__: 'property',
       get: getter,
       set: setter,
@@ -55,7 +55,7 @@
     var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
-      __name__: inName,
+      //__name__: inName,
       __type__: 'method'
     };
     inTarget[key] = descriptor;

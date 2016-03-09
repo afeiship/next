@@ -517,7 +517,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
     descriptor = inTarget[key] = {
       __meta__: inMeta,
-      __name__: inName,
+      //__name__: inName,
       __type__: 'property',
       get: getter,
       set: setter,
@@ -533,7 +533,7 @@ if (typeof module !== 'undefined' && module.exports) {
     var key = '@' + inName;
     var descriptor = {
       __meta__: inMeta,
-      __name__: inName,
+      //__name__: inName,
       __type__: 'method'
     };
     inTarget[key] = descriptor;
@@ -935,14 +935,11 @@ if (typeof module !== 'undefined' && module.exports) {
   var STATUS = nx.amd.Status;
   var completeRE = /loaded|complete/;
 
-  var ModuleLoader = nx.declare('nx.amd.ModuleLoader', {
-    statics: {
-      defaultScheme: 'js'
-    },
+  nx.declare('nx.amd.ModuleLoader', {
     methods: {
       init: function (inPath, inScheme, inCallback) {
         var path = this.path = inPath || '';
-        this.scheme = inScheme || ModuleLoader.defaultScheme;
+        this.scheme = inScheme;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
         this.load();
