@@ -591,6 +591,7 @@ if (typeof module !== 'undefined' && module.exports) {
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extend || nx.RootClass;
+    this.module=nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -606,7 +607,7 @@ if (typeof module !== 'undefined' && module.exports) {
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
-        __module__: nx.camelCase(this.module),
+        __module__: this.module,
         __classId__: classId++,
         __init__: methods.init || this.base.__init__,
         __static_init__: statics.init || this.base.__static_init__
@@ -891,8 +892,8 @@ if (typeof module !== 'undefined' && module.exports) {
           var count = deps.length;
           var params = [];
           var self = this;
-          var done = function () {
-            value = factory.call(value) || value;
+          var done = function (inValue, inParams) {
+            var value = factory.apply(inValue, inParams) || inValue;
             self.set('value', value);
             self.set('status', STATUS.RESOLVED);
 
@@ -906,14 +907,14 @@ if (typeof module !== 'undefined' && module.exports) {
           this.set('status', STATUS.RESOLVING);
 
           if (count === 0) {
-            done.call(self);
+            done(value, params);
           } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
                 count--;
                 if (count === 0) {
-                  done.call(self);
+                  done(value, params);
                 }
               }, self);
             });

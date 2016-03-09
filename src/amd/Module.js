@@ -43,8 +43,8 @@
           var count = deps.length;
           var params = [];
           var self = this;
-          var done = function () {
-            value = factory.call(value) || value;
+          var done = function (inValue, inParams) {
+            var value = factory.apply(inValue, inParams) || inValue;
             self.set('value', value);
             self.set('status', STATUS.RESOLVED);
 
@@ -58,14 +58,14 @@
           this.set('status', STATUS.RESOLVING);
 
           if (count === 0) {
-            done.call(self);
+            done(value, params);
           } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
                 count--;
                 if (count === 0) {
-                  done.call(self);
+                  done(value, params);
                 }
               }, self);
             });

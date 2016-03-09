@@ -33,6 +33,7 @@
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extend || nx.RootClass;
+    this.module=nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -48,7 +49,7 @@
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
-        __module__: nx.camelCase(this.module),
+        __module__: this.module,
         __classId__: classId++,
         __init__: methods.init || this.base.__init__,
         __static_init__: statics.init || this.base.__static_init__

@@ -6,7 +6,8 @@ nx.define([
   return nx.declare({
     methods: {
       start: function () {
-        console.log(view);
+        console.dir(view[0]);
+        console.dir(view[1]);
         console.log('App start!');
       }
     }

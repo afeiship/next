@@ -16,11 +16,11 @@
 
   var files = {
     src: [
-      conf.src + '/base.js',
-      conf.src + '/event.js',
-      conf.src + '/oop-base.js',
-      conf.src + '/oop-define-meta.js',
-      conf.src + '/oop.js',
+      conf.src + '/core/base.js',
+      conf.src + '/core/event.js',
+      conf.src + '/core/oop-base.js',
+      conf.src + '/core/oop-define-meta.js',
+      conf.src + '/core/oop.js',
       conf.src + '/amd/Path.js',
       conf.src + '/amd/Status.js',
       conf.src + '/amd/Module.js',
