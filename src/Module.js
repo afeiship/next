@@ -187,8 +187,8 @@
         factory = function () {
           var result = {length: arguments.length};
           nx.each(arguments, function (index, mod) {
-            if (mod.__type__) {
-              result[mod.__type__] = mod;
+            if (mod.__alias__) {
+              result[mod.__alias__] = mod;
             }
 
             result[index] = mod;
