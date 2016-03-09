@@ -946,8 +946,8 @@ if (typeof module !== 'undefined' && module.exports) {
         factory = function () {
           var result = {length: arguments.length};
           nx.each(arguments, function (index, mod) {
-            if (mod.__name__) {
-              result[mod.__name__] = mod;
+            if (mod.__type__) {
+              result[mod.__type__] = mod;
             }
 
             result[index] = mod;
