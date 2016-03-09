@@ -21,7 +21,11 @@
       conf.src + '/oop-base.js',
       conf.src + '/oop-define-meta.js',
       conf.src + '/oop.js',
-      conf.src + '/Module.js'
+      conf.src + '/amd/Path.js',
+      conf.src + '/amd/Status.js',
+      conf.src + '/amd/Module.js',
+      conf.src + '/amd/ModuleLoader.js',
+      conf.src + '/amd/index.js'
     ],
     dist: 'next-js-core2.js',
     mini: 'next-js-core2.min.js'

@@ -48,7 +48,7 @@
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
-        __alias__:this.alias,
+        __module__: nx.camelCase(this.module),
         __classId__: classId++,
         __init__: methods.init || this.base.__init__,
         __static_init__: statics.init || this.base.__static_init__

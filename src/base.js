@@ -66,7 +66,7 @@ nx = {
   };
 
   nx.camelCase = function (inStr) {
-    return inStr.replace(/[-_]+(.)?/g, function (match, chr) {
+    return (inStr || '').replace(/[-_]+(.)?/g, function (match, chr) {
       return chr ? chr.toUpperCase() : '';
     });
   };
