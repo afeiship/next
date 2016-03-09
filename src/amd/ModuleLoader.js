@@ -8,14 +8,11 @@
   var STATUS = nx.amd.Status;
   var completeRE = /loaded|complete/;
 
-  var ModuleLoader = nx.declare('nx.amd.ModuleLoader', {
-    statics: {
-      defaultScheme: 'js'
-    },
+  nx.declare('nx.amd.ModuleLoader', {
     methods: {
       init: function (inPath, inScheme, inCallback) {
         var path = this.path = inPath || '';
-        this.scheme = inScheme || ModuleLoader.defaultScheme;
+        this.scheme = inScheme;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
         this.load();
@@ -35,7 +32,7 @@
           factory: Module.current.get('factory'),
           status: STATUS.RESOLVED
         });
-        this.module.require(callback);
+        this.module.require(this.callback);
       },
       css: function () {
         var linkNode = doc.createElement('link');

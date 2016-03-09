@@ -891,34 +891,29 @@ if (typeof module !== 'undefined' && module.exports) {
           var count = deps.length;
           var params = [];
           var self = this;
+          var done = function () {
+            value = factory.call(value) || value;
+            self.set('value', value);
+            self.set('status', STATUS.RESOLVED);
+
+            nx.each(self._callbacks, function (_, callback) {
+              callback(value);
+            });
+
+            self._callbacks = [];
+          };
 
           this.set('status', STATUS.RESOLVING);
 
           if (count === 0) {
-            value = factory.call(value) || value;
-            this.set('value', value);
-            this.set('status', STATUS.RESOLVED);
-
-            nx.each(this._callbacks, function (_, callback) {
-              callback(value);
-            });
-
-            this._callbacks = [];
+            done.call(self);
           } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
                 count--;
                 if (count === 0) {
-                  value = factory.apply(value, params) || value;
-                  self.set('value', value);
-                  self.set('status', STATUS.RESOLVED);
-
-                  nx.each(self._callbacks, function (_, callback) {
-                    callback(value);
-                  });
-
-                  self._callbacks = [];
+                  done.call(self);
                 }
               }, self);
             });
@@ -967,7 +962,7 @@ if (typeof module !== 'undefined' && module.exports) {
           factory: Module.current.get('factory'),
           status: STATUS.RESOLVED
         });
-        this.module.require(callback);
+        this.module.require(this.callback);
       },
       css: function () {
         var linkNode = doc.createElement('link');
@@ -1033,6 +1028,8 @@ if (typeof module !== 'undefined' && module.exports) {
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var ModuleLoader = nx.amd.ModuleLoader;
+  var isNodeEnv = typeof module !== 'undefined' && module.exports;
+
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
@@ -1066,30 +1063,31 @@ if (typeof module !== 'undefined' && module.exports) {
     return Module.current = new Module('', deps, factory);
   };
 
-  nx.require = function (path, callback, owner) {
-    if (nx.isString(path)) {
-      var currentPath = path,
+  nx.require = function (inPath, inCallback, inOwner) {
+    if (nx.isString(inPath)) {
+      var currentPath = inPath,
         currentModule,
         ownerPath,
-        ext = Path.getExt(path);
+        ext = Path.getExt(inPath),
+        scheme;
 
       // If PATH does not have a value, assign the first loaded module path to it
       if (!nx.PATH) {
-        nx.PATH = Path.parent(path) || './';
-        currentPath = Path.last(path);
+        nx.PATH = Path.parent(inPath) || './';
+        currentPath = Path.last(inPath);
       }
       // If original path does not contain a SLASH, it should be the library path
-      ownerPath = owner ? Path.parent(owner.get('path')) : nx.PATH;
+      ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
+      scheme = ext || (isNodeEnv ? 'node' : 'js');
       if (currentModule) {
-        return currentModule.require(callback);
+        return currentModule.require(inCallback);
       } else {
-        new ModuleLoader(currentPath, ext, callback);
+        new ModuleLoader(currentPath, scheme, inCallback);
       }
     }
   };
-
 
 }(nx, nx.GLOBAL));

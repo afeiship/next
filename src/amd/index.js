@@ -3,6 +3,8 @@
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var ModuleLoader = nx.amd.ModuleLoader;
+  var isNodeEnv = typeof module !== 'undefined' && module.exports;
+
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
@@ -36,30 +38,31 @@
     return Module.current = new Module('', deps, factory);
   };
 
-  nx.require = function (path, callback, owner) {
-    if (nx.isString(path)) {
-      var currentPath = path,
+  nx.require = function (inPath, inCallback, inOwner) {
+    if (nx.isString(inPath)) {
+      var currentPath = inPath,
         currentModule,
         ownerPath,
-        ext = Path.getExt(path);
+        ext = Path.getExt(inPath),
+        scheme;
 
       // If PATH does not have a value, assign the first loaded module path to it
       if (!nx.PATH) {
-        nx.PATH = Path.parent(path) || './';
-        currentPath = Path.last(path);
+        nx.PATH = Path.parent(inPath) || './';
+        currentPath = Path.last(inPath);
       }
       // If original path does not contain a SLASH, it should be the library path
-      ownerPath = owner ? Path.parent(owner.get('path')) : nx.PATH;
+      ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
+      scheme = ext || (isNodeEnv ? 'node' : 'js');
       if (currentModule) {
-        return currentModule.require(callback);
+        return currentModule.require(inCallback);
       } else {
-        new ModuleLoader(currentPath, ext, callback);
+        new ModuleLoader(currentPath, scheme, inCallback);
       }
     }
   };
-
 
 }(nx, nx.GLOBAL));

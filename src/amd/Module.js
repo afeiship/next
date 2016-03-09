@@ -43,34 +43,29 @@
           var count = deps.length;
           var params = [];
           var self = this;
+          var done = function () {
+            value = factory.call(value) || value;
+            self.set('value', value);
+            self.set('status', STATUS.RESOLVED);
+
+            nx.each(self._callbacks, function (_, callback) {
+              callback(value);
+            });
+
+            self._callbacks = [];
+          };
 
           this.set('status', STATUS.RESOLVING);
 
           if (count === 0) {
-            value = factory.call(value) || value;
-            this.set('value', value);
-            this.set('status', STATUS.RESOLVED);
-
-            nx.each(this._callbacks, function (_, callback) {
-              callback(value);
-            });
-
-            this._callbacks = [];
+            done.call(self);
           } else {
             nx.each(deps, function (index, dep) {
               nx.require(dep, function (param) {
                 params[index] = param;
                 count--;
                 if (count === 0) {
-                  value = factory.apply(value, params) || value;
-                  self.set('value', value);
-                  self.set('status', STATUS.RESOLVED);
-
-                  nx.each(self._callbacks, function (_, callback) {
-                    callback(value);
-                  });
-
-                  self._callbacks = [];
+                  done.call(self);
                 }
               }, self);
             });
