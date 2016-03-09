@@ -6,6 +6,7 @@
   var classMeta = {
     __classId__: 0,
     __type__: 'nx.RootClass',
+    __alias__: 'root',
     __base__: Object,
     __meta__: {},
     __init__: nx.noop,
