@@ -39,7 +39,7 @@
 
     descriptor = inTarget[key] = {
       __meta__: inMeta,
-      //__name__: inName,
+      __name__: inName,
       __type__: 'property',
       get: getter,
       set: setter,
@@ -53,17 +53,14 @@
 
   nx.defineMethod = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var descriptor = {
+    var descriptor = inTarget[key] = {
       __meta__: inMeta,
-      //__name__: inName,
+      __name__: inName,
       __type__: 'method'
     };
-    inTarget[key] = descriptor;
-    nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };
-
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
     var descriptor = {
@@ -71,7 +68,7 @@
       __name__: inName,
       __type__: 'static'
     };
-    nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
+    //nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };

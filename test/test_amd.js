@@ -1,5 +1,5 @@
-require('../dist/next-js-core2')(module, require);
-nx.define(function () {
+require('../dist/next-js-core2')(require);
+nx.define(['underscore'],function () {
   return nx.declare({
     methods: {
       init: function () {

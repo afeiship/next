@@ -3,8 +3,6 @@
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var ModuleLoader = nx.amd.ModuleLoader;
-  var isNodeEnv = typeof module !== 'undefined' && module.exports;
-
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
@@ -56,7 +54,7 @@
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
-      scheme = ext || (isNodeEnv ? 'node' : 'js');
+      scheme = ext || 'js';
       if (currentModule) {
         return currentModule.require(inCallback);
       } else {
@@ -64,5 +62,25 @@
       }
     }
   };
+
+  nx.require = function (inSysRequire) {
+    nx.require = function (inPath, inCallback) {
+      new ModuleLoader(inPath, 'node', inCallback, inSysRequire);
+      //var module = new Module(inPath);
+      //module.sets({
+      //  value: inSysRequire(inPath),
+      //  path: inPath,
+      //  dependencies: Module.current.get('dependencies'),
+      //  factory: Module.current.get('factory'),
+      //  status: nx.amd.Status.LOADING
+      //});
+      //module.require(inCallback);
+    }
+  };
+
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = nx.require;
+  }
 
 }(nx, nx.GLOBAL));

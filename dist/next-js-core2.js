@@ -517,7 +517,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
     descriptor = inTarget[key] = {
       __meta__: inMeta,
-      //__name__: inName,
+      __name__: inName,
       __type__: 'property',
       get: getter,
       set: setter,
@@ -531,17 +531,14 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.defineMethod = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var descriptor = {
+    var descriptor = inTarget[key] = {
       __meta__: inMeta,
-      //__name__: inName,
+      __name__: inName,
       __type__: 'method'
     };
-    inTarget[key] = descriptor;
-    nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };
-
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
     var descriptor = {
@@ -549,7 +546,7 @@ if (typeof module !== 'undefined' && module.exports) {
       __name__: inName,
       __type__: 'static'
     };
-    nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
+    //nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
   };
@@ -938,11 +935,12 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.declare('nx.amd.ModuleLoader', {
     methods: {
-      init: function (inPath, inScheme, inCallback) {
+      init: function (inPath, inScheme, inCallback, inSysRequire) {
         var path = this.path = inPath || '';
         this.scheme = inScheme;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
+        this.sysRequire = inSysRequire;
         this.load();
       },
       load: function () {
@@ -952,13 +950,13 @@ if (typeof module !== 'undefined' && module.exports) {
         }
         nx.error('The scheme ' + scheme + ' is not supported.');
       },
-      node: function () {
+      node: function (inSysRequire) {
         this.module.sets({
-          value: require(this.path),
+          value: this.sysRequire(this.path),
           path: this.path,
           dependencies: Module.current.get('dependencies'),
           factory: Module.current.get('factory'),
-          status: STATUS.RESOLVED
+          status: STATUS.LOADING
         });
         this.module.require(this.callback);
       },
@@ -1026,8 +1024,6 @@ if (typeof module !== 'undefined' && module.exports) {
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var ModuleLoader = nx.amd.ModuleLoader;
-  var isNodeEnv = typeof module !== 'undefined' && module.exports;
-
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
@@ -1079,7 +1075,7 @@ if (typeof module !== 'undefined' && module.exports) {
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
-      scheme = ext || (isNodeEnv ? 'node' : 'js');
+      scheme = ext || 'js';
       if (currentModule) {
         return currentModule.require(inCallback);
       } else {
@@ -1087,5 +1083,25 @@ if (typeof module !== 'undefined' && module.exports) {
       }
     }
   };
+
+  nx.require = function (inSysRequire) {
+    nx.require = function (inPath, inCallback) {
+      new ModuleLoader(inPath, 'node', inCallback, inSysRequire);
+      //var module = new Module(inPath);
+      //module.sets({
+      //  value: inSysRequire(inPath),
+      //  path: inPath,
+      //  dependencies: Module.current.get('dependencies'),
+      //  factory: Module.current.get('factory'),
+      //  status: nx.amd.Status.LOADING
+      //});
+      //module.require(inCallback);
+    }
+  };
+
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = nx.require;
+  }
 
 }(nx, nx.GLOBAL));

@@ -10,11 +10,12 @@
 
   nx.declare('nx.amd.ModuleLoader', {
     methods: {
-      init: function (inPath, inScheme, inCallback) {
+      init: function (inPath, inScheme, inCallback, inSysRequire) {
         var path = this.path = inPath || '';
         this.scheme = inScheme;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
+        this.sysRequire = inSysRequire;
         this.load();
       },
       load: function () {
@@ -24,13 +25,13 @@
         }
         nx.error('The scheme ' + scheme + ' is not supported.');
       },
-      node: function () {
+      node: function (inSysRequire) {
         this.module.sets({
-          value: require(this.path),
+          value: this.sysRequire(this.path),
           path: this.path,
           dependencies: Module.current.get('dependencies'),
           factory: Module.current.get('factory'),
-          status: STATUS.RESOLVED
+          status: STATUS.LOADING
         });
         this.module.require(this.callback);
       },
