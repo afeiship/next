@@ -1084,23 +1084,24 @@ if (typeof module !== 'undefined' && module.exports) {
     }
   };
 
-  nx.require = function (inSysRequire) {
-    nx.require = function (inPath, inCallback) {
-      new ModuleLoader(inPath, 'node', inCallback, inSysRequire);
-      //var module = new Module(inPath);
-      //module.sets({
-      //  value: inSysRequire(inPath),
-      //  path: inPath,
-      //  dependencies: Module.current.get('dependencies'),
-      //  factory: Module.current.get('factory'),
-      //  status: nx.amd.Status.LOADING
-      //});
-      //module.require(inCallback);
-    }
-  };
 
 
   if (typeof module !== 'undefined' && module.exports) {
+    nx.require = function (inSysRequire) {
+      nx.require = function (inPath, inCallback) {
+        new ModuleLoader(inPath, 'node', inCallback, inSysRequire);
+        //var module = new Module(inPath);
+        //module.sets({
+        //  value: inSysRequire(inPath),
+        //  path: inPath,
+        //  dependencies: Module.current.get('dependencies'),
+        //  factory: Module.current.get('factory'),
+        //  status: nx.amd.Status.LOADING
+        //});
+        //module.require(inCallback);
+      }
+    };
+
     module.exports = nx.require;
   }
 
