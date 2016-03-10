@@ -25,7 +25,7 @@
         }
         nx.error('The scheme ' + scheme + ' is not supported.');
       },
-      node: function (inSysRequire) {
+      node: function () {
         this.module.sets({
           value: this.sysRequire(this.path),
           path: this.path,

@@ -837,8 +837,7 @@ if (typeof module !== 'undefined' && module.exports) {
     statics: {
       PENDING: 0,
       LOADING: 1,
-      RESOLVING: 2,
-      RESOLVED: 3
+      RESOLVED: 2
     }
   });
 
@@ -901,8 +900,6 @@ if (typeof module !== 'undefined' && module.exports) {
             self._callbacks = [];
           };
 
-          this.set('status', STATUS.RESOLVING);
-
           if (count === 0) {
             done(value, params);
           } else {
@@ -950,7 +947,7 @@ if (typeof module !== 'undefined' && module.exports) {
         }
         nx.error('The scheme ' + scheme + ' is not supported.');
       },
-      node: function (inSysRequire) {
+      node: function () {
         this.module.sets({
           value: this.sysRequire(this.path),
           path: this.path,

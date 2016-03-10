@@ -4,8 +4,7 @@
     statics: {
       PENDING: 0,
       LOADING: 1,
-      RESOLVING: 2,
-      RESOLVED: 3
+      RESOLVED: 2
     }
   });
 

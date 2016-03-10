@@ -55,8 +55,6 @@
             self._callbacks = [];
           };
 
-          this.set('status', STATUS.RESOLVING);
-
           if (count === 0) {
             done(value, params);
           } else {
