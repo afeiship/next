@@ -33,7 +33,8 @@
       default:
         nx.error('Invalid arguments.');
     }
-    return Module.current = new Module('', deps, factory);
+    Module.current = new Module('', deps, factory);
+    return Module.current;
   };
 
   nx.require = function (inPath, inCallback, inOwner) {
@@ -64,20 +65,16 @@
   };
 
 
-
   if (typeof module !== 'undefined' && module.exports) {
     nx.require = function (inSysRequire) {
       nx.require = function (inPath, inCallback) {
-        new ModuleLoader(inPath, 'node', inCallback, inSysRequire);
-        //var module = new Module(inPath);
-        //module.sets({
-        //  value: inSysRequire(inPath),
-        //  path: inPath,
-        //  dependencies: Module.current.get('dependencies'),
-        //  factory: Module.current.get('factory'),
-        //  status: nx.amd.Status.LOADING
-        //});
-        //module.require(inCallback);
+        var deps = nx.toArray(inPath);
+        var params = [], param;
+        deps.forEach(function (item) {
+          param = inSysRequire(item);
+          params.push(param);
+        });
+        inCallback.apply(null,params);
       }
     };
 
