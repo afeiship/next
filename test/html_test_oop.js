@@ -18,4 +18,4 @@ nx.declare('Class1', {
   }
 });
 
-var cls1=new Class1();
+var cls1 = new Class1();
