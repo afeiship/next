@@ -18,7 +18,7 @@
         this.sets({
           path: path,
           dependencies: deps || [],
-          factory: factory,
+          factory: factory || nx.noop,
           value: {}
         });
 
@@ -67,7 +67,7 @@
                 if (count === 0) {
                   done(value, params);
                 }
-              },self);
+              }, self);
             });
           }
         }

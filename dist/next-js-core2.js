@@ -823,7 +823,7 @@ if (typeof module !== 'undefined' && module.exports) {
         if (dotIndex > slashIndex) {
           return inPath.slice(dotIndex + 1);
         } else {
-          return '';
+          return 'js';
         }
       }
     }
@@ -864,7 +864,7 @@ if (typeof module !== 'undefined' && module.exports) {
         this.sets({
           path: path,
           dependencies: deps || [],
-          factory: factory,
+          factory: factory || nx.noop,
           value: {}
         });
 
@@ -913,7 +913,7 @@ if (typeof module !== 'undefined' && module.exports) {
                 if (count === 0) {
                   done(value, params);
                 }
-              },self);
+              }, self);
             });
           }
         }
@@ -935,19 +935,19 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.declare('nx.amd.ModuleLoader', {
     methods: {
-      init: function (inPath, inScheme, inCallback) {
+      init: function (inPath, inExt, inCallback) {
         var path = this.path = inPath || '';
-        this.scheme = inScheme;
+        this.ext = inExt;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
         this.load();
       },
       load: function () {
-        var scheme = this.scheme;
-        if (scheme) {
-          return this[scheme]();
+        var ext = this.ext;
+        if (ext) {
+          return this[ext]();
         }
-        nx.error('The scheme ' + scheme + ' is not supported.');
+        nx.error('The ext ' + ext + ' is not supported.');
       },
       css: function () {
         var linkNode = doc.createElement('link');
@@ -1052,8 +1052,7 @@ if (typeof module !== 'undefined' && module.exports) {
       var currentPath = inPath,
         currentModule,
         ownerPath,
-        ext = Path.getExt(inPath),
-        scheme;
+        ext = Path.getExt(inPath);
 
       // If PATH does not have a value, assign the first loaded module path to it
       if (!nx.PATH) {
@@ -1065,11 +1064,10 @@ if (typeof module !== 'undefined' && module.exports) {
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
-      scheme = ext || 'js';
       if (currentModule) {
         return currentModule.require(inCallback);
       } else {
-        new ModuleLoader(currentPath, scheme, inCallback);
+        new ModuleLoader(currentPath, ext, inCallback);
       }
     }
   };
@@ -1084,7 +1082,7 @@ if (typeof module !== 'undefined' && module.exports) {
           param = inSysRequire(item);
           params.push(param);
         });
-        inCallback.apply(null,params);
+        inCallback.apply(null, params);
       }
     };
 
