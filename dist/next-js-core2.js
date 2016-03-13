@@ -837,7 +837,8 @@ if (typeof module !== 'undefined' && module.exports) {
     statics: {
       PENDING: 0,
       LOADING: 1,
-      RESOLVED: 2
+      RESOLVING: 2,
+      RESOLVED: 3
     }
   });
 
@@ -900,6 +901,8 @@ if (typeof module !== 'undefined' && module.exports) {
             self._callbacks = [];
           };
 
+          this.set('status', STATUS.RESOLVING);
+
           if (count === 0) {
             done(value, params);
           } else {
@@ -910,7 +913,7 @@ if (typeof module !== 'undefined' && module.exports) {
                 if (count === 0) {
                   done(value, params);
                 }
-              }, self);
+              },self);
             });
           }
         }
@@ -932,12 +935,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.declare('nx.amd.ModuleLoader', {
     methods: {
-      init: function (inPath, inScheme, inCallback, inSysRequire) {
+      init: function (inPath, inScheme, inCallback) {
         var path = this.path = inPath || '';
         this.scheme = inScheme;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
-        this.sysRequire = inSysRequire;
         this.load();
       },
       load: function () {
@@ -946,16 +948,6 @@ if (typeof module !== 'undefined' && module.exports) {
           return this[scheme]();
         }
         nx.error('The scheme ' + scheme + ' is not supported.');
-      },
-      node: function () {
-        this.sysRequire(this.path);
-        this.module.sets({
-          path: this.path,
-          dependencies: Module.current.get('dependencies'),
-          factory: Module.current.get('factory'),
-          status: STATUS.LOADING
-        });
-        this.module.require(this.callback);
       },
       css: function () {
         var linkNode = doc.createElement('link');

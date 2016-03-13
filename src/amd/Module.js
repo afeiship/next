@@ -67,7 +67,7 @@
                 if (count === 0) {
                   done(value, params);
                 }
-              });
+              },self);
             });
           }
         }

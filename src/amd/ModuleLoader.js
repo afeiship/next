@@ -10,30 +10,19 @@
 
   nx.declare('nx.amd.ModuleLoader', {
     methods: {
-      init: function (inPath, inScheme, inCallback, inSysRequire) {
+      init: function (inPath, inExt, inCallback) {
         var path = this.path = inPath || '';
-        this.scheme = inScheme;
+        this.ext = inExt;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
-        this.sysRequire = inSysRequire;
         this.load();
       },
       load: function () {
-        var scheme = this.scheme;
-        if (scheme) {
-          return this[scheme]();
+        var ext = this.ext;
+        if (ext) {
+          return this[ext]();
         }
-        nx.error('The scheme ' + scheme + ' is not supported.');
-      },
-      node: function () {
-        this.sysRequire(this.path);
-        this.module.sets({
-          path: this.path,
-          dependencies: Module.current.get('dependencies'),
-          factory: Module.current.get('factory'),
-          status: STATUS.LOADING
-        });
-        this.module.require(this.callback);
+        nx.error('The ext ' + ext + ' is not supported.');
       },
       css: function () {
         var linkNode = doc.createElement('link');

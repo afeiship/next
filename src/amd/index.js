@@ -42,8 +42,7 @@
       var currentPath = inPath,
         currentModule,
         ownerPath,
-        ext = Path.getExt(inPath),
-        scheme;
+        ext = Path.getExt(inPath);
 
       // If PATH does not have a value, assign the first loaded module path to it
       if (!nx.PATH) {
@@ -55,11 +54,10 @@
       currentPath = Path.normalize(ownerPath + currentPath);
       currentModule = Module.all[currentPath];
 
-      scheme = ext || 'js';
       if (currentModule) {
         return currentModule.require(inCallback);
       } else {
-        new ModuleLoader(currentPath, scheme, inCallback);
+        new ModuleLoader(currentPath, ext, inCallback);
       }
     }
   };
@@ -74,7 +72,7 @@
           param = inSysRequire(item);
           params.push(param);
         });
-        inCallback.apply(null,params);
+        inCallback.apply(null, params);
       }
     };
 

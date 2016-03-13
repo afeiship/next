@@ -64,7 +64,7 @@
         if (dotIndex > slashIndex) {
           return inPath.slice(dotIndex + 1);
         } else {
-          return '';
+          return 'js';
         }
       }
     }
