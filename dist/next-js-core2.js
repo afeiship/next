@@ -118,6 +118,7 @@ nx = {
         inTarget[key] = inSource[key];
       }
     }
+    return inTarget;
   };
 
   nx.mix = function (inTarget) {
@@ -307,9 +308,9 @@ nx = {
     return inValue;
   };
 
-  nx.stringify = function () {
+  nx.stringify = function (inValue) {
     try {
-      return JSON.stringify(arguments);
+      return JSON.stringify(inValue);
     } catch (_) {
     }
     return inValue;
@@ -426,6 +427,7 @@ if (typeof module !== 'undefined' && module.exports) {
       switch (type) {
         case 'method':
         case 'property':
+        case 'undefined':
           return this[inName];
         case 'static':
           return this.constructor[inName];
@@ -455,7 +457,7 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     memberType: function (inName) {
       var member = this.member(inName);
-      return member && member.__type__;
+      return (member && member.__type__) || 'undefined';
     },
     init: function () {
       //will be implement
@@ -573,7 +575,7 @@ if (typeof module !== 'undefined' && module.exports) {
           result.push(val);
         }
       });
-      return result || array;
+      return result || inArray;
     },
     union: function () {
       var result = [];
@@ -759,6 +761,36 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
+  var Config = nx.declare('nx.amd.Config', {
+    statics: {
+      __config__: {},
+      getInstance: function () {
+        var instance = Config.instance;
+        if (!instance) {
+          instance = Config.instance = new Config();
+        }
+        return instance;
+      }
+    },
+    methods: {
+      set: function (inName, inValue) {
+        Config.__config__[inName] = inValue;
+      },
+      get: function (inName) {
+        return Config.__config__[inName];
+      },
+      gets: function () {
+        return Config.__config__;
+      }
+    }
+  });
+
+  nx.config = Config.getInstance();
+
+}(nx, nx.GLOBAL));
+
+(function (nx, global) {
+
   var DOT = '.',
     DOUBLE_DOT = '..',
     SLASH = '/';
@@ -825,6 +857,13 @@ if (typeof module !== 'undefined' && module.exports) {
         } else {
           return 'js';
         }
+      },
+      unique: function (inPathArray) {
+        var map = {};
+        inPathArray.forEach(function (path) {
+          map[path] = true;
+        });
+        return Object.keys(map);
       }
     }
   });
@@ -847,161 +886,45 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var STATUS = nx.amd.Status;
-  nx.declare('nx.amd.Module', {
+  var Path = nx.amd.Path;
+  var Module = nx.declare('nx.amd.Module', {
+    properties: {
+      path: '',
+      status: STATUS.PENDING,
+      dependencies: null,
+      factory: null
+    },
     statics: {
+      depsMap: {},
       all: {},
       current: null
     },
-    properties: {
-      status: STATUS.PENDING,
-      path: '',
-      dependencies: null,
-      factory: null,
-      value: null
-    },
     methods: {
-      init: function (path, deps, factory) {
+      init: function (inPath, inDeps, inFactory) {
         this.sets({
-          path: path,
-          dependencies: deps || [],
-          factory: factory || nx.noop,
-          value: {}
+          path: inPath || '',
+          dependencies: inDeps || [],
+          factory: inFactory || nx.noop
         });
-
-        this._callbacks = [];
+        Module.depsMap[this.path] = this.dependencies;
       },
-      require: function (inCallback) {
-        var status = this.get('status');
-
-        if (inCallback) {
-          if (status === STATUS.RESOLVED) {
-            inCallback(this.get('value'));
-          } else {
-            this._callbacks.push(inCallback);
+      load: function (inCallback) {
+        var ext, path, fullPath, loader;
+        var baseUrl = nx.config.get('baseUrl');
+        var deps = this.dependencies.slice(0);
+        nx.each(deps, function (_, dep) {
+          ext = Path.getExt(dep);
+          path = Path.normalize(baseUrl + dep);
+          fullPath = Path.setExt(baseUrl + dep, ext);
+          if (deps.indexOf(dep) === -1) {
+            deps.push(dep);
           }
-        }
-
-        if (status === STATUS.LOADING) {
-          var path = this.get('path');
-          var deps = this.get('dependencies');
-          var factory = this.get('factory');
-          var value = this.get('value');
-          var count = deps.length;
-          var params = [];
-          var self = this;
-          var done = function (inValue, inParams) {
-            var value = factory.apply(inValue, inParams) || inValue;
-            self.set('value', value);
-            self.set('status', STATUS.RESOLVED);
-
-            nx.each(self._callbacks, function (_, callback) {
-              callback(value);
-            });
-
-            self._callbacks = [];
-          };
-
-          this.set('status', STATUS.RESOLVING);
-
-          if (count === 0) {
-            done(value, params);
-          } else {
-            nx.each(deps, function (index, dep) {
-              nx.require(dep, function (param) {
-                params[index] = param;
-                count--;
-                if (count === 0) {
-                  done(value, params);
-                }
-              }, self);
-            });
-          }
-        }
-      }
-    }
-  });
-
-}(nx, nx.GLOBAL));
-
-(function (nx, global) {
-
-  var doc = global.document;
-  var isBrowserEnv = !!doc;
-  var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
-  var Path = nx.amd.Path;
-  var Module = nx.amd.Module;
-  var STATUS = nx.amd.Status;
-  var completeRE = /loaded|complete/;
-
-  nx.declare('nx.amd.ModuleLoader', {
-    methods: {
-      init: function (inPath, inExt, inCallback) {
-        var path = this.path = inPath || '';
-        this.ext = inExt;
-        this.module = Module.all[path] = new Module(path);
-        this.callback = inCallback || nx.noop;
-        this.load();
+        }, this);
+        Module.depsMap[this.path] = deps;
       },
-      load: function () {
-        var ext = this.ext;
-        if (ext) {
-          return this[ext]();
-        }
-        nx.error('The ext ' + ext + ' is not supported.');
+      onLoad: function () {
       },
-      css: function () {
-        var linkNode = doc.createElement('link');
-        linkNode.rel = 'stylesheet';
-        linkNode.href = Path.setExt(this.path, 'css');
-        head.appendChild(linkNode);
-
-        this.module.sets({
-          value: linkNode,
-          path: this.path,
-          dependencies: Module.current.get('dependencies'),
-          factory: Module.current.get('factory'),
-          status: STATUS.RESOLVED
-        });
-        this.module.require(this.callback);
-      },
-      js: function () {
-        var scriptNode = doc.createElement('script');
-        var supportOnload = "onload" in scriptNode;
-        var self = this;
-        var handler = function (err) {
-          scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
-          if (err) {
-            nx.error('Failed to load module:' + self.path);
-          } else {
-            self.module.sets({
-              path: self.path,
-              dependencies: Module.current.get('dependencies'),
-              factory: Module.current.get('factory'),
-              status: STATUS.LOADING
-            });
-            self.module.require(self.callback);
-          }
-        };
-
-        scriptNode.src = Path.setExt(self.path, 'js');
-        scriptNode.async = true;
-        head.appendChild(scriptNode);
-        if (supportOnload) {
-          scriptNode.onload = function () {
-            handler(null);
-          };
-        } else {
-          scriptNode.onreadystatechange = function (e) {
-            if (completeRE.test(scriptNode.readyState)) {
-              handler(null);
-            } else {
-              handler(e);
-            }
-          };
-        }
-        scriptNode.onerror = function (e) {
-          handler(e);
-        };
+      getModule: function (inPath) {
       }
     }
   });
@@ -1011,9 +934,6 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var Module = nx.amd.Module;
-  var Path = nx.amd.Path;
-  var ModuleLoader = nx.amd.ModuleLoader;
-
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
@@ -1043,50 +963,7 @@ if (typeof module !== 'undefined' && module.exports) {
       default:
         nx.error('Invalid arguments.');
     }
-    Module.current = new Module('', deps, factory);
-    return Module.current;
+    return Module.current = new Module('', deps, factory);
   };
-
-  nx.require = function (inPath, inCallback, inOwner) {
-    if (nx.isString(inPath)) {
-      var currentPath = inPath,
-        currentModule,
-        ownerPath,
-        ext = Path.getExt(inPath);
-
-      // If PATH does not have a value, assign the first loaded module path to it
-      if (!nx.PATH) {
-        nx.PATH = Path.parent(inPath) || './';
-        currentPath = Path.last(inPath);
-      }
-      // If original path does not contain a SLASH, it should be the library path
-      ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
-      currentPath = Path.normalize(ownerPath + currentPath);
-      currentModule = Module.all[currentPath];
-
-      if (currentModule) {
-        return currentModule.require(inCallback);
-      } else {
-        new ModuleLoader(currentPath, ext, inCallback);
-      }
-    }
-  };
-
-
-  if (typeof module !== 'undefined' && module.exports) {
-    nx.require = function (inSysRequire) {
-      nx.require = function (inPath, inCallback) {
-        var deps = nx.toArray(inPath);
-        var params = [], param;
-        deps.forEach(function (item) {
-          param = inSysRequire(item);
-          params.push(param);
-        });
-        inCallback.apply(null, params);
-      }
-    };
-
-    module.exports = nx.require;
-  }
 
 }(nx, nx.GLOBAL));

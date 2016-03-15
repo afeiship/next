@@ -118,6 +118,7 @@ nx = {
         inTarget[key] = inSource[key];
       }
     }
+    return inTarget;
   };
 
   nx.mix = function (inTarget) {
@@ -307,9 +308,9 @@ nx = {
     return inValue;
   };
 
-  nx.stringify = function () {
+  nx.stringify = function (inValue) {
     try {
-      return JSON.stringify(arguments);
+      return JSON.stringify(inValue);
     } catch (_) {
     }
     return inValue;

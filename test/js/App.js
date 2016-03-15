@@ -1,4 +1,5 @@
-nx.define([
+
+var AppModule=nx.define([
   './modules/mod1',
   '../css/style.css',
   './index-view/'
@@ -13,3 +14,6 @@ nx.define([
     }
   });
 });
+
+
+

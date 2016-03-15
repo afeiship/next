@@ -4,14 +4,23 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <script type="text/javascript" src="../dist/next-js-core2.js"></script>
+  <script type="text/javascript" src="../src/amd/Config.js"></script>
+  <script type="text/javascript" src="./js/App.js"></script>
 </head>
 <body>
 
 <script type="text/javascript">
-  nx.require('./js/App', function (App) {
+  nx.config.set({
+    baseUrl:'./js'
+  });
+  AppModule.load(function(App){
+  });
+  /*nx.require('./js/App', function (App) {
     var app=new App();
     app.start();
-  });
+  });*/
+
+
 </script>
 </body>
 </html>

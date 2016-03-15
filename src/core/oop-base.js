@@ -56,6 +56,7 @@
       switch (type) {
         case 'method':
         case 'property':
+        case 'undefined':
           return this[inName];
         case 'static':
           return this.constructor[inName];
@@ -85,7 +86,7 @@
     },
     memberType: function (inName) {
       var member = this.member(inName);
-      return member && member.__type__;
+      return (member && member.__type__) || 'undefined';
     },
     init: function () {
       //will be implement

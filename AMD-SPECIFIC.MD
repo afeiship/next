@@ -154,3 +154,13 @@ It is recommended that define calls be in the literal form of 'define(...)' in o
 A version of this API started on the CommonJS wiki as a transport format, as Modules Transport/C, but it changed over time to also include a module definition API. Consensus was not reached on the CommonJS list about recommending this API as a module definition API. The API was transferred over to its own wiki and discussion group.
 
 AMD can be used as a transport format for CommonJS modules as long as the CommonJS module does not use computed, synchronous require('') calls. CommonJS code that use computed synchronous require('') code can be converted to use the callback-style [[require]] supported in most AMD loaders.
+
+
+##Reference:
++ http://www.cnblogs.com/rentj1/archive/2012/11/15/2772021.html
++ http://developer.51cto.com/art/201211/364202.htm
++ http://www.barretlee.com/blog/2013/12/29/cb-how-to-achieve-loading-module/
++ http://www.cnblogs.com/snandy/archive/2012/03/12/2390782.html
++ http://www.cnblogs.com/johnl/archive/2015/01/26/4251300.html
++ https://segmentfault.com/a/1190000002515305
++ http://www.chawenti.com/articles/9423.html

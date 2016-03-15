@@ -18,7 +18,7 @@
           result.push(val);
         }
       });
-      return result || array;
+      return result || inArray;
     },
     union: function () {
       var result = [];

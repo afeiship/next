@@ -66,13 +66,6 @@
         } else {
           return 'js';
         }
-      },
-      unique: function (inPathArray) {
-        var map = {};
-        inPathArray.forEach(function (path) {
-          map[path] = true;
-        });
-        return Object.keys(map);
       }
     }
   });
