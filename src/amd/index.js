@@ -16,7 +16,7 @@
       case len === 1 && nx.isArray(inDeps):
         deps = inDeps;
         factory = function () {
-          var result = {length: arguments.length};
+          var result = {__index__: true, length: arguments.length};
           nx.each(arguments, function (index, mod) {
             if (mod.__module__) {
               result[mod.__module__] = mod;

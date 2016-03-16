@@ -28,7 +28,7 @@
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
-            self.fire('load');
+            self.fire('load',this);
           }
         };
 
@@ -58,7 +58,7 @@
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-        this.fire('load');
+        this.fire('load',this);
       }
     }
   });

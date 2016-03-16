@@ -913,7 +913,7 @@ if (typeof module !== 'undefined' && module.exports) {
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
-            self.fire('load');
+            self.fire('load',this);
           }
         };
 
@@ -943,7 +943,7 @@ if (typeof module !== 'undefined' && module.exports) {
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-        this.fire('load');
+        this.fire('load',this);
       }
     }
   });
@@ -974,8 +974,6 @@ if (typeof module !== 'undefined' && module.exports) {
         this.resetProperties();
       },
       resetProperties: function () {
-        console.log(this);
-        this.__factory=this.get('factory');
         this._count = this.dependencies.length;
         this._params = [];
       },
@@ -991,22 +989,39 @@ if (typeof module !== 'undefined' && module.exports) {
           path = Path.normalize(
             Path.setExt(baseUrl + dep, ext)
           );
+          console.log(path);
           this.attachLoader(path, ext, inCallback);
         }, this);
       },
       attachLoader: function (inPath, inExt) {
-        var loader = this.loader = new Loader(inPath, inExt);
+        var loader = new Loader(inPath, inExt);
         loader.on('load', this.onModuleLoad, this);
         loader.load();
       },
-      onModuleLoad: function () {
-        console.log('item load');
-        var factory = Module.current.get('factory');
-        this._params[this._count] = factory();
+      onModuleLoad: function (inLoader) {
+        //console.log('item load');
+        var currentModule = Module.current,
+          factory = currentModule.get('factory'),
+          deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
+          nDeps = deps.length;
+
+        console.log(nDeps);
+        if (nDeps === 0) {
+          //end:
+          console.log('end!!!');
+        } else {
+          nx.each(deps,function(index,dep){
+            console.log(index,dep);
+            //currentModule.load()
+          });
+          console.log('ing!!!');
+        }
+
+
         this._count--;
         this.sets({
-          path: this.loader.path,
-          dependencies: Module.current.get('dependencies'),
+          path: inLoader.path,
+          dependencies: deps,
           factory: factory
         });
         if (this._count === 0) {
@@ -1014,11 +1029,15 @@ if (typeof module !== 'undefined' && module.exports) {
         }
       },
       onModuleAllLoad: function (inCallback) {
-        console.log('this.this.__factory',this.__factory);
-        console.log('this._count', this._count);
-        console.log('this._params', this._params);
-        console.log('inCallback', inCallback);
-        console.log('All loaded!');
+        //console.log('this._callback',this._callback);
+        //console.log('this._params',this._params);
+        //console.log('inCallback', inCallback);
+        //console.log('All loaded!');
+        //console.log(inCallback.toString(), inParam);
+        inCallback.call(this);
+        //console.log(this._params[0]);
+        //this._callback(this._params[0]);
+        //inCallback.call(this._params.slice(1));
       }
     }
   });
@@ -1043,7 +1062,7 @@ if (typeof module !== 'undefined' && module.exports) {
       case len === 1 && nx.isArray(inDeps):
         deps = inDeps;
         factory = function () {
-          var result = {length: arguments.length};
+          var result = {__index__: true, length: arguments.length};
           nx.each(arguments, function (index, mod) {
             if (mod.__module__) {
               result[mod.__module__] = mod;

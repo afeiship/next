@@ -22,8 +22,6 @@
         this.resetProperties();
       },
       resetProperties: function () {
-        //todo:buggy
-        this.__factory=this.get('factory');
         this._count = this.dependencies.length;
         this._params = [];
       },
@@ -39,22 +37,41 @@
           path = Path.normalize(
             Path.setExt(baseUrl + dep, ext)
           );
+          console.log(path);
           this.attachLoader(path, ext, inCallback);
         }, this);
       },
       attachLoader: function (inPath, inExt) {
-        var loader = this.loader = new Loader(inPath, inExt);
+        var loader = new Loader(inPath, inExt);
         loader.on('load', this.onModuleLoad, this);
         loader.load();
       },
-      onModuleLoad: function () {
-        console.log('item load');
-        var factory = Module.current.get('factory');
-        this._params[this._count] = factory();
+      onModuleLoad: function (inLoader) {
+        //console.log('item load');
+        var currentModule = Module.current,
+          factory = currentModule.get('factory'),
+          deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
+          nDeps = deps.length,
+          params=[];
+
+        console.log(nDeps);
+        if (nDeps === 0) {
+          //end:
+          console.log('end!!!');
+        } else {
+          nx.each(deps,function(index,dep){
+            currentModule.load(function(){
+              //params[index]=Module.current.get('factory')
+            })
+          });
+          console.log('ing!!!');
+        }
+
+
         this._count--;
         this.sets({
-          path: this.loader.path,
-          dependencies: Module.current.get('dependencies'),
+          path: inLoader.path,
+          dependencies: deps,
           factory: factory
         });
         if (this._count === 0) {
@@ -62,11 +79,15 @@
         }
       },
       onModuleAllLoad: function (inCallback) {
-        console.log('this.this.__factory',this.__factory);
-        console.log('this._count', this._count);
-        console.log('this._params', this._params);
-        console.log('inCallback', inCallback);
-        console.log('All loaded!');
+        //console.log('this._callback',this._callback);
+        //console.log('this._params',this._params);
+        //console.log('inCallback', inCallback);
+        //console.log('All loaded!');
+        //console.log(inCallback.toString(), inParam);
+        inCallback.call(this);
+        //console.log(this._params[0]);
+        //this._callback(this._params[0]);
+        //inCallback.call(this._params.slice(1));
       }
     }
   });
