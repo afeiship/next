@@ -9,7 +9,6 @@
       factory: null
     },
     statics: {
-      depsMap: {},
       all: {},
       current: null
     },
@@ -20,7 +19,6 @@
           dependencies: inDeps || [],
           factory: inFactory || nx.noop
         });
-        Module.depsMap[this.path] = this.dependencies;
       },
       load: function (inCallback) {
         var ext, path, fullPath, loader;
