@@ -965,6 +965,7 @@ if (typeof module !== 'undefined' && module.exports) {
         },
         set: function (inValue) {
           if (inValue === 0) {
+            this.params.reverse();
             this.fire('allLoad');
           }
           this._count = inValue;
@@ -983,13 +984,14 @@ if (typeof module !== 'undefined' && module.exports) {
           factory: inFactory || nx.noop
         });
         this.count = this.dependencies.length;
+        this.params = [];
       },
       load: function (inCallback, inOwner) {
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
 
-        this.on('allLoad', function () {
+        this.on('allLoad', function (inParams) {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
 
@@ -1012,29 +1014,30 @@ if (typeof module !== 'undefined' && module.exports) {
         var currentModule = Module.current,
           factory = inLoader.ext === 'css' ? nx.noop : currentModule.get('factory'),
           deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
-          nDeps = deps.length,
-          params = [];
+          nDeps = deps.length;
         this.count--;
+        this.params[this.count] = factory();
         this.sets({
           path: inLoader.path,
           dependencies: deps,
           factory: factory
         });
         if (nDeps === 0) {
-          //end:
-          console.log('end!!!');
-          console.dir(new factory());
+          //this.params.push(factory());
         } else {
           currentModule.load(factory, this);
         }
       },
       onModuleAllLoad: function (inCallback) {
+        debugger;
         //console.log('this._callback',this._callback);
         //console.log('this._params',this._params);
         //console.log('inCallback', inCallback);
         //console.log('All loaded!');
         //console.log(inCallback.toString(), inParam);
-        inCallback.call(this);
+        var params = this.params.slice(0);
+        inCallback.call(this, params);
+        this.params = [];
         //console.log(this._params[0]);
         //this._callback(this._params[0]);
         //inCallback.call(this._params.slice(1));
