@@ -6,7 +6,18 @@
     properties: {
       path: '',
       dependencies: null,
-      factory: null
+      factory: null,
+      count: {
+        get: function () {
+          return this._count;
+        },
+        set: function (inValue) {
+          if (inValue === 0) {
+            this.fire('allLoad');
+          }
+          this._count = inValue;
+        }
+      }
     },
     statics: {
       all: {},
@@ -19,25 +30,23 @@
           dependencies: inDeps || [],
           factory: inFactory || nx.noop
         });
-        this.resetProperties();
+        this.count = this.dependencies.length;
       },
-      resetProperties: function () {
-        this._count = this.dependencies.length;
-        this._params = [];
-      },
-      load: function (inCallback) {
-        var ext, path;
-        var baseUrl = nx.config.get('baseUrl');
-        var deps = this.dependencies;
+      load: function (inCallback, inOwner) {
+        var ext, path, ownerPath;
+        var baseUrl = nx.config.get('baseUrl'),
+          deps = this.dependencies;
+
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
+
         nx.each(deps, function (_, dep) {
+          ownerPath = inOwner ? Path.parent(inOwner.get('path')) : baseUrl;
           ext = Path.getExt(dep);
           path = Path.normalize(
-            Path.setExt(baseUrl + dep, ext)
+            Path.setExt(ownerPath + dep, ext)
           );
-          console.log(path);
           this.attachLoader(path, ext, inCallback);
         }, this);
       },
@@ -49,33 +58,23 @@
       onModuleLoad: function (inLoader) {
         //console.log('item load');
         var currentModule = Module.current,
-          factory = currentModule.get('factory'),
+          factory = inLoader.ext === 'css' ? nx.noop : currentModule.get('factory'),
           deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
           nDeps = deps.length,
-          params=[];
-
-        console.log(nDeps);
-        if (nDeps === 0) {
-          //end:
-          console.log('end!!!');
-        } else {
-          nx.each(deps,function(index,dep){
-            currentModule.load(function(){
-              //params[index]=Module.current.get('factory')
-            })
-          });
-          console.log('ing!!!');
-        }
-
-
-        this._count--;
+          params = [];
+        this.count--;
         this.sets({
           path: inLoader.path,
           dependencies: deps,
           factory: factory
         });
-        if (this._count === 0) {
-          this.fire('allLoad');
+        if (nDeps === 0) {
+          //end:
+          console.log('end!!!');
+          console.dir(new factory());
+
+        } else {
+          currentModule.load(factory, this);
         }
       },
       onModuleAllLoad: function (inCallback) {
