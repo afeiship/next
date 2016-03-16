@@ -344,7 +344,7 @@ if (typeof module !== 'undefined' && module.exports) {
     off: function (inName, inHandler, inContext) {
       var listeners = this.__listeners__[inName];
       if (inHandler) {
-        nx.each(listeners, function (listener, index) {
+        nx.each(listeners, function (index,listener) {
           if (listener.handler === inHandler && (!inContext || listener.context === inContext )) {
             listeners.splice(index, 1);
           }
@@ -356,7 +356,7 @@ if (typeof module !== 'undefined' && module.exports) {
     fire: function (inName, inArgs) {
       var listeners = this.__listeners__[inName];
       if (listeners) {
-        nx.each(listeners, function (listener) {
+        nx.each(listeners, function (_,listener) {
           if (listener && listener.handler) {
             if (listener.handler.call(listener.context || listener.owner, listener.owner, inArgs) === false) {
               return nx.BREAKER;
@@ -885,17 +885,82 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
-  var STATUS = nx.amd.Status;
+  var doc = global.document;
+  var isBrowserEnv = !!doc;
+  var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
+  var completeRE = /loaded|complete/;
+
+  nx.declare('nx.amd.Loader', {
+    methods: {
+      init: function (inPath, inExt) {
+        this.path = inPath;
+        this.ext = inExt;
+      },
+      load: function () {
+        var ext = this.ext;
+        if (ext) {
+          return this[ext]();
+        }
+        nx.error('The ext ' + ext + ' is not supported.');
+      },
+      js: function () {
+        var scriptNode = doc.createElement('script');
+        var supportOnload = "onload" in scriptNode;
+        var self = this;
+        var path = this.path;
+        var complete = function (err) {
+          scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
+          if (err) {
+            nx.error('Failed to load module:' + path);
+          } else {
+            self.fire('load');
+          }
+        };
+
+        scriptNode.src = path;
+        scriptNode.async = true;
+        head.appendChild(scriptNode);
+
+        if (supportOnload) {
+          scriptNode.onload = function () {
+            complete(null);
+          };
+        } else {
+          scriptNode.onreadystatechange = function (e) {
+            if (completeRE.test(scriptNode.readyState)) {
+              complete(null);
+            } else {
+              complete(e);
+            }
+          };
+        }
+        scriptNode.onerror = function (e) {
+          complete(e);
+        }
+      },
+      css: function () {
+        var linkNode = doc.createElement('link');
+        linkNode.rel = 'stylesheet';
+        linkNode.href = this.path;
+        head.appendChild(linkNode);
+        this.fire('load');
+      }
+    }
+  });
+
+}(nx, nx.GLOBAL));
+
+(function (nx, global) {
+
   var Path = nx.amd.Path;
+  var Loader = nx.amd.Loader;
   var Module = nx.declare('nx.amd.Module', {
     properties: {
       path: '',
-      status: STATUS.PENDING,
       dependencies: null,
       factory: null
     },
     statics: {
-      depsMap: {},
       all: {},
       current: null
     },
@@ -906,25 +971,54 @@ if (typeof module !== 'undefined' && module.exports) {
           dependencies: inDeps || [],
           factory: inFactory || nx.noop
         });
-        Module.depsMap[this.path] = this.dependencies;
+        this.resetProperties();
+      },
+      resetProperties: function () {
+        console.log(this);
+        this.__factory=this.get('factory');
+        this._count = this.dependencies.length;
+        this._params = [];
       },
       load: function (inCallback) {
-        var ext, path, fullPath, loader;
+        var ext, path;
         var baseUrl = nx.config.get('baseUrl');
-        var deps = this.dependencies.slice(0);
+        var deps = this.dependencies;
+        this.on('allLoad', function () {
+          this.onModuleAllLoad.call(this, inCallback);
+        }, this);
         nx.each(deps, function (_, dep) {
           ext = Path.getExt(dep);
-          path = Path.normalize(baseUrl + dep);
-          fullPath = Path.setExt(baseUrl + dep, ext);
-          if (deps.indexOf(dep) === -1) {
-            deps.push(dep);
-          }
+          path = Path.normalize(
+            Path.setExt(baseUrl + dep, ext)
+          );
+          this.attachLoader(path, ext, inCallback);
         }, this);
-        Module.depsMap[this.path] = deps;
       },
-      onLoad: function () {
+      attachLoader: function (inPath, inExt) {
+        var loader = this.loader = new Loader(inPath, inExt);
+        loader.on('load', this.onModuleLoad, this);
+        loader.load();
       },
-      getModule: function (inPath) {
+      onModuleLoad: function () {
+        console.log('item load');
+        var factory = Module.current.get('factory');
+        this._params[this._count] = factory();
+        this._count--;
+        this.sets({
+          path: this.loader.path,
+          dependencies: Module.current.get('dependencies'),
+          factory: factory
+        });
+        if (this._count === 0) {
+          this.fire('allLoad');
+        }
+      },
+      onModuleAllLoad: function (inCallback) {
+        console.log('this.this.__factory',this.__factory);
+        console.log('this._count', this._count);
+        console.log('this._params', this._params);
+        console.log('inCallback', inCallback);
+        console.log('All loaded!');
       }
     }
   });

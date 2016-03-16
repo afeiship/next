@@ -24,6 +24,7 @@
       conf.src + '/amd/Config.js',
       conf.src + '/amd/Path.js',
       conf.src + '/amd/Status.js',
+      conf.src + '/amd/Loader.js',
       conf.src + '/amd/Module.js',
       conf.src + '/amd/index.js'
     ],

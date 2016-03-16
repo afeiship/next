@@ -10,10 +10,12 @@
 <body>
 
 <script type="text/javascript">
-  nx.config.set({
-    baseUrl:'./js'
+  nx.DEBUG=true;
+  nx.config.sets({
+    baseUrl:'./js/'
   });
   AppModule.load(function(App){
+    console.log('App',App);
   });
   /*nx.require('./js/App', function (App) {
     var app=new App();

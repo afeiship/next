@@ -7,9 +7,9 @@
 
   nx.declare('nx.amd.Loader', {
     methods: {
-      init: function (inPath) {
+      init: function (inPath, inExt) {
         this.path = inPath;
-        this.load();
+        this.ext = inExt;
       },
       load: function () {
         var ext = this.ext;
