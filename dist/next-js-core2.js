@@ -983,15 +983,19 @@ if (typeof module !== 'undefined' && module.exports) {
           dependencies: inDeps || [],
           factory: inFactory || nx.noop
         });
-        this.count = this.dependencies.length;
-        this.params = [];
       },
       load: function (inCallback, inOwner) {
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
-
-        this.on('allLoad', function (inParams) {
+        this.params = [];
+        if (!inOwner) {
+          this.params.push(
+            this.factory()
+          );
+        }
+        this.count = deps.length;
+        this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
 
@@ -1016,6 +1020,7 @@ if (typeof module !== 'undefined' && module.exports) {
           deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
           nDeps = deps.length;
         this.count--;
+        //console.log(factory.toString(), this.count);
         this.params[this.count] = factory();
         this.sets({
           path: inLoader.path,
@@ -1029,15 +1034,15 @@ if (typeof module !== 'undefined' && module.exports) {
         }
       },
       onModuleAllLoad: function (inCallback) {
-        debugger;
         //console.log('this._callback',this._callback);
         //console.log('this._params',this._params);
         //console.log('inCallback', inCallback);
         //console.log('All loaded!');
         //console.log(inCallback.toString(), inParam);
         var params = this.params.slice(0);
+        console.dir(params);
         inCallback.call(this, params);
-        this.params = [];
+        //this.params = [];
         //console.log(this._params[0]);
         //this._callback(this._params[0]);
         //inCallback.call(this._params.slice(1));
