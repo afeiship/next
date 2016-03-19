@@ -910,10 +910,11 @@ if (typeof module !== 'undefined' && module.exports) {
         var path = this.path;
         var complete = function (err) {
           scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
+          scriptNode=null;
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
-            self.fire('load',this);
+            self.fire('load', this);
           }
         };
 
@@ -934,16 +935,28 @@ if (typeof module !== 'undefined' && module.exports) {
             }
           };
         }
+
         scriptNode.onerror = function (e) {
           complete(e);
-        }
+        };
+
       },
       css: function () {
         var linkNode = doc.createElement('link');
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-        this.fire('load',this);
+
+        //special module properties for css:
+        nx.amd.Module.current.sets({
+          factory: function(){
+            return null;
+          },
+          dependencies: [],
+          value: null
+        });
+
+        this.fire('load', this);
       }
     }
   });
@@ -954,18 +967,22 @@ if (typeof module !== 'undefined' && module.exports) {
 
   var Path = nx.amd.Path;
   var Loader = nx.amd.Loader;
+  var STATUS = nx.amd.Status;
+
   var Module = nx.declare('nx.amd.Module', {
     properties: {
       path: '',
+      value: null,
       dependencies: null,
       factory: null,
+      status: STATUS.PENDING,
       count: {
         get: function () {
           return this._count;
         },
         set: function (inValue) {
           if (inValue === 0) {
-            this.params.reverse();
+            //this._loadingModules.reverse();
             this.fire('allLoad');
           }
           this._count = inValue;
@@ -983,18 +1000,13 @@ if (typeof module !== 'undefined' && module.exports) {
           dependencies: inDeps || [],
           factory: inFactory || nx.noop
         });
+        this._loadingModules = [];
       },
       load: function (inCallback, inOwner) {
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
-        this.params = [];
-        if (!inOwner) {
-          this.params.push(
-            this.factory()
-          );
-        }
-        this.count = deps.length;
+        this.count =this._length= deps.length;
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
@@ -1016,32 +1028,37 @@ if (typeof module !== 'undefined' && module.exports) {
       onModuleLoad: function (inLoader) {
         //console.log('item load');
         var currentModule = Module.current,
-          factory = inLoader.ext === 'css' ? nx.noop : currentModule.get('factory'),
-          deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
+          factory = currentModule.get('factory'),
+          deps = currentModule.get('dependencies'),
+          value = currentModule.get('value'),
           nDeps = deps.length;
-        this.count--;
-        //console.log(factory.toString(), this.count);
-        this.params[this.count] = factory();
-        this.sets({
+
+        currentModule.sets({
           path: inLoader.path,
           dependencies: deps,
           factory: factory
         });
+
+        this.count--;
+
+        this._loadingModules[this.count] = currentModule;
         if (nDeps === 0) {
-          //this.params.push(factory());
+          currentModule.set('value', factory());
         } else {
-          currentModule.load(factory, this);
+          currentModule.load(factory, currentModule);
         }
+
       },
       onModuleAllLoad: function (inCallback) {
+        console.log(this._loadingModules);
+        //console.log('inCallback:->', inCallback);
+        //console.log('this._callbacks', this._callbacks);
         //console.log('this._callback',this._callback);
         //console.log('this._params',this._params);
         //console.log('inCallback', inCallback);
         //console.log('All loaded!');
         //console.log(inCallback.toString(), inParam);
-        var params = this.params.slice(0);
-        console.dir(params);
-        inCallback.call(this, params);
+        //inCallback.call(this, params);
         //this.params = [];
         //console.log(this._params[0]);
         //this._callback(this._params[0]);

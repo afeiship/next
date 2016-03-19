@@ -4,7 +4,6 @@
   var isBrowserEnv = !!doc;
   var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
   var completeRE = /loaded|complete/;
-  var Module = nx.amd.Module;
 
   nx.declare('nx.amd.Loader', {
     methods: {
@@ -26,6 +25,7 @@
         var path = this.path;
         var complete = function (err) {
           scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
+          scriptNode=null;
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
@@ -50,9 +50,11 @@
             }
           };
         }
+
         scriptNode.onerror = function (e) {
           complete(e);
-        }
+        };
+
       },
       css: function () {
         var linkNode = doc.createElement('link');
@@ -60,8 +62,11 @@
         linkNode.href = this.path;
         head.appendChild(linkNode);
 
-        Module.current.sets({
-          factory: nx.noop,
+        //special module properties for css:
+        nx.amd.Module.current.sets({
+          factory: function(){
+            return null;
+          },
           dependencies: [],
           value: null
         });
