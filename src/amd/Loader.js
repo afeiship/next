@@ -4,6 +4,7 @@
   var isBrowserEnv = !!doc;
   var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
   var completeRE = /loaded|complete/;
+  var Module = nx.amd.Module;
 
   nx.declare('nx.amd.Loader', {
     methods: {
@@ -28,7 +29,7 @@
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
-            self.fire('load',this);
+            self.fire('load', this);
           }
         };
 
@@ -58,7 +59,14 @@
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-        this.fire('load',this);
+
+        Module.current.sets({
+          factory: nx.noop,
+          dependencies: [],
+          value: null
+        });
+
+        this.fire('load', this);
       }
     }
   });
