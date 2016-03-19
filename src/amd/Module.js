@@ -62,8 +62,8 @@
       onModuleLoad: function (inLoader) {
         //console.log('item load');
         var currentModule = Module.current,
-          factory = inLoader.ext === 'css' ? nx.noop : currentModule.get('factory'),
-          deps = inLoader.ext === 'css' ? [] : currentModule.get('dependencies'),
+          factory = currentModule.get('factory'),
+          deps = currentModule.get('dependencies'),
           nDeps = deps.length;
         this.count--;
         //console.log(factory.toString(), this.count);
