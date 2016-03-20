@@ -910,7 +910,7 @@ if (typeof module !== 'undefined' && module.exports) {
         var path = this.path;
         var complete = function (err) {
           scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
-          scriptNode=null;
+          scriptNode = null;
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
@@ -949,7 +949,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
         //special module properties for css:
         nx.amd.Module.current.sets({
-          factory: function(){
+          factory: function () {
             return null;
           },
           dependencies: [],
@@ -1006,7 +1006,7 @@ if (typeof module !== 'undefined' && module.exports) {
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
-        this.count =this._length= deps.length;
+        this.count = this._length = deps.length;
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
@@ -1033,6 +1033,8 @@ if (typeof module !== 'undefined' && module.exports) {
           value = currentModule.get('value'),
           nDeps = deps.length;
 
+        Module.all[inLoader.path] = currentModule;
+        
         currentModule.sets({
           path: inLoader.path,
           dependencies: deps,
@@ -1050,7 +1052,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
       },
       onModuleAllLoad: function (inCallback) {
-        console.log(this._loadingModules);
+        console.log(Module.all);
         //console.log('inCallback:->', inCallback);
         //console.log('this._callbacks', this._callbacks);
         //console.log('this._callback',this._callback);

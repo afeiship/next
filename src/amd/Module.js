@@ -41,7 +41,7 @@
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
-        this.count =this._length= deps.length;
+        this.count = this._length = deps.length;
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
@@ -68,6 +68,8 @@
           value = currentModule.get('value'),
           nDeps = deps.length;
 
+        Module.all[inLoader.path] = currentModule;
+
         currentModule.sets({
           path: inLoader.path,
           dependencies: deps,
@@ -85,7 +87,7 @@
 
       },
       onModuleAllLoad: function (inCallback) {
-        console.log(this._loadingModules);
+        console.log(Module.all);
         //console.log('inCallback:->', inCallback);
         //console.log('this._callbacks', this._callbacks);
         //console.log('this._callback',this._callback);

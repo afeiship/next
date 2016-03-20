@@ -25,7 +25,7 @@
         var path = this.path;
         var complete = function (err) {
           scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
-          scriptNode=null;
+          scriptNode = null;
           if (err) {
             nx.error('Failed to load module:' + path);
           } else {
@@ -64,7 +64,7 @@
 
         //special module properties for css:
         nx.amd.Module.current.sets({
-          factory: function(){
+          factory: function () {
             return null;
           },
           dependencies: [],
