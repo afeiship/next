@@ -6,6 +6,13 @@
   var completeRE = /loaded|complete/;
 
   nx.declare('nx.amd.Loader', {
+    statics: {
+      getCurrentScriptPath: function () {
+        var scripts = head.getElementsByTagName("script");
+        var length_ = scripts.length - 1;
+        return scripts[length_].getAttribute('src');
+      }
+    },
     methods: {
       init: function (inPath, inExt) {
         this.path = inPath;
@@ -61,7 +68,6 @@
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-
         //special module properties for css:
         nx.amd.Module.current.sets({
           factory: function () {

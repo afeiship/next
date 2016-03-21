@@ -40,18 +40,19 @@
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
+        console.log('load--------');
         this.count = deps.length;
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
 
         nx.each(deps, function (_, dep) {
-          ownerPath = inOwner ? Path.parent(inOwner.get('path')) : baseUrl;
+          ownerPath = inOwner ? Path.parent(this.get('path')) : baseUrl;
           ext = Path.getExt(dep);
           path = Path.normalize(
             Path.setExt(ownerPath + dep, ext)
           );
-          this.attachLoader(path, ext, inCallback);
+          this.attachLoader(path, ext);
         }, this);
       },
       attachLoader: function (inPath, inExt) {
@@ -71,7 +72,7 @@
         Module.all[inLoader.path] = currentModule;
 
         currentModule.sets({
-          path: inLoader.path,
+          //path: inLoader.path,
           dependencies: deps,
           factory: factory
         });
@@ -88,7 +89,7 @@
       onModuleAllLoad: function (inCallback) {
         console.log(Module.all);
         console.log(this.dependencies);
-        debugger;
+
         //console.log('inCallback:->', inCallback);
         //console.log('this._callbacks', this._callbacks);
         //console.log('this._callback',this._callback);

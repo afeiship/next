@@ -1,10 +1,12 @@
 (function (nx, global) {
 
   var Module = nx.amd.Module;
+  var Loader = nx.amd.Loader;
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
     var factory = null;
+    var path = Loader.getCurrentScriptPath();
     switch (true) {
       case len === 2:
         deps = inDeps;
@@ -30,7 +32,9 @@
       default:
         nx.error('Invalid arguments.');
     }
-    return Module.current = new Module('', deps, factory);
+    Module.current = new Module(path, deps, factory);
+    return Module.current;
   };
+
 
 }(nx, nx.GLOBAL));

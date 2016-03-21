@@ -17,7 +17,7 @@
   console.log(AppModule===nx.amd.Module.current);
   AppModule.load(function(App){
     console.log('App',App);
-  });
+  },AppModule);
   /*nx.require('./js/App', function (App) {
     var app=new App();
     app.start();

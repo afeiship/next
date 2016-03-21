@@ -891,6 +891,13 @@ if (typeof module !== 'undefined' && module.exports) {
   var completeRE = /loaded|complete/;
 
   nx.declare('nx.amd.Loader', {
+    statics: {
+      getCurrentScriptPath: function () {
+        var scripts = head.getElementsByTagName("script");
+        var length_ = scripts.length - 1;
+        return scripts[length_].getAttribute('src');
+      }
+    },
     methods: {
       init: function (inPath, inExt) {
         this.path = inPath;
@@ -946,7 +953,6 @@ if (typeof module !== 'undefined' && module.exports) {
         linkNode.rel = 'stylesheet';
         linkNode.href = this.path;
         head.appendChild(linkNode);
-
         //special module properties for css:
         nx.amd.Module.current.sets({
           factory: function () {
@@ -1005,18 +1011,19 @@ if (typeof module !== 'undefined' && module.exports) {
         var ext, path, ownerPath;
         var baseUrl = nx.config.get('baseUrl'),
           deps = this.dependencies;
+        console.log('load--------');
         this.count = deps.length;
         this.on('allLoad', function () {
           this.onModuleAllLoad.call(this, inCallback);
         }, this);
 
         nx.each(deps, function (_, dep) {
-          ownerPath = inOwner ? Path.parent(inOwner.get('path')) : baseUrl;
+          ownerPath = inOwner ? Path.parent(this.get('path')) : baseUrl;
           ext = Path.getExt(dep);
           path = Path.normalize(
             Path.setExt(ownerPath + dep, ext)
           );
-          this.attachLoader(path, ext, inCallback);
+          this.attachLoader(path, ext);
         }, this);
       },
       attachLoader: function (inPath, inExt) {
@@ -1036,7 +1043,7 @@ if (typeof module !== 'undefined' && module.exports) {
         Module.all[inLoader.path] = currentModule;
 
         currentModule.sets({
-          path: inLoader.path,
+          //path: inLoader.path,
           dependencies: deps,
           factory: factory
         });
@@ -1053,7 +1060,7 @@ if (typeof module !== 'undefined' && module.exports) {
       onModuleAllLoad: function (inCallback) {
         console.log(Module.all);
         console.log(this.dependencies);
-        debugger;
+
         //console.log('inCallback:->', inCallback);
         //console.log('this._callbacks', this._callbacks);
         //console.log('this._callback',this._callback);
@@ -1075,10 +1082,12 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var Module = nx.amd.Module;
+  var Loader = nx.amd.Loader;
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
     var factory = null;
+    var path = Loader.getCurrentScriptPath();
     switch (true) {
       case len === 2:
         deps = inDeps;
@@ -1104,7 +1113,9 @@ if (typeof module !== 'undefined' && module.exports) {
       default:
         nx.error('Invalid arguments.');
     }
-    return Module.current = new Module('', deps, factory);
+    Module.current = new Module(path, deps, factory);
+    return Module.current;
   };
+
 
 }(nx, nx.GLOBAL));
