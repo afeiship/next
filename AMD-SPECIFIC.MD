@@ -164,3 +164,13 @@ AMD can be used as a transport format for CommonJS modules as long as the Common
 + http://www.cnblogs.com/johnl/archive/2015/01/26/4251300.html
 + https://segmentfault.com/a/1190000002515305
 + http://www.chawenti.com/articles/9423.html
++ http://blog.csdn.net/songzheng_741/article/details/38847589
++ http://my.oschina.net/chenzhiqiang/blog/129783
++ https://segmentfault.com/a/1190000000733959
++ http://www.tuicool.com/articles/umIFJ3j
++ http://caibaojian.com/js-module-define.html
++ http://code.ownlike.com/javascript%E6%A8%A1%E5%9D%97%E5%8C%96%E5%8A%A0%E8%BD%BD%E5%99%A8.html
++ http://www.ituring.com.cn/article/48461
++ https://segmentfault.com/a/1190000000400756
++ http://developer.51cto.com/art/201511/498027.htm
++ http://wsztrush.github.io/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/2015/09/05/JavaScript-Sea.html

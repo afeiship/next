@@ -36,5 +36,7 @@
     return Module.current;
   };
 
+  nx.require();
+
 
 }(nx, nx.GLOBAL));

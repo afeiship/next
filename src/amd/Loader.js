@@ -70,6 +70,7 @@
         head.appendChild(linkNode);
         //special module properties for css:
         nx.amd.Module.current.sets({
+          path: '',
           factory: function () {
             return null;
           },
