@@ -25,6 +25,7 @@ function getModule(name) {
     defineCache[name] = module;
     backgroundReadFile(name, function (code) {
         currentMod = module;
+        //eval the loaded code:
         new Function("", code)();
     });
     return module;
@@ -42,9 +43,10 @@ function define(depNames, moduleFunction) {
     });
     // 用于检查是否所有的依赖模块都被成功加载了
     function whenDepsLoaded() {
-        if (!deps.every(function (m) {
-                return m.loaded;
-            })) {
+        var allLoaded=deps.every(function (m) {
+            return m.loaded;
+        });
+        if (!allLoaded) {
             return;
         }
         var args = deps.map(function (m) {
