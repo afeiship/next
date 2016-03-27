@@ -88,7 +88,7 @@
       },
       onModuleAllLoad: function (inCallback) {
         console.log(Module.all);
-        console.log(this.dependencies);
+        //console.log(this.dependencies);
 
         //console.log('inCallback:->', inCallback);
         //console.log('this._callbacks', this._callbacks);
