@@ -1,107 +1,62 @@
 (function (nx, global) {
 
-  var Path = nx.amd.Path;
-  var Loader = nx.amd.Loader;
+  var doc = global.document;
   var STATUS = nx.amd.Status;
 
-  var Module = nx.declare('nx.amd.Module', {
-    properties: {
-      path: '',
-      value: null,
-      dependencies: null,
-      factory: null,
-      status: STATUS.PENDING,
-      count: {
-        get: function () {
-          return this._count;
-        },
-        set: function (inValue) {
-          if (inValue === 0) {
-            //this._loadingModules.reverse();
-            this.fire('allLoad');
+  nx.declare('nx.amd.Module', {
+    statics: {
+      all: {},
+      current: null,
+      getCurrentScript: function () {
+        var stack;
+        var nodes, i, node;
+        if (doc.currentScript) {
+          return doc.currentScript.src; //FF,Chrome
+        }
+        try {
+          a.b.c();
+        } catch (e) {
+          stack = e.stack;
+          if (!stack && window.opera) {
+            stack = String(e);
+            if (!stack && window.opera) {
+              stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
+            }
           }
-          this._count = inValue;
+        }
+        if (stack) {
+          stack = stack.split(/[@ ]/g).pop();
+          stack = stack[0] === "(" ? stack.slice(1, -1) : stack;
+          return stack.replace(/(:\d+)?:\d+$/i, "");
+        }
+        // IE
+        nodes = head.getElementsByTagName("script");
+        for (i = 0; node = nodes[i++];) {
+          if (node.readyState === 'interactive') {
+            return node.src;
+          }
         }
       }
     },
-    statics: {
-      all: {},
-      current: null
+    properties: {
+      path: '',
+      status: STATUS.PENDING,
+      dependencies: null,
+      factory: null,
+      exports: null
     },
     methods: {
       init: function (inPath, inDeps, inFactory) {
         this.sets({
           path: inPath || '',
           dependencies: inDeps || [],
-          factory: inFactory || nx.noop
-        });
-      },
-      load: function (inCallback, inOwner) {
-        var ext, path, ownerPath;
-        var baseUrl = nx.config.get('baseUrl'),
-          deps = this.dependencies;
-        console.log('load--------');
-        this.count = deps.length;
-        this.on('allLoad', function () {
-          this.onModuleAllLoad.call(this, inCallback);
-        }, this);
-
-        nx.each(deps, function (_, dep) {
-          ownerPath = inOwner ? Path.parent(this.get('path')) : baseUrl;
-          ext = Path.getExt(dep);
-          path = Path.normalize(
-            Path.setExt(ownerPath + dep, ext)
-          );
-          this.attachLoader(path, ext);
-        }, this);
-      },
-      attachLoader: function (inPath, inExt) {
-        var loader = new Loader(inPath, inExt);
-        loader.on('load', this.onModuleLoad, this);
-        loader.load();
-      },
-      onModuleLoad: function (inLoader) {
-        //console.log('item load');
-        var currentModule = Module.current,
-          factory = currentModule.get('factory'),
-          deps = currentModule.get('dependencies'),
-          value = currentModule.get('value'),
-          nDeps = deps.length;
-
-        //cache modules:
-        Module.all[inLoader.path] = currentModule;
-
-        currentModule.sets({
-          //path: inLoader.path,
-          dependencies: deps,
-          factory: factory
+          factory: inFactory || nx.noop,
+          exports: {}
         });
 
-        this.count--;
-
-        if (nDeps === 0) {
-          currentModule.set('value', factory());
-        } else {
-          currentModule.load(factory, currentModule);
-        }
-
+        this._callbacks = [];
       },
-      onModuleAllLoad: function (inCallback) {
-        console.log(Module.all);
-        //console.log(this.dependencies);
-
-        //console.log('inCallback:->', inCallback);
-        //console.log('this._callbacks', this._callbacks);
-        //console.log('this._callback',this._callback);
-        //console.log('this._params',this._params);
-        //console.log('inCallback', inCallback);
-        //console.log('All loaded!');
-        //console.log(inCallback.toString(), inParam);
-        //inCallback.call(this, params);
-        //this.params = [];
-        //console.log(this._params[0]);
-        //this._callback(this._params[0]);
-        //inCallback.call(this._params.slice(1));
+      load: function (inCallback) {
       }
     }
   });

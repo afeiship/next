@@ -27,6 +27,7 @@
 
         if (inCallback) {
           if (status === STATUS.RESOLVED) {
+            //类似于CSS这种,直接处理掉.
             inCallback(this.get('value'));
           } else {
             this._callbacks.push(inCallback);

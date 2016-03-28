@@ -24,10 +24,12 @@ function getModule(name) {
     loaded: false,
     onLoad: []
   };
+
   defineCache[name] = module;
   backgroundReadFile(name, function (code) {
     currentMod = module;
     //eval the loaded code:
+    //closure function: === new Function(undefined,code)();
     new Function("", code)();
   });
   return module;
@@ -66,3 +68,6 @@ function define(depNames, moduleFunction) {
 
   whenDepsLoaded();
 }
+
+//-------load js:-------
+

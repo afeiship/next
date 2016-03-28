@@ -1,12 +1,11 @@
 (function (nx, global) {
 
   var Module = nx.amd.Module;
-  var Loader = nx.amd.Loader;
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
     var factory = null;
-    var path = Loader.getCurrentScriptPath();
+    var path = Module.getCurrentScript();
     switch (true) {
       case len === 2:
         deps = inDeps;
@@ -18,7 +17,7 @@
       case len === 1 && nx.isArray(inDeps):
         deps = inDeps;
         factory = function () {
-          var result = {__index__: true, length: arguments.length};
+          var result = {length: arguments.length};
           nx.each(arguments, function (index, mod) {
             if (mod.__module__) {
               result[mod.__module__] = mod;
@@ -36,7 +35,20 @@
     return Module.current;
   };
 
-  nx.require();
 
+  nx.require = function (inDeps, inCallback) {
+    var currentModule = Module.current;
+    var nDeps = inDeps.length;
+
+    if (nDeps === 0) {
+      currentModule.sets({
+        exports: inCallback.apply(null),
+        loaded: true
+      });
+      currentModule.load(inCallback);
+    } else {
+
+    }
+  };
 
 }(nx, nx.GLOBAL));

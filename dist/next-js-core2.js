@@ -791,93 +791,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
-  var DOT = '.',
-    DOUBLE_DOT = '..',
-    SLASH = '/';
-
-  nx.declare('nx.amd.Path', {
-    statics: {
-      normalize: function (inPath) {
-        var tokens = inPath.split(SLASH);
-        var normalized = [], token, count = 0;
-
-        for (var i = 0, len = tokens.length; i < len; i++) {
-          token = tokens[i];
-          if (token) {
-            if (token === DOUBLE_DOT) {
-              if (count > 0) {
-                count--;
-                normalized.pop();
-              } else {
-                normalized.push(DOUBLE_DOT);
-              }
-            } else if (token === DOT) {
-              if (i === 0) {
-                normalized.push(DOT);
-              }
-            } else {
-              count++;
-              normalized.push(token);
-            }
-          } else {
-            if (count > 0 && i < len - 1) {
-              normalized = normalized.slice(0, -count);
-            } else {
-              normalized.push('');
-            }
-          }
-        }
-
-        return normalized.join(SLASH);
-      },
-      parent: function (inPath) {
-        return inPath.slice(0, inPath.lastIndexOf(SLASH) + 1);
-      },
-      last: function (inPath) {
-        return inPath.slice(inPath.lastIndexOf(SLASH) + 1);
-      },
-      setExt: function (inPath, inExt) {
-        var extLength = inExt.length;
-        var end = inPath.slice(-extLength);
-
-        if (end === inExt) {
-          return inPath;
-        } else if (end[extLength - 1] === SLASH) {
-          return inPath + 'index' + DOT + inExt;
-        } else {
-          return inPath + DOT + inExt;
-        }
-      },
-      getExt: function (inPath) {
-        var slashIndex = inPath.lastIndexOf(SLASH);
-        var dotIndex = inPath.lastIndexOf(DOT);
-
-        if (dotIndex > slashIndex) {
-          return inPath.slice(dotIndex + 1);
-        } else {
-          return 'js';
-        }
-      },
-      unique: function (inPathArray) {
-        var map = {};
-        inPathArray.forEach(function (path) {
-          map[path] = true;
-        });
-        return Object.keys(map);
-      }
-    }
-  });
-
-}(nx, nx.GLOBAL));
-
-(function (nx, global) {
-
   nx.declare('nx.amd.Status', {
     statics: {
       PENDING: 0,
-      LOADING: 1,
-      RESOLVING: 2,
-      RESOLVED: 3
+      RESOLVING: 1,
+      RESOLVED: 2
     }
   });
 
@@ -886,193 +804,72 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var doc = global.document;
-  var isBrowserEnv = !!doc;
-  var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
-  var completeRE = /loaded|complete/;
-
-  nx.declare('nx.amd.Loader', {
-    statics: {
-      getCurrentScriptPath: function () {
-        var scripts = head.getElementsByTagName("script");
-        var length_ = scripts.length - 1;
-        return scripts[length_].getAttribute('src');
-      }
-    },
-    methods: {
-      init: function (inPath, inExt) {
-        this.path = inPath;
-        this.ext = inExt;
-      },
-      load: function () {
-        var ext = this.ext;
-        if (ext) {
-          return this[ext]();
-        }
-        nx.error('The ext ' + ext + ' is not supported.');
-      },
-      js: function () {
-        var scriptNode = doc.createElement('script');
-        var supportOnload = "onload" in scriptNode;
-        var self = this;
-        var path = this.path;
-        var complete = function (err) {
-          scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
-          scriptNode = null;
-          if (err) {
-            nx.error('Failed to load module:' + path);
-          } else {
-            self.fire('load', this);
-          }
-        };
-
-        scriptNode.src = path;
-        scriptNode.async = true;
-        head.appendChild(scriptNode);
-
-        if (supportOnload) {
-          scriptNode.onload = function () {
-            complete(null);
-          };
-        } else {
-          scriptNode.onreadystatechange = function (e) {
-            if (completeRE.test(scriptNode.readyState)) {
-              complete(null);
-            } else {
-              complete(e);
-            }
-          };
-        }
-
-        scriptNode.onerror = function (e) {
-          complete(e);
-        };
-
-      },
-      css: function () {
-        var linkNode = doc.createElement('link');
-        linkNode.rel = 'stylesheet';
-        linkNode.href = this.path;
-        head.appendChild(linkNode);
-        //special module properties for css:
-        nx.amd.Module.current.sets({
-          factory: function () {
-            return null;
-          },
-          dependencies: [],
-          value: null
-        });
-
-        this.fire('load', this);
-      }
-    }
-  });
-
-}(nx, nx.GLOBAL));
-
-(function (nx, global) {
-
-  var Path = nx.amd.Path;
-  var Loader = nx.amd.Loader;
   var STATUS = nx.amd.Status;
 
-  var Module = nx.declare('nx.amd.Module', {
-    properties: {
-      path: '',
-      value: null,
-      dependencies: null,
-      factory: null,
-      status: STATUS.PENDING,
-      count: {
-        get: function () {
-          return this._count;
-        },
-        set: function (inValue) {
-          if (inValue === 0) {
-            //this._loadingModules.reverse();
-            this.fire('allLoad');
+  nx.declare('nx.amd.Module', {
+    statics: {
+      all: {},
+      current: null,
+      getCurrentScript: function () {
+        var stack;
+        var nodes, i, node;
+        if (doc.currentScript) {
+          return doc.currentScript.src; //FF,Chrome
+        }
+        try {
+          a.b.c();
+        } catch (e) {
+          stack = e.stack;
+          if (!stack && window.opera) {
+            stack = String(e);
+            if (!stack && window.opera) {
+              stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
+            }
           }
-          this._count = inValue;
+        }
+        if (stack) {
+          stack = stack.split(/[@ ]/g).pop();
+          stack = stack[0] === "(" ? stack.slice(1, -1) : stack;
+          return stack.replace(/(:\d+)?:\d+$/i, "");
+        }
+        // IE
+        nodes = head.getElementsByTagName("script");
+        for (i = 0; node = nodes[i++];) {
+          if (node.readyState === 'interactive') {
+            return node.src;
+          }
         }
       }
     },
-    statics: {
-      all: {},
-      current: null
+    properties: {
+      path: '',
+      status: STATUS.PENDING,
+      dependencies: null,
+      factory: null,
+      exports: null
     },
     methods: {
       init: function (inPath, inDeps, inFactory) {
         this.sets({
           path: inPath || '',
           dependencies: inDeps || [],
-          factory: inFactory || nx.noop
-        });
-      },
-      load: function (inCallback, inOwner) {
-        var ext, path, ownerPath;
-        var baseUrl = nx.config.get('baseUrl'),
-          deps = this.dependencies;
-        console.log('load--------');
-        this.count = deps.length;
-        this.on('allLoad', function () {
-          this.onModuleAllLoad.call(this, inCallback);
-        }, this);
-
-        nx.each(deps, function (_, dep) {
-          ownerPath = inOwner ? Path.parent(this.get('path')) : baseUrl;
-          ext = Path.getExt(dep);
-          path = Path.normalize(
-            Path.setExt(ownerPath + dep, ext)
-          );
-          this.attachLoader(path, ext);
-        }, this);
-      },
-      attachLoader: function (inPath, inExt) {
-        var loader = new Loader(inPath, inExt);
-        loader.on('load', this.onModuleLoad, this);
-        loader.load();
-      },
-      onModuleLoad: function (inLoader) {
-        //console.log('item load');
-        var currentModule = Module.current,
-          factory = currentModule.get('factory'),
-          deps = currentModule.get('dependencies'),
-          value = currentModule.get('value'),
-          nDeps = deps.length;
-
-        //cache modules:
-        Module.all[inLoader.path] = currentModule;
-
-        currentModule.sets({
-          //path: inLoader.path,
-          dependencies: deps,
-          factory: factory
+          factory: inFactory || nx.noop,
+          exports: {}
         });
 
-        this.count--;
-
-        if (nDeps === 0) {
-          currentModule.set('value', factory());
+        this._callbacks = [];
+      },
+      require: function (inCallback) {
+        var status = this.get('status');
+        if (status === STATUS.RESOLVED) {
+          inCallback && inCallback(this.exports);
         } else {
-          currentModule.load(factory, currentModule);
+          inCallback && this._callbacks.push(inCallback);
         }
 
-      },
-      onModuleAllLoad: function (inCallback) {
-        console.log(Module.all);
-        console.log(this.dependencies);
+        if (status === STATUS.LOADING) {
 
-        //console.log('inCallback:->', inCallback);
-        //console.log('this._callbacks', this._callbacks);
-        //console.log('this._callback',this._callback);
-        //console.log('this._params',this._params);
-        //console.log('inCallback', inCallback);
-        //console.log('All loaded!');
-        //console.log(inCallback.toString(), inParam);
-        //inCallback.call(this, params);
-        //this.params = [];
-        //console.log(this._params[0]);
-        //this._callback(this._params[0]);
-        //inCallback.call(this._params.slice(1));
+        }
       }
     }
   });
@@ -1082,12 +879,11 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var Module = nx.amd.Module;
-  var Loader = nx.amd.Loader;
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
     var factory = null;
-    var path = Loader.getCurrentScriptPath();
+    var path = Module.getCurrentScript();
     switch (true) {
       case len === 2:
         deps = inDeps;
@@ -1099,7 +895,7 @@ if (typeof module !== 'undefined' && module.exports) {
       case len === 1 && nx.isArray(inDeps):
         deps = inDeps;
         factory = function () {
-          var result = {__index__: true, length: arguments.length};
+          var result = {length: arguments.length};
           nx.each(arguments, function (index, mod) {
             if (mod.__module__) {
               result[mod.__module__] = mod;
@@ -1116,6 +912,5 @@ if (typeof module !== 'undefined' && module.exports) {
     Module.current = new Module(path, deps, factory);
     return Module.current;
   };
-
 
 }(nx, nx.GLOBAL));

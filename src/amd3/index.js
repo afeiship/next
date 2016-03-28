@@ -31,18 +31,14 @@
       for (var attr in source) {
         target[attr] = source[attr];
       }
-      ;
     } else {
       for (var i = 0, len = args.length; i < len; i++) {
         var obj = args[i];
         for (var attr in obj) {
           AS[attr] = obj[attr];
         }
-        ;
       }
-      ;
     }
-    ;
   };
 
   /*AMD模块开始*/
@@ -55,13 +51,12 @@
       state: 0,
       factory: noop
     };
-  };
+  }
 
   function getCurrentScript(DOC) {
     if (DOC.currentScript) {
       return DOC.currentScript.src; //FF,Chrome
     }
-    ;
     var stack;
     try {
       a.b.c();
@@ -73,9 +68,7 @@
           stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
         }
       }
-      ;
     }
-    ;
     if (stack) {
       stack = stack.split(/[@ ]/g).pop(); //取得最后一行,最后一个空格或@之后的部分
       stack = stack[0] === "(" ? stack.slice(1, -1) : stack;
@@ -87,9 +80,7 @@
       if (node.readyState === 'interactive') {
         return node.src;
       }
-      ;
     }
-    ;
   }
 
   function getModuleName(url) {
@@ -100,10 +91,15 @@
     var loaded = 0;
     var requires = list.length;
     var args = [];
+    //current id:
     var id = getCurrentScript(DOC);
-    console.info('加载' + getModuleName(id) + '模块需要依赖' + list + '模块')
+    console.info('加载' + getModuleName(id) + '模块需要依赖' + list + '模块');
+
+    //current module:
     var module = modules[id] ? modules[id] : getEmptyModule();
     module['factory'] = factory;
+
+    //cache module:{ currentId:currentModule }
     modules[id] = module;
 
     for (var i = 0; i < list.length; i++) {
@@ -127,15 +123,13 @@
         modules[depId].offers.push(id);
         loadJS(depId);
       }
-      ;
     }
-    ;
     if (loaded === requires) {
       module.factory.apply(null, args);
       module.state = 2;
     }
-    ;
-  };
+  }
+
   window.require = AS.require = require;
 
   function loadJS(url) {
@@ -145,13 +139,12 @@
       if (/loaded|complete/i.test(node.readyState) || !node.readyState) {
 
       }
-      ;
     };
     node.src = url;
     head.insertBefore(node, head.firstChild);
     module.state = 1;
     //console.info('正在加载模块'+getModuleName(url));
-  };
+  }
 
   function findFishedModules(url) {
     var ret = [];
@@ -166,23 +159,18 @@
         if (dep.state == 2 || deps[j] == url) {
           flag = true;
         }
-        ;
         if (dep.state != 2) {
           flag = false;
           break;
         }
-        ;
       }
-      ;
       if (flag) {
         //console.info('模块' + getModuleName(id) + '已可用');
         ret.push(id);
       }
-      ;
     }
-    ;
     return ret;
-  };
+  }
 
   function fireFactory(root) {
     console.info('查找依赖于' + getModuleName(root) + '模块的模块安装情况');
@@ -198,11 +186,9 @@
       } else {
         break;
       }
-      ;
       fireFactory(finshedIds[i]);
     }
-    ;
-  };
+  }
 
   function getDepsModules(deps) {
     var args = [];
@@ -210,9 +196,8 @@
       var dep = deps[i];
       args.push(modules[dep].exports);
     }
-    ;
     return args;
-  };
+  }
 
   function define(deps, factory) {
     var id = getCurrentScript(DOC);
@@ -225,19 +210,18 @@
       fireFactory(id);
       return;
     }
-    ;
     require(deps, function () {
       var _deps = [];
       for (var i = 0; i < deps.length; i++) {
         _deps.push(basePath + deps[i] + '.js');
       }
-      ;
       modules[id].exports = factory.apply(null, getDepsModules(_deps));
       modules[id].state = 2;
       console.info('模块' + getModuleName(id) + '加载完毕');
       fireFactory(id);
     });
-  };
+  }
+
   window.define = AS.define = define;
   /*AMD模块结束*/
 

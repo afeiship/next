@@ -12,3 +12,23 @@ A javascript OOP toolkit for mobile.
 
 ##resources:
 + AMD-Require:https://github.com/arqex/amdrequire/blob/master/amdrequire.js
+
+
+## my mind:
+a-->[b,c,d]
+          b--->[e,f]
+
+1) 假设所有的依赖已经加载好了.
+b.exports,
+c.exports,
+d.exports,
+e.exports,
+f.exports都是有值的(正常情况下都不为null)
+
+b.loaded && c.loaded ... ===true;
+
+
+
+
+1) a--->Module.count ==3
+2) a->b[e,f]+2=5
