@@ -32,3 +32,28 @@ b.loaded && c.loaded ... ===true;
 
 1) a--->Module.count ==3
 2) a->b[e,f]+2=5
+
+## --------
+思路1:
+require(['a','b','c'],callback);
+  1.当前JS有依赖:
+    - 继续loadScript对应的依赖
+    - 状态置为:'resolving'
+    - 递归
+  2.当前JS无依赖:
+    - 加载完成,
+    - 状态置为:'loaded'
+
+
+## --------
+思路2:
+将所有的JS扁平化,一次性loadJS
+a--->[b,c,d]
+b--->[e,f]
+
+只有载入后,才知道b依赖e,f,所以,这种扁平化的思路行不通.
+
+
+
+
+

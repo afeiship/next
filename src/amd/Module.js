@@ -1,9 +1,10 @@
 (function (nx, global) {
 
   var doc = global.document;
-  var STATUS = nx.amd.Status;
+  var Path = nx.amd.Path;
+  var Loader = nx.amd.Loader;
 
-  nx.declare('nx.amd.Module', {
+  var Module = nx.declare('nx.amd.Module', {
     statics: {
       all: {},
       current: null,
@@ -37,8 +38,8 @@
           }
         }
       },
-      getModule: function () {
-
+      getModule: function (inPath) {
+        return Module.all[inPath] || new Module(inPath);
       }
     },
     properties: {
@@ -54,12 +55,32 @@
           path: inPath || '',
           dependencies: inDeps || [],
           factory: inFactory || nx.noop,
-          exports: {}
+          exports: null
         });
 
         this._callbacks = [];
       },
-      load: function (inCallback) {
+      load: function (inCallback, inOwner) {
+        var ownerPath, currentPath, currentModule;
+        var path = this.path;
+        var ext = Path.getExt(path);
+        var loader;
+        var deps = this.dependencies;
+
+        if (!nx.PATH) {
+          nx.PATH = Path.parent(path) || './';
+          currentPath = Path.last(path);
+        }
+        ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
+        currentPath = Path.normalize(ownerPath + currentPath);
+        currentModule = Module.all[currentPath];
+
+        if (currentModule) {
+          return currentModule.load(inCallback);
+        } else {
+          loader = new Loader(currentPath, ext, inCallback);
+          loader.load();
+        }
       }
     }
   });
