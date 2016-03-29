@@ -10,11 +10,12 @@
 
   nx.declare('nx.amd.Loader', {
     methods: {
-      init: function (inPath, inExt, inCallback) {
+      init: function (inPath, inExt, inCallback, inOptions) {
         var path = this.path = inPath || '';
         this.ext = inExt;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
+        this.options = inOptions;
       },
       load: function () {
         var ext = this.ext;
@@ -22,6 +23,19 @@
           return this[ext]();
         }
         nx.error('The ext ' + ext + ' is not supported.');
+      },
+      nodejs: function () {
+        //system require:
+        var result = require(this.path);
+        var currentModule = Module.current;
+        this.module.sets({
+          exports: result,
+          path: this.path,
+          dependencies: currentModule.get('dependencies'),
+          factory: currentModule.get('factory'),
+          status: STATUS.LOADING
+        });
+        this.module.load(this.callback);
       },
       css: function () {
         var linkNode = doc.createElement('link'),

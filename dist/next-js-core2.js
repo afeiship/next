@@ -968,11 +968,12 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.declare('nx.amd.Loader', {
     methods: {
-      init: function (inPath, inExt, inCallback) {
+      init: function (inPath, inExt, inCallback, inOptions) {
         var path = this.path = inPath || '';
         this.ext = inExt;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
+        this.options = inOptions;
       },
       load: function () {
         var ext = this.ext;
@@ -980,6 +981,19 @@ if (typeof module !== 'undefined' && module.exports) {
           return this[ext]();
         }
         nx.error('The ext ' + ext + ' is not supported.');
+      },
+      nodejs: function () {
+        //system require:
+        var result = require(this.path);
+        var currentModule = Module.current;
+        this.module.sets({
+          exports: result,
+          path: this.path,
+          dependencies: currentModule.get('dependencies'),
+          factory: currentModule.get('factory'),
+          status: STATUS.LOADING
+        });
+        this.module.load(this.callback);
       },
       css: function () {
         var linkNode = doc.createElement('link'),
@@ -1049,6 +1063,7 @@ if (typeof module !== 'undefined' && module.exports) {
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var Loader = nx.amd.Loader;
+  var isNodeEnv = typeof module !== 'undefined' && module.exports;
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
@@ -1108,6 +1123,30 @@ if (typeof module !== 'undefined' && module.exports) {
       loader.load();
     }
   };
+
+
+  nx.require = function (inDeps, inCallback) {
+    inDeps.forEach(function (dep) {
+      nx.load(dep, inCallback);
+    });
+  };
+
+
+/*  if (isNodeEnv) {
+    nx.require = function (inSystemRequire) {
+      return nx.require = function (inDeps, inCallback) {
+        var args = [];
+        inDeps.forEach(function (item) {
+          args.push(
+            inSystemRequire(item)
+          );
+        });
+        inCallback.apply(null, args);
+      }
+    };
+
+    module.exports = nx.require;
+  }*/
 
 
 }(nx, nx.GLOBAL));
