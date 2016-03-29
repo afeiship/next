@@ -57,7 +57,7 @@
     currentModule = Module.all[currentPath];
 
     if (currentModule) {
-      return currentModule.require(inCallback);
+      return currentModule.load(inCallback);
     } else {
       loader = new Loader(currentPath, ext, inCallback);
       loader.load();
@@ -66,9 +66,7 @@
 
 
   nx.require = function (inDeps, inCallback) {
-    inDeps.forEach(function (dep) {
-      nx.load(dep, inCallback);
-    });
+
   };
 
 
