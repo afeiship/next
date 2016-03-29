@@ -5,6 +5,7 @@
   var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
   var Path = nx.amd.Path;
   var Module = nx.amd.Module;
+  var STATUS = nx.amd.Status;
   var completeRE = /loaded|complete/;
 
   nx.declare('nx.amd.Loader', {
@@ -23,37 +24,38 @@
         nx.error('The ext ' + ext + ' is not supported.');
       },
       css: function () {
-        var currentModule = Module.current;
-        var linkNode = doc.createElement('link');
+        var linkNode = doc.createElement('link'),
+          currentModule;
         linkNode.rel = 'stylesheet';
         linkNode.href = Path.setExt(this.path, 'css');
         head.appendChild(linkNode);
+        currentModule = Module.current;
 
         this.module.sets({
-          value: linkNode,
+          exports: linkNode,
           path: this.path,
           dependencies: currentModule.get('dependencies'),
           factory: currentModule.get('factory'),
-          loaded: true
+          status: STATUS.RESOLVED
         });
-
         this.module.load(this.callback);
       },
       js: function () {
         var scriptNode = doc.createElement('script');
         var supportOnload = "onload" in scriptNode;
         var self = this;
-        var currentModule = Module.current;
+        var currentModule;
         var complete = function (err) {
           scriptNode.onload = scriptNode.onerror = scriptNode.onreadystatechange = null;
           if (err) {
             nx.error('Failed to load module:' + self.path);
           } else {
+            currentModule = Module.current;
             self.module.sets({
               path: self.path,
               dependencies: currentModule.get('dependencies'),
               factory: currentModule.get('factory'),
-              loaded: true
+              status: STATUS.LOADING
             });
             self.module.load(self.callback);
           }

@@ -1,12 +1,13 @@
 (function (nx, global) {
 
   var Module = nx.amd.Module;
+  var Path = nx.amd.Path;
+  var Loader = nx.amd.Loader;
 
   nx.define = function (inDeps, inFactory) {
     var len = arguments.length;
     var deps = [];
     var factory = null;
-    var path = Module.getCurrentScript();
     switch (true) {
       case len === 2:
         deps = inDeps;
@@ -32,38 +33,33 @@
       default:
         nx.error('Invalid arguments.');
     }
-    Module.current = new Module(path, deps, factory);
+    Module.current = new Module('', deps, factory);
     return Module.current;
   };
 
 
-  nx.require = function (inDeps, inCallback) {
-    var currentModule = Module.current;
-    var nDeps = inDeps.length;
-    var modules, args;
+  nx.load = function (inPath, inCallback, inOwner) {
+    var currentPath = inPath,
+      currentModule,
+      ownerPath,
+      loader,
+      ext = Path.getExt(inPath);
 
-    if (nDeps === 0) {
-      currentModule.sets({
-        exports: inCallback.apply(null),
-        loaded: true
-      });
-    } else {
-      modules = inDeps.map(function (dep) {
-        var module = Module.getModule(dep);
-        module.load(inCallback);
-        return module;
-      });
+    // If PATH does not have a value, assign the first loaded module path to it
+    if (!nx.PATH) {
+      nx.PATH = Path.parent(inPath) || './';
+      currentPath = Path.last(inPath);
     }
+    // If original path does not contain a SLASH, it should be the library path
+    ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
+    currentPath = Path.normalize(ownerPath + currentPath);
+    currentModule = Module.all[currentPath];
 
-    if (currentModule.loaded) {
-      args = modules.map(function (module) {
-        return module.exports;
-      });
-
-      currentModule.sets({
-        exports: inCallback.apply(null, args),
-        loaded: true
-      });
+    if (currentModule) {
+      return currentModule.require(inCallback);
+    } else {
+      loader = new Loader(currentPath, ext, inCallback);
+      loader.load();
     }
   };
 

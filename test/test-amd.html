@@ -16,11 +16,9 @@
   });
 */
 
-/*  AppModule.load(function(App){
-    console.log('App',App);
-  });*/
-  nx.require('./js/App', function (App) {
+  nx.load('./js/App', function (App) {
     var app=new App();
+    console.log(app);
     app.start();
   });
 

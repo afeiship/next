@@ -1,4 +1,4 @@
-var AppModule = nx.define([
+nx.define([
   './modules/mod1',
   '../css/style.css',
   './index-view/'
