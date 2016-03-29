@@ -36,11 +36,14 @@
             return node.src;
           }
         }
+      },
+      getModule: function () {
+
       }
     },
     properties: {
       path: '',
-      status: STATUS.PENDING,
+      loaded: false,
       dependencies: null,
       factory: null,
       exports: null
