@@ -3,6 +3,7 @@
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var Loader = nx.amd.Loader;
+  var STATUS = nx.amd.Status;
   var isNodeEnv = typeof module !== 'undefined' && module.exports;
 
   nx.define = function (inDeps, inFactory) {
@@ -65,14 +66,9 @@
   };
 
 
-  nx.require = function (inDeps, inCallback) {
-
-  };
-
-
-/*  if (isNodeEnv) {
-    nx.require = function (inSystemRequire) {
-      return nx.require = function (inDeps, inCallback) {
+  if (isNodeEnv) {
+    nx.load = function (inSystemRequire) {
+      return nx.load = function (inDeps, inCallback) {
         var args = [];
         inDeps.forEach(function (item) {
           args.push(
@@ -83,8 +79,8 @@
       }
     };
 
-    module.exports = nx.require;
-  }*/
+    module.exports = nx.load;
+  }
 
 
 }(nx, nx.GLOBAL));

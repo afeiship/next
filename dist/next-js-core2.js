@@ -787,6 +787,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.config = Config.getInstance();
 
+  //default config:
+  nx.config.sets({
+    baseUrl: './'
+  });
+
 }(nx, nx.GLOBAL));
 
 (function (nx, global) {
@@ -879,11 +884,41 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var STATUS = nx.amd.Status;
+  var doc = global.document;
 
   var Module = nx.declare('nx.amd.Module', {
     statics: {
       all: {},
-      current: null
+      current: null,
+      getCurrentScript: function () {
+        if (doc.currentScript) {
+          return doc.currentScript.src; //FF,Chrome
+        }
+        var stack;
+        try {
+          a.b.c();
+        } catch (e) {
+          stack = e.stack;
+          if (!stack && window.opera) {
+            stack = String(e);
+            if (!stack && window.opera) {
+              stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
+            }
+          }
+        }
+        if (stack) {
+          stack = stack.split(/[@ ]/g).pop();
+          stack = stack[0] === "(" ? stack.slice(1, -1) : stack;
+          return stack.replace(/(:\d+)?:\d+$/i, "");
+        }
+        // IE
+        var nodes = head.getElementsByTagName("script");
+        for (var i = 0, node; node = nodes[i++];) {
+          if (node.readyState === 'interactive') {
+            return node.src;
+          }
+        }
+      }
     },
     properties: {
       path: '',
@@ -1063,6 +1098,7 @@ if (typeof module !== 'undefined' && module.exports) {
   var Module = nx.amd.Module;
   var Path = nx.amd.Path;
   var Loader = nx.amd.Loader;
+  var STATUS = nx.amd.Status;
   var isNodeEnv = typeof module !== 'undefined' && module.exports;
 
   nx.define = function (inDeps, inFactory) {
@@ -1117,7 +1153,7 @@ if (typeof module !== 'undefined' && module.exports) {
     currentModule = Module.all[currentPath];
 
     if (currentModule) {
-      return currentModule.require(inCallback);
+      return currentModule.load(inCallback);
     } else {
       loader = new Loader(currentPath, ext, inCallback);
       loader.load();
@@ -1125,16 +1161,9 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
 
-  nx.require = function (inDeps, inCallback) {
-    inDeps.forEach(function (dep) {
-      nx.load(dep, inCallback);
-    });
-  };
-
-
-/*  if (isNodeEnv) {
-    nx.require = function (inSystemRequire) {
-      return nx.require = function (inDeps, inCallback) {
+  if (isNodeEnv) {
+    nx.load = function (inSystemRequire) {
+      return nx.load = function (inDeps, inCallback) {
         var args = [];
         inDeps.forEach(function (item) {
           args.push(
@@ -1145,8 +1174,8 @@ if (typeof module !== 'undefined' && module.exports) {
       }
     };
 
-    module.exports = nx.require;
-  }*/
+    module.exports = nx.load;
+  }
 
 
 }(nx, nx.GLOBAL));

@@ -26,4 +26,9 @@
 
   nx.config = Config.getInstance();
 
+  //default config:
+  nx.config.sets({
+    baseUrl: './'
+  });
+
 }(nx, nx.GLOBAL));
