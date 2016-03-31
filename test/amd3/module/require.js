@@ -5,50 +5,50 @@
   var define;
   window.modules = {};
   var getUrl = function (src) {
-    var scriptSrc = "";
+    var scriptSrc = '';
     //判断URL是否是
     // ./或者
     // /或者
     // 直接是以字符串开头
     // 或者是以http://开头;
-    if (src.indexOf("/") === 0 || src.indexOf("./") === 0) {
-      scriptSrc = require.config.base + src.replace(/^\//, "").replace(/^\.\//, "");
-    } else if (src.indexOf("http:") === 0) {
+    if (src.indexOf('/') === 0 || src.indexOf('./') === 0) {
+      scriptSrc = require.config.base + src.replace(/^\//, '').replace(/^\.\//, '');
+    } else if (src.indexOf('http:') === 0) {
       scriptSrc = src;
     } else if (src.match(/^[a-zA-Z1-9]/)) {
       scriptSrc = require.config.base + src;
     } else if (true) {
-      alert("src错误!");
+      alert('src错误!');
     }
-    if (scriptSrc.lastIndexOf(".js") === -1) {
-      scriptSrc += ".js";
+    if (scriptSrc.lastIndexOf('.js') === -1) {
+      scriptSrc += '.js';
     }
     return scriptSrc;
   };
 
   var loadScript = function (src) {
     var scriptSrc = getUrl(src);
-    var sc = document.createElement("script");
-    var head = document.getElementsByTagName("head")[0];
+    var sc = document.createElement('script');
+    var head = document.getElementsByTagName('head')[0];
     sc.src = scriptSrc;
     sc.onload = function () {
-      console.log("script tag is load, the url is : " + src);
+      console.log('script tag is load, the url is : ' + src);
     };
     head.appendChild(sc);
   };
 
   var getBasePath = function () {
     var src = getCurrentPath();
-    var index = src.lastIndexOf("/");
+    var index = src.lastIndexOf('/');
     return src.substring(0, index + 1);
   };
 
   var getCurrentNode = function () {
     if (document.currentScript) return document.currentScript;
-    var arrScript = document.getElementsByTagName("script");
+    var arrScript = document.getElementsByTagName('script');
     var len = arrScript.length;
     for (var i = 0; i < len; i++) {
-      if (arrScript[i].readyState === "interactive") {
+      if (arrScript[i].readyState === 'interactive') {
         return arrScript[i];
       }
     }
@@ -60,12 +60,12 @@
         return arrScript[i];
       }
     }
-    throw new Error("getCurrentNode error");
+    throw new Error('getCurrentNode error');
   };
 
   var getCurrentPath = function () {
     var repStr = function (str) {
-      return (str || "").replace(/[\&\?]{1}[\w\W]+/g, "") || "";
+      return (str || '').replace(/[\&\?]{1}[\w\W]+/g, '') || '';
     };
     if (document.currentScript) return repStr(document.currentScript.src);
 
@@ -78,7 +78,7 @@
       stack = e.stack;
       if (!stack && window.opera) {
         //opera 9没有e.stack,但有e.Backtrace,但不能直接取得,需要对e对象转字符串进行抽取
-        stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
+        stack = (String(e).match(/of linked script \S+/g) || []).join(' ');
       }
     }
     if (stack) {
@@ -94,20 +94,20 @@
        *  //firefox4+ 可以用document.currentScript
        */
       stack = stack.split(/[@ ]/g).pop(); //取得最后一行,最后一个空格或@之后的部分
-      stack = stack[0] === "(" ? stack.slice(1, -1) : stack.replace(/\s/, ""); //去掉换行符
-      return stack.replace(/(:\d+)?:\d+$/i, ""); //去掉行号与或许存在的出错字符起始位置
+      stack = stack[0] === '(' ? stack.slice(1, -1) : stack.replace(/\s/, ''); //去掉换行符
+      return stack.replace(/(:\d+)?:\d+$/i, ''); //去掉行号与或许存在的出错字符起始位置
     }
 
     //实在不行了就走这里;
     var node = getCurrentNode();
     //IE>=8的直接通过src可以获取，IE67要通过getAttriubte获取src;
-    return repStr(document.querySelector ? node.src : node.getAttribute("src", 4)) || "";
+    return repStr(document.querySelector ? node.src : node.getAttribute('src', 4)) || '';
 
-    throw new Error("getCurrentPath error!");
+    throw new Error('getCurrentPath error!');
   };
 
   var loadDpt = function (module) {
-    var dp = "";
+    var dp = '';
     for (var p = 0; p < module.deps.length; p++) {
       //获取绝对的地址;
       dp = getUrl(module.deps[p]);
@@ -126,29 +126,29 @@
       var params = [];
       var module = modules[key];
       //加载完毕就什么都不做;
-      if (module.state === "complete") {
+      if (module.state === 'complete') {
         continue;
       }
-      if (module.state === "initial") {
+      if (module.state === 'initial') {
         //如果依赖没有加载就加载依赖并且modules没有该module就加载这个模块;
         loadDpt(module);
-        module.state = "loading";
+        module.state = 'loading';
       }
-      if (module.state === "loading") {
+      if (module.state === 'loading') {
         //如果这个依赖加载完毕
         for (var p = 0; p < module.deps.length; p++) {
           //获取绝对的地址;
           var dp = getUrl(module.deps[p]);
           //如果依赖加载完成了， 而且状态为complete;;
-          if (modules[dp] && modules[dp].state === "complete") {
+          if (modules[dp] && modules[dp].state === 'complete') {
             params.push(modules[dp].exports);
           }
         }
         //如果依赖全部加载完毕，就执行;
         if (module.deps.length === params.length) {
-          if (typeof module.exports === "function") {
+          if (typeof module.exports === 'function') {
             module.exports = module.exports.apply(modules, params);
-            module.state = "complete";
+            module.state = 'complete';
             //每一次有一个模块加载完毕就重新检测modules，看看是否有未加载完毕的模块需要加载;
             checkDps();
           }
@@ -159,13 +159,13 @@
 
   //[],fn; fn
   define = function (deps, fn, name) {
-    if (typeof deps === "function") {
+    if (typeof deps === 'function') {
       fn = deps;
       deps = [];//我们要把数组清空;
     }
 
-    if (typeof deps !== "object" && typeof fn !== "function") {
-      alert("参数错误")
+    if (typeof deps !== 'object' && typeof fn !== 'function') {
+      alert('参数错误')
     }
 
     var src = getCurrentPath();
@@ -175,8 +175,8 @@
         name: name || src,
         src: src,
         deps: [],
-        exports: (typeof fn === "function") && fn(),
-        state: "complete"
+        exports: (typeof fn === 'function') && fn(),
+        state: 'complete'
       };
 
     } else {
@@ -185,7 +185,7 @@
         src: src,
         deps: deps,
         exports: fn,
-        state: "initial"
+        state: 'initial'
       };
     }
 
@@ -202,6 +202,6 @@
     base: getBasePath()
   };
   require.loadScript = loadScript;
-  var loadDefaultJS = getCurrentNode().getAttribute("data-main");
+  var loadDefaultJS = getCurrentNode().getAttribute('data-main');
   loadDefaultJS && loadScript(loadDefaultJS);
 })();
