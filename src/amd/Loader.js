@@ -32,9 +32,10 @@
         console.log('result:->',result);
         var currentModule = Module.current;
         if(/\w/.test(path.charAt(0))){
-          this.module.set('exports',result);
+
         }
         this.module.sets({
+          result:this.module.set('exports',result),
           path: path,
           dependencies: currentModule.get('dependencies'),
           factory: currentModule.get('factory'),
