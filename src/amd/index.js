@@ -61,7 +61,6 @@
     nx.require = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
       return nx.require = function (inDeps, inCallback) {
-        console.log(inDeps);
         oldRequire(inDeps, inCallback);
       }
     };

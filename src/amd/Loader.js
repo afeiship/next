@@ -26,13 +26,16 @@
       },
       nodejs: function () {
         //system require:
-        var result = nx.__currentRequire(this.path);
-        console.log('this.path:->',this.path);
+        var path=this.path;
+        var result = nx.__currentRequire(path);
+        console.log('this.path:->',path);
         console.log('result:->',result);
         var currentModule = Module.current;
+        if(/\w/.test(path.charAt(0))){
+          this.module.set('exports',result);
+        }
         this.module.sets({
-          exports: result,
-          path: this.path,
+          path: path,
           dependencies: currentModule.get('dependencies'),
           factory: currentModule.get('factory'),
           status: STATUS.LOADING
