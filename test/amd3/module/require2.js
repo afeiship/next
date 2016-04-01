@@ -2,12 +2,12 @@
 
   var document = global.document;
   var modules = {};
-  var define;
+  var define,require;
 
   //todo:rename to getAbsoluteUrl
   function getUrl(inPath) {
     var path = '';
-    var baseUrl = define.config.base;
+    var baseUrl = require.config.base;
     if (inPath.indexOf('/') === 0 || inPath.indexOf('./') === 0) {
       //1.path=将:/ 或者 ./替换为空
       //2.将baseUrl + path
@@ -125,7 +125,12 @@
   }
 
 
-  define = function (deps, fn, name) {
+
+  define=function(deps,fn,name){
+
+  };
+
+  require = function (deps, fn, name) {
     if (typeof deps === 'function') {
       fn = deps;
       deps = [];//我们要把数组清空;
@@ -158,5 +163,7 @@
 
     return checkDps();
   };
+
+  window.require=require;
 
 }(window));

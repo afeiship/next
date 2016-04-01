@@ -9,21 +9,15 @@
 <body>
 
 <script type="text/javascript">
-  nx.DEBUG=true;
-/*  nx.config.sets({
-    baseUrl:'./js'
-  });*/
-/*
+  nx.DEBUG = true;
+  /*  nx.config.sets({
+   baseUrl:'./js'
+   });*/
 
-  nx.load('./js/App', function (App) {
-    var app=new App();
+  nx.require(['./js/App'], function (App) {
+    var app = new App();
     console.log(app);
     app.start();
-  });
-*/
-
-  nx.require(['./js/index-view/View1', './js/modules/mod1'], function (a, b) {
-    console.log(a,b);
   });
 
 </script>

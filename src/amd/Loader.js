@@ -26,7 +26,9 @@
       },
       nodejs: function () {
         //system require:
-        var result = require(this.path);
+        var result = nx.__currentRequire(this.path);
+        console.log('this.path:->',this.path);
+        console.log('result:->',result);
         var currentModule = Module.current;
         this.module.sets({
           exports: result,

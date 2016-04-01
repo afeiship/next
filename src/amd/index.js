@@ -1,9 +1,6 @@
 (function (nx, global) {
 
   var Module = nx.amd.Module;
-  var Path = nx.amd.Path;
-  var Loader = nx.amd.Loader;
-  var STATUS = nx.amd.Status;
   var isNodeEnv = typeof module !== 'undefined' && module.exports;
 
   nx.define = function (inDeps, inFactory) {
@@ -40,46 +37,36 @@
   };
 
 
-  nx.load = function (inPath, inCallback, inOwner) {
-    var currentPath = inPath,
-      currentModule,
-      ownerPath,
-      loader,
-      ext = Path.getExt(inPath);
+  nx.require = function (inDeps, inCallback) {
+    var nDeps = inDeps.length;
+    var count = 0, params = [];
+    var done = function () {
+      if (count === nDeps) {
+        inCallback.apply(null, params);
+      }
+    };
 
-    // If PATH does not have a value, assign the first loaded module path to it
-    if (!nx.PATH) {
-      nx.PATH = Path.parent(inPath) || './';
-      currentPath = Path.last(inPath);
-    }
-    // If original path does not contain a SLASH, it should be the library path
-    ownerPath = inOwner ? Path.parent(inOwner.get('path')) : nx.PATH;
-    currentPath = Path.normalize(ownerPath + currentPath);
-    currentModule = Module.all[currentPath];
-
-    if (currentModule) {
-      return currentModule.load(inCallback);
-    } else {
-      loader = new Loader(currentPath, ext, inCallback);
-      loader.load();
-    }
+    inDeps.forEach(function (dep) {
+      Module.load(dep, function (param) {
+        count++;
+        params.push(param);
+        done();
+      });
+    });
   };
 
 
   if (isNodeEnv) {
-    nx.load = function (inSystemRequire) {
-      return nx.load = function (inDeps, inCallback) {
-        var args = [];
-        inDeps.forEach(function (item) {
-          args.push(
-            inSystemRequire(item)
-          );
-        });
-        inCallback.apply(null, args);
+    var oldRequire = nx.require;
+    nx.require = function (inSystemRequire) {
+      nx.__currentRequire = inSystemRequire;
+      return nx.require = function (inDeps, inCallback) {
+        console.log(inDeps);
+        oldRequire(inDeps, inCallback);
       }
     };
 
-    module.exports = nx.load;
+    module.exports = nx.require;
   }
 
 

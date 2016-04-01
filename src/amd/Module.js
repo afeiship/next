@@ -1,39 +1,33 @@
 (function (nx, global) {
 
   var STATUS = nx.amd.Status;
-  var doc = global.document;
-
+  var Path = nx.amd.Path;
+  var isNodeEnv = typeof module !== 'undefined' && module.exports;
   var Module = nx.declare('nx.amd.Module', {
     statics: {
       all: {},
       current: null,
-      getCurrentScript: function () {
-        if (doc.currentScript) {
-          return doc.currentScript.src; //FF,Chrome
-        }
-        var stack;
-        try {
-          a.b.c();
-        } catch (e) {
-          stack = e.stack;
-          if (!stack && window.opera) {
-            stack = String(e);
-            if (!stack && window.opera) {
-              stack = (String(e).match(/of linked script \S+/g) || []).join(" ");
-            }
+      load: function (inPath, inCallback, inOwner) {
+        var currentPath = inPath,
+          currentModule,
+          ownerPath,
+          loader,
+          ext = Path.getExt(inPath);
+
+        // If original path does not contain a SLASH, it should be the library path
+        ownerPath = inOwner ? Path.parent(inOwner.get('path')) : './';
+        currentPath = Path.normalize(ownerPath + currentPath);
+        currentModule = Module.all[currentPath];
+
+        if (currentModule) {
+          return currentModule.load(inCallback);
+        } else {
+          if (!isNodeEnv) {
+            loader = new nx.amd.Loader(currentPath, ext, inCallback);
+          } else {
+            loader = new nx.amd.Loader(inPath, 'nodejs', inCallback);
           }
-        }
-        if (stack) {
-          stack = stack.split(/[@ ]/g).pop();
-          stack = stack[0] === "(" ? stack.slice(1, -1) : stack;
-          return stack.replace(/(:\d+)?:\d+$/i, "");
-        }
-        // IE
-        var nodes = head.getElementsByTagName("script");
-        for (var i = 0, node; node = nodes[i++];) {
-          if (node.readyState === 'interactive') {
-            return node.src;
-          }
+          loader.load();
         }
       }
     },
@@ -92,7 +86,7 @@
             done(exports, params);
           } else {
             nx.each(deps, function (index, dep) {
-              nx.load(dep, function (param) {
+              Module.load(dep, function (param) {
                 params[index] = param;
                 count--;
                 if (count === 0) {
