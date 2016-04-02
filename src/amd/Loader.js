@@ -25,7 +25,6 @@
         nx.error('The ext ' + ext + ' is not supported.');
       },
       nodejs: function () {
-        //system require:
         var path=this.path;
         var result = nx.__currentRequire(path);
         console.log('this.path:->',path);
