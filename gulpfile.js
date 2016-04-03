@@ -21,7 +21,6 @@
       conf.src + '/core/oop-base.js',
       conf.src + '/core/oop-define-meta.js',
       conf.src + '/core/oop.js',
-      conf.src + '/amd/Config.js',
       conf.src + '/amd/Path.js',
       conf.src + '/amd/Status.js',
       conf.src + '/amd/Module.js',
