@@ -10,9 +10,6 @@ A javascript OOP toolkit for mobile.
 + test base:mocha test/test_base.js
 + test oop:mocha test/test_oop.js
 
-##resources:
-+ AMD-Require:https://github.com/arqex/amdrequire/blob/master/amdrequire.js
-
 ##log:
 + [2015-12-01]:finish core refactor.
 + [2016-04-03]:finish node & browser AMD implement.
