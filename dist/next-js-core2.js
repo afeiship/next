@@ -1012,16 +1012,16 @@ if (typeof module !== 'undefined' && module.exports) {
         nx.error('The ext ' + ext + ' is not supported.');
       },
       nodejs: function () {
-        //system require:
         var path=this.path;
         var result = nx.__currentRequire(path);
         console.log('this.path:->',path);
         console.log('result:->',result);
         var currentModule = Module.current;
         if(/\w/.test(path.charAt(0))){
-          this.module.set('exports',result);
+
         }
         this.module.sets({
+          result:this.module.set('exports',result),
           path: path,
           dependencies: currentModule.get('dependencies'),
           factory: currentModule.get('factory'),
@@ -1152,14 +1152,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
   if (isNodeEnv) {
     var oldRequire = nx.require;
-    nx.require = function (inSystemRequire) {
+    nx.__currentRequire = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
-      return nx.require = function (inDeps, inCallback) {
-        oldRequire(inDeps, inCallback);
-      }
     };
 
-    module.exports = nx.require;
+    module.exports = nx.__currentRequire;
   }
 
 
