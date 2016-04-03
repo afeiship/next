@@ -1,8 +1,7 @@
 (function (nx, global) {
 
   var doc = global.document;
-  var isBrowserEnv = !!doc;
-  var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
+  var head = doc && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
   var Path = nx.amd.Path;
   var Module = nx.amd.Module;
   var STATUS = nx.amd.Status;
