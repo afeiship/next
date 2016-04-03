@@ -57,7 +57,6 @@
 
 
   if (isNodeEnv) {
-    var oldRequire = nx.require;
     nx.__currentRequire = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
     };
