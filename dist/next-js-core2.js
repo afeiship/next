@@ -997,12 +997,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.declare('nx.amd.Loader', {
     methods: {
-      init: function (inPath, inExt, inCallback, inOptions) {
+      init: function (inPath, inExt, inCallback) {
         var path = this.path = inPath || '';
         this.ext = inExt;
         this.module = Module.all[path] = new Module(path);
         this.callback = inCallback || nx.noop;
-        this.options = inOptions;
       },
       load: function () {
         var ext = this.ext;
@@ -1012,20 +1011,26 @@ if (typeof module !== 'undefined' && module.exports) {
         nx.error('The ext ' + ext + ' is not supported.');
       },
       nodejs: function () {
-        var path=this.path;
-        var result = nx.__currentRequire(path);
-        console.log('this.path:->',path);
-        console.log('result:->',result);
-        var currentModule = Module.current;
-        if(/\w/.test(path.charAt(0))){
-
+        var currentModule, path = this.path;
+        var exports = null;
+        var status;
+        if (path[0].indexOf('.') === 0) {
+          console.log('normal module:->',path);
+          nx.__currentRequire(path);
+          status=STATUS.LOADING;
+        } else {
+          console.log('node module:->',path);
+          exports = nx.__currentRequire(path);
+          status=STATUS.RESOLVED;
         }
+
+        currentModule = Module.current;
         this.module.sets({
-          result:this.module.set('exports',result),
+          exports: exports,
           path: path,
           dependencies: currentModule.get('dependencies'),
           factory: currentModule.get('factory'),
-          status: STATUS.LOADING
+          status: status
         });
         this.module.load(this.callback);
       },
@@ -1151,7 +1156,6 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
   if (isNodeEnv) {
-    var oldRequire = nx.require;
     nx.__currentRequire = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
     };
