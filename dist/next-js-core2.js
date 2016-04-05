@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.0.9',
+  VERSION: '1.0.10',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -761,41 +761,6 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
-  var Config = nx.declare('nx.amd.Config', {
-    statics: {
-      __config__: {},
-      getInstance: function () {
-        var instance = Config.instance;
-        if (!instance) {
-          instance = Config.instance = new Config();
-        }
-        return instance;
-      }
-    },
-    methods: {
-      set: function (inName, inValue) {
-        Config.__config__[inName] = inValue;
-      },
-      get: function (inName) {
-        return Config.__config__[inName];
-      },
-      gets: function () {
-        return Config.__config__;
-      }
-    }
-  });
-
-  nx.config = Config.getInstance();
-
-  //default config:
-  nx.config.sets({
-    baseUrl: './'
-  });
-
-}(nx, nx.GLOBAL));
-
-(function (nx, global) {
-
   var DOT = '.',
     DOUBLE_DOT = '..',
     SLASH = '/';
@@ -988,8 +953,7 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var doc = global.document;
-  var isBrowserEnv = !!doc;
-  var head = isBrowserEnv && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
+  var head = doc && (doc.head || doc.getElementsByTagName('head')[0] || doc.documentElement);
   var Path = nx.amd.Path;
   var Module = nx.amd.Module;
   var STATUS = nx.amd.Status;
@@ -1012,18 +976,9 @@ if (typeof module !== 'undefined' && module.exports) {
       },
       nodejs: function () {
         var currentModule, path = this.path;
-        var exports = null;
-        var status;
-        if (path[0].indexOf('.') === 0) {
-          console.log('normal module:->',path);
-          nx.__currentRequire(path);
-          status=STATUS.LOADING;
-        } else {
-          console.log('node module:->',path);
-          exports = nx.__currentRequire(path);
-          status=STATUS.RESOLVED;
-        }
-
+        var exports = nx.__currentRequire(path);
+        var isNodeModule = path[0].indexOf('.') === -1;
+        var status = isNodeModule ? STATUS.RESOLVED : STATUS.LOADING;
         currentModule = Module.current;
         this.module.sets({
           exports: exports,
