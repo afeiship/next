@@ -1111,11 +1111,15 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
   if (isNodeEnv) {
-    nx.__currentRequire = function (inSystemRequire) {
+    var oldRequire = nx.require;
+    nx.require = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
+      return nx.require = function (inDeps, inCallback) {
+        oldRequire(inDeps, inCallback);
+      }
     };
 
-    module.exports = nx.__currentRequire;
+    module.exports = nx.require;
   }
 
 
