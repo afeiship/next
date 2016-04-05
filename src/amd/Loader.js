@@ -23,18 +23,27 @@
         nx.error('The ext ' + ext + ' is not supported.');
       },
       nodejs: function () {
+        //todo:need optimize
         var currentModule, path = this.path;
         var exports = nx.__currentRequire(path);
         var isNodeModule = path[0].indexOf('.') === -1;
         var status = isNodeModule ? STATUS.RESOLVED : STATUS.LOADING;
         currentModule = Module.current;
-        this.module.sets({
-          exports: exports,
-          path: path,
-          dependencies: currentModule && currentModule.get('dependencies'),
-          factory: currentModule && currentModule.get('factory'),
-          status: status
-        });
+        if (currentModule) {
+          this.module.sets({
+            exports: exports,
+            path: path,
+            dependencies: currentModule.get('dependencies'),
+            factory: currentModule.get('factory'),
+            status: status
+          });
+        } else {
+          this.module.sets({
+            exports: exports,
+            path: path,
+            status: status
+          });
+        }
         this.module.load(this.callback);
       },
       css: function () {
