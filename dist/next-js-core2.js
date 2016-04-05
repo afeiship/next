@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.0.11',
+  VERSION: '1.0.12',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -983,8 +983,8 @@ if (typeof module !== 'undefined' && module.exports) {
         this.module.sets({
           exports: exports,
           path: path,
-          dependencies: currentModule.get('dependencies'),
-          factory: currentModule.get('factory'),
+          dependencies: currentModule && currentModule.get('dependencies'),
+          factory: currentModule && currentModule.get('factory'),
           status: status
         });
         this.module.load(this.callback);
@@ -1111,15 +1111,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
   if (isNodeEnv) {
-    var oldRequire = nx.require;
-    nx.require = function (inSystemRequire) {
+    nx.__currentRequire = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
-      return nx.require = function (inDeps, inCallback) {
-        oldRequire(inDeps, inCallback);
-      }
     };
 
-    module.exports = nx.require;
+    module.exports = nx.__currentRequire;
   }
 
 

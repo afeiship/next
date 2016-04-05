@@ -31,8 +31,8 @@
         this.module.sets({
           exports: exports,
           path: path,
-          dependencies: currentModule.get('dependencies'),
-          factory: currentModule.get('factory'),
+          dependencies: currentModule && currentModule.get('dependencies'),
+          factory: currentModule && currentModule.get('factory'),
           status: status
         });
         this.module.load(this.callback);

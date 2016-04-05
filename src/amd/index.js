@@ -57,15 +57,11 @@
 
 
   if (isNodeEnv) {
-    var oldRequire = nx.require;
-    nx.require = function (inSystemRequire) {
+    nx.__currentRequire = function (inSystemRequire) {
       nx.__currentRequire = inSystemRequire;
-      return nx.require = function (inDeps, inCallback) {
-        oldRequire(inDeps, inCallback);
-      }
     };
 
-    module.exports = nx.require;
+    module.exports = nx.__currentRequire;
   }
 
 
