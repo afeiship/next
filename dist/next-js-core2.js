@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.0.13',
+  VERSION: '1.0.15',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -507,8 +507,8 @@ if (typeof module !== 'undefined' && module.exports) {
       };
 
     } else {
-      getter = inMeta.get || inTarget[key].get || nx.noop;
-      setter = inMeta.set || inTarget[key].set || nx.noop;
+      getter = inMeta.get || inTarget[key] && inTarget[key].get || nx.noop;
+      setter = inMeta.set || inTarget[key] && inTarget[key].set || nx.noop;
     }
 
     //remain base setter/getter:
@@ -975,6 +975,7 @@ if (typeof module !== 'undefined' && module.exports) {
         nx.error('The ext ' + ext + ' is not supported.');
       },
       nodejs: function () {
+        //todo:need optimize
         var currentModule, path = this.path;
         var exports = nx.__currentRequire(path);
         var isNodeModule = path[0].indexOf('.') === -1;
