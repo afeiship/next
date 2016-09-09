@@ -2,12 +2,12 @@ nx = {
   BREAKER: {},
   VERSION: '1.0.15',
   DEBUG: false,
-  GLOBAL: (function () {
+  GLOBAL: (function() {
     return this;
   }).call(null)
 };
 
-(function (nx, global) {
+(function(nx, global) {
 
   var undefined;
   var class2type = {};
@@ -20,18 +20,17 @@ nx = {
     concat = emptyArray.concat;
 
   //populate class2type map:
-  javascriptType.split(' ').forEach(function (inName) {
+  javascriptType.split(' ').forEach(function(inName) {
     class2type['[object ' + inName + ']'] = inName.toLowerCase()
   });
 
-  nx.noop = function () {
-  };
+  nx.noop = function() {};
 
-  nx.error = function (inMsg) {
+  nx.error = function(inMsg) {
     throw new Error(inMsg);
   };
 
-  nx.each = function (inTarget, inCallback, inContext) {
+  nx.each = function(inTarget, inCallback, inContext) {
     var key, length;
     if (inTarget) {
       if (inTarget.each) {
@@ -57,40 +56,44 @@ nx = {
     }
   };
 
-  nx.type = function (inObj) {
+  nx.type = function(inObj) {
     if (inObj && inObj.type) {
       return inObj.type();
     }
     return inObj == null ? String(inObj) :
-    class2type[toString.call(inObj)] || 'object';
+      class2type[toString.call(inObj)] || 'object';
   };
 
-  nx.camelCase = function (inStr) {
-    return (inStr || '').replace(/[-_]+(.)?/g, function (match, chr) {
+  nx.camelCase = function(inStr) {
+    return (inStr || '').replace(/[-_]+(.)?/g, function(match, chr) {
       return chr ? chr.toUpperCase() : '';
     });
   };
 
-  nx.trim = function (inStr) {
-    return inStr == null ? '' : String.prototype.trim.call(inStr)
+  nx.trim = function(inStr) {
+    return inStr == null ? '' : String.prototype.trim.call(inStr);
   };
 
-  nx.deserializeValue = function (inValue) {
+  nx.capitalize = function(inStr) {
+    return inStr.charAt(0).toUpperCase() + inStr.slice(1);
+  }
+
+  nx.deserializeValue = function(inValue) {
     try {
       return inValue ?
-      inValue == 'true' ||
-      ( inValue == 'false' ? false :
-        inValue == 'null' ? null :
+        inValue == 'true' ||
+        (inValue == 'false' ? false :
+          inValue == 'null' ? null :
           +inValue + '' == inValue ? +inValue :
-            /^[\[\{]/.test(inValue) ? nx.parse(inValue) :
-              inValue )
-        : inValue;
+          /^[\[\{]/.test(inValue) ? nx.parse(inValue) :
+          inValue) :
+        inValue;
     } catch (e) {
       return inValue;
     }
   };
 
-  nx.dasherize = function (inStr) {
+  nx.dasherize = function(inStr) {
     return inStr.replace(/::/g, '/')
       .replace(/([A-Z]+)([A-Z][a-z])/g, '$1_$2')
       .replace(/([a-z\d])([A-Z])/g, '$1_$2')
@@ -98,7 +101,7 @@ nx = {
       .toLowerCase()
   };
 
-  nx.clone = function (inTarget, inSource, inDeep) {
+  nx.clone = function(inTarget, inSource, inDeep) {
     var isPlainObject = nx.isPlainObject,
       isArray = nx.isArray;
     var key;
@@ -113,73 +116,72 @@ nx = {
           }
           nx.clone(inTarget[key], inSource[key], inDeep);
         }
-      }
-      else if (inSource[key] !== undefined) {
+      } else if (inSource[key] !== undefined) {
         inTarget[key] = inSource[key];
       }
     }
     return inTarget;
   };
 
-  nx.mix = function (inTarget) {
+  nx.mix = function(inTarget) {
     var deep, args = slice.call(arguments, 1);
     if (typeof inTarget == 'boolean') {
       deep = inTarget;
       inTarget = args.shift();
     }
-    args.forEach(function (arg) {
+    args.forEach(function(arg) {
       nx.clone(inTarget, arg, deep);
     });
     return inTarget;
   };
 
-  nx.isNumber = function (inObj) {
+  nx.isNumber = function(inObj) {
     return !isNaN(inObj) && typeof(inObj) == 'number';
   };
 
-  nx.isBoolean = function (inObj) {
+  nx.isBoolean = function(inObj) {
     return typeof(inObj) == 'boolean';
   };
 
-  nx.isString = function (inObj) {
+  nx.isString = function(inObj) {
     return typeof(inObj) == 'string';
   };
 
-  nx.isArray = Array.isArray || function (inObj) {
-      return inObj instanceof Array;
-    };
+  nx.isArray = Array.isArray || function(inObj) {
+    return inObj instanceof Array;
+  };
 
-  nx.isArrayLike = function (inObj) {
+  nx.isArrayLike = function(inObj) {
     return typeof inObj.length == 'number';
   };
 
-  nx.isFunction = function (inObj) {
+  nx.isFunction = function(inObj) {
     return typeof(inObj) == 'function';
   };
 
-  nx.isObject = function (inObj) {
+  nx.isObject = function(inObj) {
     return nx.type(inObj) == 'object';
   };
 
-  nx.isDocument = function (inObj) {
+  nx.isDocument = function(inObj) {
     return inObj != null && inObj.nodeType == 9;
   };
 
-  nx.isWindow = function (inObj) {
+  nx.isWindow = function(inObj) {
     return inObj != null && inObj == inObj.global;
   };
 
-  nx.isPlainObject = function (inObj) {
+  nx.isPlainObject = function(inObj) {
     return nx.isObject(inObj) && !nx.isWindow(inObj) && Object.getPrototypeOf(inObj) == Object.prototype;
   };
 
-  nx.isEmptyObject = function (obj) {
+  nx.isEmptyObject = function(inObj) {
     var key;
-    for (key in obj) return false;
+    for (key in inObj) return false;
     return true;
   };
 
-  nx.has = function (inTarget, inName) {
+  nx.has = function(inTarget, inName) {
     if (inTarget) {
       if (inTarget.has) {
         return inTarget.has(inName);
@@ -190,7 +192,7 @@ nx = {
     return false;
   };
 
-  nx.get = function (inTarget, inName) {
+  nx.get = function(inTarget, inName) {
     if (inTarget) {
       if (inTarget.get) {
         return inTarget.get(inName);
@@ -200,7 +202,7 @@ nx = {
     }
   };
 
-  nx.set = function (inTarget, inName, inValue) {
+  nx.set = function(inTarget, inName, inValue) {
     if (inTarget) {
       if (inTarget.set) {
         return inTarget.set(inName, inValue);
@@ -210,7 +212,7 @@ nx = {
     }
   };
 
-  nx.gets = function (inTarget) {
+  nx.gets = function(inTarget) {
     if (inTarget) {
       if (inTarget.gets) {
         return inTarget.gets();
@@ -220,7 +222,7 @@ nx = {
     }
   };
 
-  nx.sets = function (inTarget, inObject) {
+  nx.sets = function(inTarget, inObject) {
     if (inTarget) {
       if (inTarget.sets) {
         return inTarget.sets(inObject);
@@ -230,7 +232,7 @@ nx = {
     }
   };
 
-  nx.is = function (inTarget, inType) {
+  nx.is = function(inTarget, inType) {
     if (inTarget && inTarget.is) {
       return inTarget.is(inType);
     } else {
@@ -260,7 +262,7 @@ nx = {
     }
   };
 
-  nx.path = function (inTarget, inPath, inValue) {
+  nx.path = function(inTarget, inPath, inValue) {
     if (typeof inPath !== 'string') {
       nx.error('Path must be a string!');
     }
@@ -270,12 +272,12 @@ nx = {
       last;
 
     if (undefined === inValue) {
-      nx.each(paths, function (path) {
+      nx.each(paths, function(path) {
         result = nx.get(result, path);
       });
     } else {
       last = paths.pop();
-      paths.forEach(function (path) {
+      paths.forEach(function(path) {
         result = result[path] = result[path] || {};
       });
       nx.set(result, last, inValue);
@@ -283,36 +285,34 @@ nx = {
     return result;
   };
 
-  nx.format = function (inString, inArgs) {
+  nx.format = function(inString, inArgs) {
     var result = inString || '';
-    var replaceFn = nx.isArray(inArgs) ? function (str, match) {
+    var replaceFn = nx.isArray(inArgs) ? function(str, match) {
       return inArgs[match];
-    } : function (str, match) {
+    } : function(str, match) {
       return nx.path(inArgs, match);
     };
     result = inString.replace(rPath, replaceFn);
     return result;
   };
 
-  nx.toArray = function (obj) {
+  nx.toArray = function(obj) {
     if (!obj) return [];
     if (nx.isArrayLike(obj)) return slice.call(obj);
     return [obj];
   };
 
-  nx.parse = function (inValue) {
+  nx.parse = function(inValue) {
     try {
       return JSON.parse(inValue);
-    } catch (_) {
-    }
+    } catch (_) {}
     return inValue;
   };
 
-  nx.stringify = function (inValue) {
+  nx.stringify = function(inValue) {
     try {
       return JSON.stringify(inValue);
-    } catch (_) {
-    }
+    } catch (_) {}
     return inValue;
   };
 

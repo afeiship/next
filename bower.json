@@ -2,8 +2,7 @@
   "name": "next-js-core2",
   "description": "A javascript OOP toolkit for mobile.",
   "main": [
-    "dist/next-js-core2.js",
-    "dist/next-js-core2.min.js"
+    "dist/next-js-core2.js"
   ],
   "authors": [
     "afei"
