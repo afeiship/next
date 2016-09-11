@@ -296,11 +296,16 @@ nx = {
     return result;
   };
 
-  nx.toArray = function(obj) {
-    if (!obj) return [];
-    if (nx.isArrayLike(obj)) return slice.call(obj);
-    return [obj];
+  nx.toArray = function(inObj) {
+    if (!inObj) return [];
+    if (nx.isArrayLike(inObj)) return slice.call(inObj);
+    return [inObj];
   };
+  nx.compact = function(inArray) {
+    return filter.call(inArray, function(item) {
+      return item != null
+    });
+  }
 
   nx.parse = function(inValue) {
     try {
