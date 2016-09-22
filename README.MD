@@ -5,6 +5,17 @@ A javascript OOP toolkit for mobile.
 + test:npm install mocha --save-dev
 + build:npm install gulp del gulp-concat gulp-rename gulp-uglify gulp-umd gulp-filter --save-dev
 
+## usage:
++ install
+```bash
+npm install --save afeiship/next-js-core2
+```
++ use:
+```javascript
+require('next-js-core2')(require);
+```
+
+
 
 ##test
 + test base:mocha test/test_base.js
@@ -13,6 +24,3 @@ A javascript OOP toolkit for mobile.
 ##log:
 + [2015-12-01]:finish core refactor.
 + [2016-04-03]:finish node & browser AMD implement.
-
-
-
