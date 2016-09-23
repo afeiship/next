@@ -7,6 +7,7 @@
   var rename = require('gulp-rename');
   var uglify = require('gulp-uglify');
   var umd = require('gulp-umd');
+  var size = require('gulp-size');
 
   var conf = {
     src: 'src',
@@ -32,11 +33,13 @@
     return gulp.src(files.src)
       .pipe(concat(files.dist))
       .pipe(gulp.dest('dist'))
+      .pipe(size({title:'[ default size ]:'}))
       .pipe(uglify())
       .pipe(rename({
         extname: '.min.js'
       }))
-      .pipe(gulp.dest('dist'));
+      .pipe(gulp.dest('dist'))
+      .pipe(size({title:'[ compressed size ]:'}));
   });
 
   gulp.task('default', ['scripts']);
