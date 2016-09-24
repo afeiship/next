@@ -76,7 +76,7 @@ nx = {
 
   nx.capitalize = function(inStr) {
     return inStr.charAt(0).toUpperCase() + inStr.slice(1);
-  }
+  };
 
   nx.deserializeValue = function(inValue) {
     try {
@@ -301,11 +301,12 @@ nx = {
     if (nx.isArrayLike(inObj)) return slice.call(inObj);
     return [inObj];
   };
+
   nx.compact = function(inArray) {
     return filter.call(inArray, function(item) {
       return item != null
     });
-  }
+  };
 
   nx.parse = function(inValue) {
     try {
@@ -319,6 +320,52 @@ nx = {
       return JSON.stringify(inValue);
     } catch (_) {}
     return inValue;
+  };
+
+  nx.delete = function(inObject, inArray) {
+    var obj = nx.clone({}, inObject, true);
+    inArray.forEach(function(key) {
+      delete obj[key];
+    });
+    return obj;
+  };
+
+  nx.param = function(inObject) {
+    var str = [];
+    var key, value, encodeValue;
+    for (key in inObject) {
+      value = inData[key];
+      if (value != null) {
+        encodeValue = angular.isArray(value) ? value.join() : value;
+        str.push(encodeURIComponent(key) + '=' + encodeURIComponent(encodeValue));
+      }
+    }
+    return str.join("&");
+  };
+
+  nx.hashlize = function(inQueryStr) {
+    var result = {};
+    var query = inQueryStr || global.location.search.substring(1);
+    var params = query.split('&');
+    var arr, pair, key, value;
+    var i, length;
+    for (i = 0, lenth = params.length; i < lenth; i++) {
+      pair = params[i].split('=');
+      key = pair[0];
+      value = pair[1];
+      switch (typeof result[key]) {
+        case 'undefined':
+          result[key] = decodeURIComponent(value);
+          break;
+        case 'string':
+          arr = [result[key], decodeURIComponent(value)];
+          result[key] = arr;
+          break;
+        default:
+          result[key].push(decodeURIComponent(value));
+      }
+    }
+    return result;
   };
 
 }(nx, nx.GLOBAL));

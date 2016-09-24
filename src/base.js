@@ -301,11 +301,12 @@ nx = {
     if (nx.isArrayLike(inObj)) return slice.call(inObj);
     return [inObj];
   };
+
   nx.compact = function(inArray) {
     return filter.call(inArray, function(item) {
       return item != null
     });
-  }
+  };
 
   nx.parse = function(inValue) {
     try {
@@ -327,6 +328,43 @@ nx = {
       delete obj[key];
     });
     return obj;
+  };
+
+  nx.param = function(inObject) {
+    var str = [];
+    var key, value, encodeValue;
+    for (key in inObject) {
+      value = inData[key];
+      if (value != null) {
+        encodeValue = angular.isArray(value) ? value.join() : value;
+        str.push(encodeURIComponent(key) + '=' + encodeURIComponent(encodeValue));
+      }
+    }
+    return str.join("&");
+  };
+
+  nx.hashlize = function(inQueryStr) {
+    var result = {};
+    var query = inQueryStr || global.location.search.substring(1);
+    var params = query.split('&');
+    var arr, pair, key, value;
+    nx.each(params, function(_, param) {
+      pair = param.split('=');
+      key = pair[0];
+      value = pair[1];
+      switch (typeof result[key]) {
+        case 'undefined':
+          result[key] = decodeURIComponent(value);
+          break;
+        case 'string':
+          arr = [result[key], decodeURIComponent(value)];
+          result[key] = arr;
+          break;
+        default:
+          result[key].push(decodeURIComponent(value));
+      }
+    })
+    return result;
   };
 
 }(nx, nx.GLOBAL));
