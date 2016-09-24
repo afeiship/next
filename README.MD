@@ -20,6 +20,7 @@ require('next-js-core2')(require);
 ##test
 + test base:mocha test/test_base.js
 + test oop:mocha test/test_oop.js
++ http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html
 
 ##log:
 + [2015-12-01]:finish core refactor.

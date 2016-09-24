@@ -76,7 +76,7 @@ nx = {
 
   nx.capitalize = function(inStr) {
     return inStr.charAt(0).toUpperCase() + inStr.slice(1);
-  }
+  };
 
   nx.deserializeValue = function(inValue) {
     try {
@@ -319,6 +319,14 @@ nx = {
       return JSON.stringify(inValue);
     } catch (_) {}
     return inValue;
+  };
+
+  nx.delete = function(inObject, inArray) {
+    var obj = nx.clone({}, inObject, true);
+    inArray.forEach(function(key) {
+      delete obj[key];
+    });
+    return obj;
   };
 
 }(nx, nx.GLOBAL));
