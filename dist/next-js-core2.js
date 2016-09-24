@@ -116,7 +116,7 @@ nx = {
 
   // Copy all but undefined properties from one or more
   // objects to the `target` object.
-  nx.extend = function(target) {
+  nx.clone = function(target) {
     var deep, args = slice.call(arguments, 1)
     if (typeof target == 'boolean') {
       deep = target
