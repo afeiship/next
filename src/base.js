@@ -334,7 +334,7 @@ nx = {
     var str = [];
     var key, value, encodeValue;
     for (key in inObject) {
-      value = inData[key];
+      value = inObject[key];
       if (value != null) {
         encodeValue = angular.isArray(value) ? value.join() : value;
         str.push(encodeURIComponent(key) + '=' + encodeURIComponent(encodeValue));
