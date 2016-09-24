@@ -101,26 +101,31 @@ nx = {
       .toLowerCase()
   };
 
-  nx.clone = function(inTarget, inSource, inDeep) {
-    var isPlainObject = nx.isPlainObject,
-      isArray = nx.isArray;
-    var key;
-    for (key in inSource) {
-      if (inDeep) {
-        if (isPlainObject(inSource[key]) || isArray(inSource[key])) {
-          if (isPlainObject(inSource[key]) && !isPlainObject(inTarget[key])) {
-            inTarget[key] = {};
-          }
-          if (isArray(inSource[key]) && !isArray(inTarget[key])) {
-            inTarget[key] = [];
-          }
-          nx.clone(inTarget[key], inSource[key], inDeep);
-        }
-      } else if (inSource[key] !== undefined) {
-        inTarget[key] = inSource[key];
-      }
+  function extend(target, source, deep) {
+    var isPlainObject = nx.isPlainObject;
+    var isArray = nx.isArray;
+    for (key in source)
+      if (deep && (isPlainObject(source[key]) || isArray(source[key]))) {
+        if (isPlainObject(source[key]) && !isPlainObject(target[key]))
+          target[key] = {}
+        if (isArray(source[key]) && !isArray(target[key]))
+          target[key] = []
+        extend(target[key], source[key], deep)
+      } else if (source[key] !== undefined) target[key] = source[key]
+  }
+
+  // Copy all but undefined properties from one or more
+  // objects to the `target` object.
+  nx.extend = function(target) {
+    var deep, args = slice.call(arguments, 1)
+    if (typeof target == 'boolean') {
+      deep = target
+      target = args.shift()
     }
-    return inTarget;
+    args.forEach(function(arg) {
+      extend(target, arg, deep)
+    })
+    return target
   };
 
   nx.mix = function(inTarget) {
@@ -334,7 +339,7 @@ nx = {
     var str = [];
     var key, value, encodeValue;
     for (key in inObject) {
-      value = inData[key];
+      value = inObject[key];
       if (value != null) {
         encodeValue = angular.isArray(value) ? value.join() : value;
         str.push(encodeURIComponent(key) + '=' + encodeURIComponent(encodeValue));
@@ -348,9 +353,8 @@ nx = {
     var query = inQueryStr || global.location.search.substring(1);
     var params = query.split('&');
     var arr, pair, key, value;
-    var i, length;
-    for (i = 0, lenth = params.length; i < lenth; i++) {
-      pair = params[i].split('=');
+    nx.each(params, function(_, param) {
+      pair = param.split('=');
       key = pair[0];
       value = pair[1];
       switch (typeof result[key]) {
@@ -364,7 +368,7 @@ nx = {
         default:
           result[key].push(decodeURIComponent(value));
       }
-    }
+    })
     return result;
   };
 
