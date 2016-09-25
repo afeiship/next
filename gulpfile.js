@@ -29,7 +29,7 @@
     return del(conf.dist);
   });
 
-  gulp.task('scripts', ['clean'], function() {
+  gulp.task('scripts', function() {
     return gulp.src(files.src)
       .pipe(concat(files.dist))
       .pipe(gulp.dest('dist'))
@@ -42,6 +42,8 @@
       .pipe(size({title:'[ compressed size ]:'}));
   });
 
-  gulp.task('default', ['scripts']);
+  gulp.task('default', ['clean'],function() {
+    gulp.start(['scripts']);
+  });
 
 }());
