@@ -78,6 +78,15 @@ nx = {
     return inStr.charAt(0).toUpperCase() + inStr.slice(1);
   };
 
+  // "true"  => true
+  // "false" => false
+  // "null"  => null
+  // "42"    => 42
+  // "42.5"  => 42.5
+  // "08"    => "08"
+  // JSON    => parse if valid
+  // String  => self
+
   nx.deserializeValue = function(inValue) {
     try {
       return inValue ?
