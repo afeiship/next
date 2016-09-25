@@ -100,27 +100,18 @@ nx = {
       .replace(/_/g, '-')
       .toLowerCase()
   };
-  
-  // Copy all but undefined properties from one or more
-  // objects to the `target` object.
-  nx.clone = function(target) {
-    var deep, args = slice.call(arguments, 1)
-    if (typeof target == 'boolean') {
-      deep = target;
-      target = args.shift();
-    }
-    args.forEach(function(source) {
-      //extend(target, source, deep);
-      for (key in source)
-        if (deep && (nx.isPlainObject(source[key]) || nx.isArray(source[key]))) {
-          if (nx.isPlainObject(source[key]) && !nx.isPlainObject(target[key]))
-            target[key] = {}
-          if (isArray(source[key]) && !isArray(target[key]))
-            target[key] = []
-          extend(target[key], source[key], deep)
-        } else if (source[key] !== undefined) target[key] = source[key];
-    })
-    return target;
+
+  nx.clone = function(target, source, deep) {
+    var isPlainObject = nx.isPlainObject,
+      isArray = nx.isArray;
+    for (key in source)
+      if (deep && (isPlainObject(source[key]) || isArray(source[key]))) {
+        if (isPlainObject(source[key]) && !isPlainObject(target[key]))
+          target[key] = {}
+        if (isArray(source[key]) && !isArray(target[key]))
+          target[key] = []
+        nx.clone(target[key], source[key], deep)
+      } else if (source[key] !== undefined) target[key] = source[key]
   };
 
   nx.mix = function(inTarget) {
