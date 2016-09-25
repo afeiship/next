@@ -112,6 +112,7 @@ nx = {
           target[key] = []
         nx.clone(target[key], source[key], deep)
       } else if (source[key] !== undefined) target[key] = source[key]
+    return target;
   };
 
   nx.mix = function(inTarget) {
