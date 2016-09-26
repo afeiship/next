@@ -278,7 +278,7 @@ nx = {
       });
     } else {
       last = paths.pop();
-      paths.forEach(function(path) {
+      paths.forEach(function(_, path) {
         result = result[path] = result[path] || {};
       });
       nx.set(result, last, inValue);
