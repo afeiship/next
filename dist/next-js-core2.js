@@ -273,12 +273,12 @@ nx = {
       last;
 
     if (undefined === inValue) {
-      nx.each(paths, function(path) {
+      nx.each(paths, function(_, path) {
         result = nx.get(result, path);
       });
     } else {
       last = paths.pop();
-      paths.forEach(function(_, path) {
+      paths.forEach(function(path) {
         result = result[path] = result[path] || {};
       });
       nx.set(result, last, inValue);
