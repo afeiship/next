@@ -205,7 +205,7 @@ nx = {
 
   nx.set = function(inTarget, inName, inValue) {
     if (inTarget) {
-      if (inTarget.set) {
+      if (inTarget.set && inTarget !== nx) {
         return inTarget.set(inName, inValue);
       } else {
         return inTarget[inName] = inValue;
