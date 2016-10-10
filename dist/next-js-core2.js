@@ -344,7 +344,6 @@ nx = {
 
   // http://dev.qwrap.com/download/latest/apps/qwrap-debug.js?20131207
   nx.toString = function(inObj) {
-    var arr, i;
     if (inObj == null) {
       return inObj + '';
     }
@@ -363,7 +362,7 @@ nx = {
       case 'date':
         return 'new Date(' + inObj.getTime() + ')';
       case 'array':
-        for (arr = [], i = 0; i < inObj.length; i++) {
+        for (var arr = [], i = 0; i < inObj.length; i++) {
           arr[i] = nx.toString(inObj[i]);
         }
         return '[' + arr.join(',') + ']';
