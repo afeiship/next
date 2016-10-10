@@ -183,8 +183,9 @@ nx = {
   };
 
   nx.mulReplace = function(inString, inArray) {
-    for (var i = 0; i < inArray.length; i++) {
-      inString = inString.replace(inArray[i][0], arr[i][1]);
+    var i, length = inArray.length;
+    for (i = 0; i < length; i++) {
+      inString = inString.replace(inArray[i][0], inArray[i][1]);
     }
     return inString;
   };
@@ -344,6 +345,7 @@ nx = {
 
   // http://dev.qwrap.com/download/latest/apps/qwrap-debug.js?20131207
   nx.toString = function(inObj) {
+    var arr;
     if (inObj == null) {
       return inObj + '';
     }
