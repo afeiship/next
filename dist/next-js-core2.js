@@ -182,6 +182,25 @@ nx = {
     return true;
   };
 
+  nx.mulReplace = function(inString, inArray) {
+    for (var i = 0; i < inArray.length; i++) {
+      inString = inString.replace(inArray[i][0], arr[i][1]);
+    }
+    return inString;
+  };
+
+  // http://dev.qwrap.com/download/latest/apps/qwrap-debug.js?20131207
+  nx.escapeChars = function(inString) {
+    return nx.mulReplace(inString, [
+      [/\\/g, "\\\\"],
+      [/"/g, "\\\""],
+      //[/'/g, "\\\'"],//标准json里不支持\后跟单引号
+      [/\r/g, "\\r"],
+      [/\n/g, "\\n"],
+      [/\t/g, "\\t"]
+    ]);
+  };
+
   nx.has = function(inTarget, inName) {
     if (inTarget) {
       if (inTarget.has) {
@@ -321,6 +340,43 @@ nx = {
       return JSON.stringify(inValue);
     } catch (_) {}
     return inValue;
+  };
+
+  // http://dev.qwrap.com/download/latest/apps/qwrap-debug.js?20131207
+  nx.toString = function(inObj) {
+    var arr, i;
+    if (inObj == null) {
+      return inObj + '';
+    }
+    if (typeof inObj != 'string' && inObj.toJSON) { //JK: IE8的字符串的toJSON有问题，丢了引号
+      return inObj.toJSON();
+    }
+    var type = nx.type(inObj);
+    switch (type) {
+      case 'string':
+        return '"' + nx.escapeChars(inObj) + '"';
+      case 'number':
+        var ret = inObj.toString();
+        return /N/.test(ret) ? 'null' : ret;
+      case 'boolean':
+        return inObj.toString();
+      case 'date':
+        return 'new Date(' + inObj.getTime() + ')';
+      case 'array':
+        for (arr = [], i = 0; i < inObj.length; i++) {
+          arr[i] = nx.toString(inObj[i]);
+        }
+        return '[' + arr.join(',') + ']';
+      case 'object':
+        if (nx.isPlainObject(inObj)) {
+          arr = [];
+          for (i in inObj) {
+            arr.push('"' + nx.escapeChars(i) + '":' + nx.toString(inObj[i]));
+          }
+          return '{' + arr.join(',') + '}';
+        }
+    }
+    return 'null'; //无法序列化的，返回null;
   };
 
   nx.delete = function(inObject, inArray) {
