@@ -360,6 +360,7 @@ nx = {
         var ret = inObj.toString();
         return /N/.test(ret) ? 'null' : ret;
       case 'boolean':
+      case 'function':
         return inObj.toString();
       case 'date':
         return 'new Date(' + inObj.getTime() + ')';
