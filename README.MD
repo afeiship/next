@@ -15,6 +15,9 @@ npm install --save afeiship/next-js-core2
 require('next-js-core2')(require);
 ```
 
+## todo:
+- [ ] split base to string,array,object module.
+- [ ] add mocha test for every module.
 
 
 ##test
