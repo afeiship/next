@@ -389,13 +389,13 @@ nx = {
     return obj;
   };
 
-  nx.param = function(inObject) {
+  nx.param = function(inObj) {
     var str = [];
     var key, value, encodeValue;
-    for (key in inObject) {
-      value = inObject[key];
+    for (key in inObj) {
+      value = inObj[key];
       if (value != null) {
-        encodeValue = angular.isArray(value) ? value.join() : value;
+        encodeValue = nx.isArray(value) ? value.join() : value;
         str.push(encodeURIComponent(key) + '=' + encodeURIComponent(encodeValue));
       }
     }
