@@ -10,9 +10,22 @@ A javascript OOP toolkit for mobile.
 ```bash
 npm install --save afeiship/next-js-core2
 ```
-+ use:
++ use in node:
 ```javascript
-require('next-js-core2')(require);
+var nx = require('next-js-core2')
+```
++ use in browser:
+```html
+<script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
+<script type="text/javascript">
+nx.declare('myApp',{
+  methods:{
+    init:function(){
+      alert('hello next!');
+    }
+  }
+})
+</script>
 ```
 
 ## todo:
