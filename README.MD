@@ -12,19 +12,21 @@ npm install --save afeiship/next-js-core2
 ```
 + use in node:
 ```javascript
-var nx = require('next-js-core2')
+var nx = require('next-js-core2');
 ```
 + use in browser:
 ```html
 <script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
 <script type="text/javascript">
-nx.declare('myApp',{
-  methods:{
-    init:function(){
-      alert('hello next!');
+(function(nx, global) {
+  nx.declare('myApp',{
+    methods:{
+      init:function(){
+        alert('hello next!');
+      }
     }
-  }
-})
+  });
+}(nx, nx.GLOBAL));
 </script>
 ```
 
