@@ -402,9 +402,10 @@ nx = {
     return str.join("&");
   };
 
-  nx.hashlize = function(inQueryStr) {
+  nx.hashlize = function(inUrl) {
     var result = {};
-    var query = inQueryStr || global.location.search.substring(1);
+    var queryString = inUrl.substring(inUrl.indexOf('?') + 1);
+    var query = queryString || global.location.search.substring(1);
     var params = query.split('&');
     var arr, pair, key, value;
     nx.each(params, function(_, param) {
