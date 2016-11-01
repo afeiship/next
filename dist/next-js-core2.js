@@ -404,8 +404,7 @@ nx = {
 
   nx.hashlize = function(inUrl) {
     var result = {};
-    var queryString = inUrl.substring(inUrl.indexOf('?') + 1);
-    var query = queryString || global.location.search.substring(1);
+    var query = inUrl ==null ? global.location.search.substring(1):inUrl.substring(inUrl.indexOf('?') + 1);
     var params = query.split('&');
     var arr, pair, key, value;
     nx.each(params, function(_, param) {
