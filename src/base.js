@@ -411,7 +411,7 @@ nx = {
       pair = param.split('=');
       key = pair[0];
       value = pair[1];
-      if(result[key]){
+      if(value){
         switch (typeof result[key]) {
           case 'undefined':
             result[key] = decodeURIComponent(value);
