@@ -57,7 +57,7 @@ nx = {
   };
 
   nx.type = function(inObj) {
-    if (inObj && inObj.type) {
+    if (inObj && nx.isFunction(inObj.type)) {
       return inObj.type();
     }
     return inObj == null ? String(inObj) :
