@@ -125,14 +125,13 @@ nx = {
   };
 
   nx.mix = function(inTarget) {
-    var deep, args = slice.call(arguments, 1);
-    if (typeof inTarget == 'boolean') {
-      deep = inTarget;
-      inTarget = args.shift();
+    var i, length;
+    var args = arguments;
+    for (i = 1, length = args.length; i < length; i++) {
+      nx.each(args[i], function (key, val) {
+        inTarget[key] = val;
+      });
     }
-    args.forEach(function(arg) {
-      nx.clone(inTarget, arg, deep);
-    });
     return inTarget;
   };
 
