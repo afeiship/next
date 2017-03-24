@@ -33,7 +33,7 @@
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extend || nx.RootClass;
-    this.module=nx.camelCase(inMeta.module);
+    this.module = nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -101,6 +101,9 @@
       this.defineMethods(classMeta);
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
+    },
+    copyBaseProto: function () {
+      this.__Class__.prototype.$base = this.$base;
     },
     copyAtProps: function (inClassMeta) {
       var prototype = this.$base;
@@ -185,6 +188,7 @@
     var lifeCycle = new LifeCycle(type, meta);
     lifeCycle.initMetaProcessor();
     lifeCycle.createClassProcessor();
+    lifeCycle.copyBaseProto();
     lifeCycle.mixinItemsProcessor();
     lifeCycle.inheritProcessor();
     lifeCycle.methodsConstructorProcessor();

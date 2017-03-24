@@ -503,7 +503,7 @@ if (typeof module !== 'undefined' && module.exports) {
     constructor: RootClass,
     base: function () {
       //TODO:NOT SUPPORT ES5 `USE STRICT` MODE
-      var method = this.base.caller.__base__;
+      var method = this.$base || this.base.caller.__base__;
       if (method) {
         return method.apply(this, arguments);
       }
@@ -701,7 +701,7 @@ if (typeof module !== 'undefined' && module.exports) {
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extend || nx.RootClass;
-    this.module=nx.camelCase(inMeta.module);
+    this.module = nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -769,6 +769,9 @@ if (typeof module !== 'undefined' && module.exports) {
       this.defineMethods(classMeta);
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
+    },
+    copyBaseProto: function () {
+      this.__Class__.prototype.$base = this.$base;
     },
     copyAtProps: function (inClassMeta) {
       var prototype = this.$base;
@@ -853,6 +856,7 @@ if (typeof module !== 'undefined' && module.exports) {
     var lifeCycle = new LifeCycle(type, meta);
     lifeCycle.initMetaProcessor();
     lifeCycle.createClassProcessor();
+    lifeCycle.copyBaseProto();
     lifeCycle.mixinItemsProcessor();
     lifeCycle.inheritProcessor();
     lifeCycle.methodsConstructorProcessor();
