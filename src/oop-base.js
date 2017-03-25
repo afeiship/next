@@ -22,9 +22,9 @@
   var prototype = classMeta.__methods__ = RootClass.prototype = {
     constructor: RootClass,
     base: function () {
-      var callerName;
+      var callerName,method;
       try {
-        var method = this.base.caller.__base__;
+        method = this.base.caller.__base__;
         if (method) {
           return method.apply(this, arguments);
         }
