@@ -1,7 +1,7 @@
-##next-js-core2
+## next-js-core2
 A javascript OOP toolkit for mobile.
 
-##install
+## install
 + test:npm install mocha --save-dev
 + build:npm install gulp del gulp-concat gulp-rename gulp-uglify gulp-umd gulp-filter --save-dev
 
@@ -33,12 +33,19 @@ var nx = require('next-js-core2');
 ## todo:
 - [ ] split base to string,array,object module.
 - [ ] add mocha test for every module.
+- [x] fix this.base issue
 
 
-##test
+
+## test
 + test base:mocha test/test_base.js
 + test oop:mocha test/test_oop.js
 + http://www.ruanyifeng.com/blog/2015/12/a-mocha-tutorial-of-examples.html
+
+
+## resources:
++ ﻿http://stackoverflow.com/questions/29572466/how-do-you-find-out-the-caller-function-in-javascript-when-use-strict-is-enabled
++ ﻿http://stackoverflow.com/questions/9777905/how-to-get-caller-from-strict-mode
 
 ##log:
 + [2015-12-01]:finish core refactor.
