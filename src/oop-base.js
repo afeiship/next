@@ -21,9 +21,14 @@
     constructor: RootClass,
     base: function () {
       //TODO:NOT SUPPORT ES5 `USE STRICT` MODE
-      var method = this.$base || this.base.caller.__base__;
-      if (method) {
-        return method.apply(this, arguments);
+      var caller = this.base.caller;
+      if(caller !== null){
+        var method = this.base.caller.__base__;
+        if (method) {
+          return method.apply(this, arguments);
+        }
+      }else{
+        nx.error('Not support caller,please use `this.$base.YOUR_METHOD() to extend~`')
       }
     },
     setMeta: function (inName, inValue) {
