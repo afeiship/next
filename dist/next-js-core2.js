@@ -482,6 +482,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
+  var callStackRE = /__Class__\.(.*) \(/;
+
   function RootClass() {
   }
 
@@ -502,15 +504,15 @@ if (typeof module !== 'undefined' && module.exports) {
   var prototype = classMeta.__methods__ = RootClass.prototype = {
     constructor: RootClass,
     base: function () {
-      //TODO:NOT SUPPORT ES5 `USE STRICT` MODE
-      var caller = this.base.caller;
-      if(caller !== null){
+      var callerName;
+      try {
         var method = this.base.caller.__base__;
         if (method) {
           return method.apply(this, arguments);
         }
-      }else{
-        nx.error('Not support caller,please use `this.$base.YOUR_METHOD() to extend~`')
+      } catch (e) {
+        callerName = e.stack.split('\n')[2].match(callStackRE)[1];
+        return this.$base[callerName](arguments);
       }
     },
     setMeta: function (inName, inValue) {
