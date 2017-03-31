@@ -11,8 +11,8 @@
   });
 
   //import
-  fs.readdirSync('./gulp').map(function(file) {
-    require('./gulp/' + file);
+  fs.readdirSync('./build').map(function(file) {
+    require('./build/' + file);
   });
 
 
