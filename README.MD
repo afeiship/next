@@ -34,8 +34,12 @@ var nx = require('next-js-core2');
 - [ ] split base to string,array,object module.
 - [ ] add mocha test for every module.
 - [x] fix this.base issue
+- [ ] fix touch device(wechat) this.base() thrrow errors bug.
+- [ ] split base to a standalone project?(next-js-lang)
 
-
+## size:
++ [ default size ]: all files 23.62 kB
++ [ minimize size ]: all files 11 kB
 
 ## test
 + test base:mocha test/test_base.js

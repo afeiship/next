@@ -2,20 +2,18 @@
 
   'use strict';
 
-  var path = require('path');
   var gulp = require('gulp');
+  var config = require('./config');
   var argv = require('yargs').argv;
-  var fs = require('fs');
   var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'gulp.*', 'del']
   });
 
-  //import
-  fs.readdirSync('./gulp').map(function(file) {
-    require('./gulp/' + file);
+  gulp.task('build', ['clean'], function() {
+    // console.log('Your task goes here!');
+    gulp.start(['scripts']);
   });
 
 
-  gulp.task('default',['build']);
 
 }());

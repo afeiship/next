@@ -12,7 +12,8 @@ nx = {
   var undefined;
   var class2type = {};
   var toString = class2type.toString;
-  var rPath = /(?:{)([\w.]+?)(?:})/gm;
+  var fomratRE = /(?:{)([\w.]+?)(?:})/gm;
+  var camelCaseRE=/[-_]+(.)?/g;
   var javascriptType = 'Boolean Number String Function Array Date RegExp Object Error';
   var emptyArray = [],
     filter = emptyArray.filter,
@@ -65,7 +66,7 @@ nx = {
   };
 
   nx.camelCase = function(inStr) {
-    return (inStr || '').replace(/[-_]+(.)?/g, function(match, chr) {
+    return (inStr || '').replace(camelCaseRE, function(match, chr) {
       return chr ? chr.toUpperCase() : '';
     });
   };
@@ -131,6 +132,18 @@ nx = {
       nx.each(args[i], function (key, val) {
         inTarget[key] = val;
       });
+    }
+    return inTarget;
+  };
+
+  nx.union = function (inTarget){
+    var i,length;
+    var j,count,item;
+    var args = arguments;
+    for (i = 1, length = args.length; item = args[i],i < length; i++) {
+      for(j=0, count = item.length; j < count; j++){
+        inTarget.push(item[j]);
+      }
     }
     return inTarget;
   };
@@ -312,7 +325,7 @@ nx = {
     } : function(str, match) {
       return nx.path(inArgs, match);
     };
-    result = inString.replace(rPath, replaceFn);
+    result = inString.replace(fomratRE, replaceFn);
     return result;
   };
 
