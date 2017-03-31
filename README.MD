@@ -36,6 +36,7 @@ var nx = require('next-js-core2');
 - [x] fix this.base issue
 - [ ] fix touch device(wechat) this.base() thrrow errors bug.
 - [ ] split base to a standalone project?(next-js-lang)
+- [ ] test case
 
 ## size:
 + [ default size ]: all files 23.62 kB
