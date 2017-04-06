@@ -34,7 +34,7 @@ var nx = require('next-js-core2');
 - [ ] split base to string,array,object module.
 - [ ] add mocha test for every module.
 - [x] fix this.base issue
-- [ ] fix touch device(wechat) this.base() thrrow errors bug.
+- [ ] fix touch device(wechat) this.base() thrrow errors bug. [Temp way: this.$base.init.call(this); ]
 - [ ] split base to a standalone project?(next-js-lang)
 - [ ] test case
 
