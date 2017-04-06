@@ -13,6 +13,7 @@ nx = {
   var class2type = {};
   var toString = class2type.toString;
   var fomratRE = /(?:{)([\w.]+?)(?:})/gm;
+  var $wRE = /\s+/;
   var camelCaseRE=/[-_]+(.)?/g;
   var javascriptType = 'Boolean Number String Function Array Date RegExp Object Error';
   var emptyArray = [],
@@ -26,6 +27,10 @@ nx = {
   });
 
   nx.noop = function() {};
+
+  nx.$w = function(inString,inSparator){
+    return String(inString).split(inSparator || $wRE);
+  };
 
   nx.error = function(inMsg) {
     throw new Error(inMsg);
