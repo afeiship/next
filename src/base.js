@@ -270,6 +270,7 @@ nx = {
     }
   };
 
+  //todo:about NaN? (nx.type?)
   nx.is = function(inTarget, inType) {
     if (inTarget && inTarget.is) {
       return inTarget.is(inType);
