@@ -131,14 +131,15 @@ nx = {
   };
 
   nx.mix = function(inTarget) {
+    var target = inTarget || {};
     var i, length;
     var args = arguments;
     for (i = 1, length = args.length; i < length; i++) {
       nx.each(args[i], function (key, val) {
-        inTarget[key] = val;
+        target[key] = val;
       });
     }
-    return inTarget;
+    return target;
   };
 
   nx.union = function (inTarget){
@@ -270,6 +271,7 @@ nx = {
     }
   };
 
+  //todo:about NaN? (nx.type?)
   nx.is = function(inTarget, inType) {
     if (inTarget && inTarget.is) {
       return inTarget.is(inType);
