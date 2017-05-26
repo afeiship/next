@@ -154,6 +154,18 @@ nx = {
     return inTarget;
   };
 
+  nx.isUndefined = function(inObj){
+    return inObj === undefined;
+  };
+
+  nx.isNull = function(inObj){
+    return inObj === null;
+  };
+
+  nx.isNil = function (inObj){
+    return inObj == null;
+  };
+
   nx.isNumber = function(inObj) {
     return !isNaN(inObj) && typeof(inObj) == 'number';
   };
