@@ -32,7 +32,7 @@
   function LifeCycle(inType, inMeta) {
     this.type = inType;
     this.meta = inMeta;
-    this.base = inMeta.extend || nx.RootClass;
+    this.base = inMeta.extends || nx.RootClass;
     this.module = nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
