@@ -80,7 +80,7 @@
 
 
         var Programmer = nx.declare({
-          extend: Person,
+          extends: Person,
           methods: {
             init: function (name, age, lang) {
               this.base(name, age);
