@@ -348,10 +348,10 @@ nx = {
     return result;
   };
 
-  nx.bindAll = function(inHandlers){
+  nx.bindAll = function(inHandlers,inContext){
     nx.each(inHandlers, function (_, handlerName) {
       this[handlerName] = this[handlerName].bind(this);
-    }, this);
+    }, inContext);
   };
 
   nx.toArray = function(inObj) {
