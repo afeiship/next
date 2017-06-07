@@ -766,7 +766,7 @@ if (typeof module !== 'undefined' && module.exports) {
         __classId__: classId++,
         __init__: methods.init || this.base.__init__,
         __static_init__: statics.init || this.base.__static_init__,
-        __pure_static__: !methods && !!statics
+        __pure_static__: !this.meta.methods && !!this.meta.statics
       });
     },
     createClassProcessor: function () {
