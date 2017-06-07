@@ -140,7 +140,7 @@
     defineProperties: function (inClassMeta) {
       var metaProperties = this.meta.properties || {};
       var extendProperties = inClassMeta.__properties__;
-      var target = this.__pure_static__ ? this.__Class__ : this.__Class__.prototype;
+      var target = inClassMeta.__pure_static__ ? this.__Class__ : this.__Class__.prototype;
       nx.each(metaProperties, function (name, prop) {
         nx.defineProperty(target, name, prop);
       });
