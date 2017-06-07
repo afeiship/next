@@ -52,7 +52,8 @@
         __module__: this.module,
         __classId__: classId++,
         __init__: methods.init || this.base.__init__,
-        __static_init__: statics.init || this.base.__static_init__
+        __static_init__: statics.init || this.base.__static_init__,
+        __pure_static__: !methods && !!statics
       });
     },
     createClassProcessor: function () {
@@ -139,7 +140,7 @@
     defineProperties: function (inClassMeta) {
       var metaProperties = this.meta.properties || {};
       var extendProperties = inClassMeta.__properties__;
-      var target = this.__Class__.prototype;
+      var target = this.__pure_static__ ? this.__Class__ : this.__Class__.prototype;
       nx.each(metaProperties, function (name, prop) {
         nx.defineProperty(target, name, prop);
       });
