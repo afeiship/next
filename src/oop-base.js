@@ -23,7 +23,6 @@
     constructor: RootClass,
     base: function () {
       var callerName,method;
-      var args;
       try {
         method = this.base.caller.__base__;
         if (method) {
@@ -31,8 +30,8 @@
         }
       } catch (e) {
         callerName = e.stack.split('\n')[2].match(callStackRE)[1];
-        args = nx.toArray(arguments);
-        return this.$base[callerName].apply(this,args);
+        method = this.$base[callerName];
+        return method.call.apply(method,arguments);
       }
     },
     setMeta: function (inName, inValue) {
