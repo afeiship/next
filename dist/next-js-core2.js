@@ -549,6 +549,7 @@ if (typeof module !== 'undefined' && module.exports) {
     constructor: RootClass,
     base: function () {
       var callerName,method;
+      var args;
       try {
         method = this.base.caller.__base__;
         if (method) {
@@ -557,7 +558,8 @@ if (typeof module !== 'undefined' && module.exports) {
       } catch (e) {
         callerName = e.stack.split('\n')[2].match(callStackRE)[1];
         method = this.$base[callerName];
-        return method.call.apply(method,arguments);
+        args = nx.toArray(arguments);
+        return method.apply(this,args);
       }
     },
     setMeta: function (inName, inValue) {
