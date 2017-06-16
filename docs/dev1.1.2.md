@@ -5,4 +5,6 @@
 + With test case.
 
 ## log:
-
+### 2017-06-13
++ [ ] reaneme `nx.bindAll` to `nx.binds`.
++ [ ] add `nx.delegates` method.

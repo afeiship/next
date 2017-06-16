@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.1.0',
+  VERSION: '1.2.0',
   DEBUG: false,
   GLOBAL: (function() {
     return this;
@@ -348,10 +348,16 @@ nx = {
     return result;
   };
 
-  nx.bindAll = function(inHandlers,inContext){
-    nx.each(inHandlers, function (_, handlerName) {
-      this[handlerName] = this[handlerName].bind(this);
+  nx.binds = function(inContext,inArray){
+    nx.each(inArray, function (_, name) {
+      this[name] = this[name].bind(this);
     }, inContext);
+  };
+
+  nx.delegates = function(inSource,inTarget,inArray){
+    inArray.forEach(function(name){
+      inSource[name] = inTarget[name].bind(inTarget);
+    });
   };
 
   nx.toArray = function(inObj) {
@@ -543,6 +549,7 @@ if (typeof module !== 'undefined' && module.exports) {
     constructor: RootClass,
     base: function () {
       var callerName,method;
+      var args;
       try {
         method = this.base.caller.__base__;
         if (method) {
@@ -550,7 +557,8 @@ if (typeof module !== 'undefined' && module.exports) {
         }
       } catch (e) {
         callerName = e.stack.split('\n')[2].match(callStackRE)[1];
-        return this.$base[callerName](arguments);
+        args = nx.toArray(arguments);
+        return this.$base[callerName].apply(this,args);
       }
     },
     setMeta: function (inName, inValue) {
