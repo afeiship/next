@@ -1,7 +1,7 @@
 (function (nx, global) {
 
   var callStackRE1 = /__Class__\.(.*) \(/;
-  var callStateRE2 = /at (.*) \(/;
+  var callStackRE2 = /at (.*) \(/;
 
   function RootClass() {
   }
