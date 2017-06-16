@@ -526,7 +526,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
 (function (nx, global) {
 
-  var callStackRE = /__Class__\.(.*) \(/;
+  var callStackRE1 = /__Class__\.(.*) \(/;
+  var callStateRE2 = /at (.*) \(/;
 
   function RootClass() {
   }
@@ -549,14 +550,15 @@ if (typeof module !== 'undefined' && module.exports) {
     constructor: RootClass,
     base: function () {
       var callerName,method;
-      var args;
+      var args,stackes;
       try {
         method = this.base.caller.__base__;
         if (method) {
           return method.apply(this, arguments);
         }
       } catch (e) {
-        callerName = e.stack.split('\n')[2].match(callStackRE)[1];
+        stackes = e.stack.split('\n')[2];
+        callerName = (stackes.match(callStackRE1) || stackes.match(callStackRE2))[1];
         method = this.$base[callerName];
         args = nx.toArray(arguments);
         return method.apply(this,args);
