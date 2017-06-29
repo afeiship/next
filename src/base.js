@@ -360,6 +360,15 @@ nx = {
     });
   };
 
+  //todo: nx.Promise
+  nx.delay = function(inInterval){
+    return new Promise(function(resolve){
+      var timeout = setTimeout(function(){
+        resolve();
+      },inInterval);
+    });
+  };
+
   nx.toArray = function(inObj) {
     if (!inObj) return [];
     if (nx.isArrayLike(inObj)) return slice.call(inObj);
