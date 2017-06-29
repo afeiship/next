@@ -364,7 +364,7 @@ nx = {
   nx.delay = function(inInterval){
     return new Promise(function(resolve){
       var timeout = setTimeout(function(){
-        resolve();
+        resolve(timeout);
       },inInterval);
     });
   };
