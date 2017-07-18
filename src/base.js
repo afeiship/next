@@ -348,6 +348,13 @@ nx = {
     return result;
   };
 
+  // Some old versions of Android don't have Function.prototype.bind
+  nx.bind = function(inMethod, inContext){
+    return function () {
+      return inMethod.apply(inContext, arguments);
+    };
+  };
+
   nx.binds = function(inContext,inArray){
     nx.each(inArray, function (_, name) {
       this[name] = this[name].bind(this);

@@ -38,6 +38,7 @@ var nx = require('next-js-core2');
 + [ ] split base to a standalone project?(next-js-lang)
 + [ ] test case
 + [ ] optimzie '__pure_static__'
++ [ ] nx.binds/nx.delegates [nx.bind] on old android condition.
 
 ## size:
 + [ default size ]: all files 23.62 kB
