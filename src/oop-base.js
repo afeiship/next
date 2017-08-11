@@ -23,8 +23,8 @@
   var prototype = classMeta.__methods__ = RootClass.prototype = {
     constructor: RootClass,
     base: function () {
-      var callerName,method;
-      var args,stackes;
+      var callerName, method;
+      var args, stackes;
       try {
         method = this.base.caller.__base__;
         if (method) {
@@ -35,7 +35,7 @@
         callerName = (stackes.match(callStackRE1) || stackes.match(callStackRE2))[1];
         method = this.$base[callerName];
         args = nx.toArray(arguments);
-        return method.apply(this,args);
+        return method.apply(this, args);
       }
     },
     setMeta: function (inName, inValue) {
@@ -51,6 +51,7 @@
       } else {
         var base = this.__base__;
         if (base) {
+          //todo: remove is
           return nx.is(base.prototype, inType);
         } else {
           return false;
@@ -77,18 +78,6 @@
     set: function (inName, inValue) {
       this[inName] = inValue;
     },
-    gets: function () {
-      var result = {};
-      nx.each(this.__properties__, function (inName) {
-        result[inName] = this.get(inName);
-      }, this);
-      return result;
-    },
-    sets: function (inTarget) {
-      nx.each(inTarget, function (inName, inValue) {
-        this.set(inName, inValue);
-      }, this);
-    },
     member: function (inName) {
       return this['@' + inName];
     },
@@ -100,12 +89,8 @@
       var member = this.member(inName);
       return (member && member.__type__) || 'undefined';
     },
-    init: function () {
-      //will be implement
-    },
-    destroy: function () {
-      //will be implement
-    },
+    init: nx.noop,
+    destroy: nx.noop,
     toString: function () {
       return '[Class@' + this.__type__ + ']';
     }
