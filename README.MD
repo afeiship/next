@@ -53,6 +53,7 @@ var nx = require('next-js-core2');
 ## resources:
 + ﻿http://stackoverflow.com/questions/29572466/how-do-you-find-out-the-caller-function-in-javascript-when-use-strict-is-enabled
 + ﻿http://stackoverflow.com/questions/9777905/how-to-get-caller-from-strict-mode
++ https://github.com/epeli/underscore.string
 
 ##log:
 + [2015-12-01]:finish core refactor.

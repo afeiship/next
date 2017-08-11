@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.2.0',
+  VERSION: '1.3.0',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -55,7 +55,7 @@ nx = {
     }
   };
 
-  nx.camelCase = function (inStr) {
+  nx.camelize = function (inStr) {
     return (inStr || '').replace(camelCaseRE, function (match, chr) {
       return chr ? chr.toUpperCase() : '';
     });
@@ -88,7 +88,6 @@ nx = {
     }
     return target;
   };
-
 
   nx.isUndefined = function (inObj) {
     return inObj === undefined;
@@ -148,12 +147,8 @@ nx = {
     return true;
   };
 
-  nx.replace = function (inString, inArray) {
-    var i, length = inArray.length;
-    for (i = 0; i < length; i++) {
-      inString = inString.replace(inArray[i][0], inArray[i][1]);
-    }
-    return inString;
+  nx.isServer = function () {
+    return typeof module !== 'undefined' && module.exports
   };
 
   nx.has = function (inTarget, inName) {
@@ -205,8 +200,6 @@ nx = {
     }
     return result;
   };
-
-
 
 }(nx, nx.GLOBAL));
 
