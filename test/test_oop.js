@@ -20,14 +20,14 @@
           },
           methods: {
             init: function () {
-              console.log('method init!');
+              // console.log('method init!');
             }
           }
         });
 
-        var cls1=new Class1();
-        var prop_member=cls1.member('prop1');
-        var method_member=cls1.member('init');
+        var cls1 = new Class1();
+        var prop_member = cls1['@prop1'];
+        var method_member = cls1['@init'];
 
         assert.equal(prop_member.__type__, 'property');
         assert.equal(prop_member.__meta__, '1234');
@@ -90,10 +90,10 @@
         });
 
         var fei = new Programmer('fei', 108, 'js');
-        var type = fei.type();
+        var type = fei.__type__;
         fei.sayHi();
 
-        assert.equal('nx.Anonymous', type);
+        assert.equal(true, !!~type.indexOf('nx.Anonymous'));
         assert.equal(fei._name, 'fei');
         assert.equal(2, num1);
 
@@ -159,12 +159,13 @@
               set: function (inValue) {
                 this._prop1 = inValue * 2;
               }
-            }
+            },
+            prop2: 'love'
           }
         });
 
         var Class2 = nx.declare({
-          extend: Class1,
+          extends: Class1,
           properties: {
             prop1: {
               set: function (inValue) {
@@ -179,6 +180,7 @@
         cls2.prop1 = 2;
         assert.equal(4, cls1.prop1);
         assert.equal(204, cls2.prop1);
+        assert.equal('love', cls2.prop2);
       });
 
 

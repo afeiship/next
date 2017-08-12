@@ -412,8 +412,9 @@ if (typeof module !== 'undefined' && module.exports) {
       var metaProperties = this.meta.properties || {};
       var extendProperties = inClassMeta.__properties__;
       var target = inClassMeta.__static_pure__ ? this.__Class__ : this.__Class__.prototype;
-      nx.defineMembers('property', target, metaProperties);
-      inClassMeta.__properties__ = nx.mix(extendProperties, metaProperties);
+      var properties = nx.mix(extendProperties, metaProperties);
+      nx.defineMembers('property', target, properties);
+      inClassMeta.__properties__ = properties;
     },
     defineStatics: function (inClassMeta) {
       var staticsMembers = nx.mix(inClassMeta.__statics__, this.meta.statics);

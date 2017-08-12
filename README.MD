@@ -55,6 +55,7 @@ var nx = require('next-js-core2');
 + ﻿http://stackoverflow.com/questions/9777905/how-to-get-caller-from-strict-mode
 + https://github.com/epeli/underscore.string
 
-##log:
+## log:
 + [2015-12-01]:finish core refactor.
 + [2016-04-03]:finish node & browser AMD implement.
++ [2017-08-12]:refactor 1.3.0

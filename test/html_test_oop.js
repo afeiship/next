@@ -9,7 +9,6 @@ var Mixin1 = nx.declare({
   }
 });
 
-
 var Mixin2 = nx.declare({
   methods: {
     init: function () {
@@ -25,14 +24,11 @@ var Mixin2 = nx.declare({
 nx.declare('Class1', {
   mixins: [
     Mixin1,
-    Mixin2,
+    Mixin2
   ],
   statics: {
     static1: 1233,
-    status: 'loading',
-    init: function () {
-      console.log('static init!');
-    }
+    status: 'loading'
   },
   properties: {
     prop1: 1234,
@@ -51,3 +47,35 @@ nx.declare('Class1', {
 
 
 var cls1 = new Class1();
+
+
+var Class11 = nx.declare({
+  properties: {
+    prop1: {
+      get: function () {
+        return this._prop1;
+      },
+      set: function (inValue) {
+        this._prop1 = inValue * 2;
+      }
+    },
+    prop2: 'love'
+  }
+});
+
+var Class22 = nx.declare({
+  extends: Class11,
+  properties: {
+    prop1: {
+      set: function (inValue) {
+        this.base(inValue + 100)
+      }
+    }
+  }
+});
+
+var cl22 = new Class22();
+cl22.prop1 = 2;
+
+console.log(cl22.prop1);
+console.log(cl22.prop2);
