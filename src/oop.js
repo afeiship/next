@@ -110,7 +110,7 @@
 
       nx.each(extendMethods, function (name, method) {
         nx.defineMethod(target, name, method);
-        if (methods.indexOf(name) > -1) {
+        if (~methods.indexOf(name)) {
           nx.defineMethod(target, name, metaMethods[name]);
           target[name].__base__ = method;
         }
