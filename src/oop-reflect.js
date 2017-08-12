@@ -2,24 +2,18 @@
 
   nx.defineProperty = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var valType;
-    var meta = nx.isObject(inMeta) ? inMeta : {
-      value: inMeta
-    };
     var getter, setter, descriptor;
     var value, filed;
+    var meta = (typeof inMeta === 'object') ? inMeta : {
+        value: inMeta
+      };
 
     if ('value' in meta) {
       value = meta.value;
       filed = '_' + inName;
-      valType = nx.type(value);
 
       getter = function () {
-        if (filed in this) {
-          return this[filed];
-        } else {
-          return nx.isFunction(valType) ? value.call(this) : value;
-        }
+        return filed in this ? this[filed] : (typeof value === 'function') ? value.call(this) : value;
       };
 
       setter = function (inValue) {
@@ -63,14 +57,21 @@
   };
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
-    var descriptor = {
+    var key = '@' + inName;
+    var descriptor = inTarget[key] = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
-    //nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
+  };
+
+  nx.defineMembers = function (inMember, inTarget, inObject) {
+    var memberAction = 'define' + inMember.charAt(0).toUpperCase() + inMember.slice(1);
+    nx.each(inObject, function (key, val) {
+      nx[memberAction](inTarget, key, val);
+    });
   };
 
 }(nx, nx.GLOBAL));

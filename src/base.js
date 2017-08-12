@@ -9,15 +9,6 @@ nx = {
 
 (function (nx, global) {
 
-  var undefined;
-  var camelCaseRE = /[-_]+(.)?/g;
-  var emptyArray = [], slice = emptyArray.slice;
-  var dasherizeRE1 = /::/g,
-    dasherizeRE2 = /([A-Z]+)([A-Z][a-z])/g,
-    dasherizeRE3 = /([a-z\d])([A-Z])/g,
-    dasherizeRE4 = /_/g,
-    dasherizeREPLACER = '$1_$2';
-
   nx.noop = function () {
   };
 
@@ -36,7 +27,7 @@ nx = {
         return inTarget.each(inCallback, inContext);
       } else {
         length = inTarget.length;
-        if (nx.isArrayLike(inTarget)) {
+        if (typeof length === 'number') {
           for (key = 0; key < length; key++) {
             if (iterator(key, inTarget[key])) {
               break;
@@ -55,28 +46,6 @@ nx = {
     }
   };
 
-  nx.camelize = function (inStr) {
-    return (inStr || '').replace(camelCaseRE, function (match, chr) {
-      return chr ? chr.toUpperCase() : '';
-    });
-  };
-
-  nx.dasherize = function (inStr) {
-    return inStr.replace(dasherizeRE1, '/')
-      .replace(dasherizeRE2, dasherizeREPLACER)
-      .replace(dasherizeRE3, dasherizeREPLACER)
-      .replace(dasherizeRE4, '-')
-      .toLowerCase()
-  };
-
-  nx.trim = function (inStr) {
-    return inStr == null ? '' : inStr.trim();
-  };
-
-  nx.capitalize = function (inStr) {
-    return inStr.charAt(0).toUpperCase() + inStr.slice(1);
-  };
-
   nx.mix = function (inTarget) {
     var target = inTarget || {};
     var i, length;
@@ -87,79 +56,6 @@ nx = {
       });
     }
     return target;
-  };
-
-  nx.isUndefined = function (inObj) {
-    return inObj === undefined;
-  };
-
-  nx.isNull = function (inObj) {
-    return inObj === null;
-  };
-
-  nx.isNil = function (inObj) {
-    return inObj == null;
-  };
-
-  nx.isNumber = function (inObj) {
-    return !isNaN(inObj) && typeof(inObj) == 'number';
-  };
-
-  nx.isBoolean = function (inObj) {
-    return typeof(inObj) == 'boolean';
-  };
-
-  nx.isString = function (inObj) {
-    return typeof(inObj) == 'string';
-  };
-
-  nx.isArray = Array.isArray || function (inObj) {
-      return inObj instanceof Array;
-    };
-
-  nx.isArrayLike = function (inObj) {
-    return typeof inObj.length == 'number';
-  };
-
-  nx.isFunction = function (inObj) {
-    return typeof(inObj) == 'function';
-  };
-
-  nx.isObject = function (inObj) {
-    return nx.type(inObj) == 'object';
-  };
-
-  nx.isDocument = function (inObj) {
-    return inObj != null && inObj.nodeType == 9;
-  };
-
-  nx.isWindow = function (inObj) {
-    return inObj != null && inObj == inObj.global;
-  };
-
-  nx.isPlainObject = function (inObj) {
-    return nx.isObject(inObj) && !nx.isWindow(inObj) && Object.getPrototypeOf(inObj) == Object.prototype;
-  };
-
-  nx.isEmptyObject = function (inObj) {
-    var key;
-    for (key in inObj) return false;
-    return true;
-  };
-
-  nx.isServer = function () {
-    return typeof module !== 'undefined' && module.exports
-  };
-
-  nx.has = function (inTarget, inName) {
-    if (inTarget) {
-      if (inTarget.has) {
-        return inTarget.has(inName);
-      } else {
-        return inName in inTarget;
-      }
-    }
-    return false;
   };
 
   nx.get = function (inTarget, inName) {
@@ -183,9 +79,9 @@ nx = {
   };
 
   nx.path = function (inTarget, inPath, inValue) {
-    var paths = inPath.split('.'),
-      result = inTarget || nx.global,
-      last;
+    var paths = inPath.split('.');
+    var result = inTarget || nx.global;
+    var last;
 
     if (undefined === inValue) {
       nx.each(paths, function (_, path) {

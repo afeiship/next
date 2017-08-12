@@ -9,15 +9,6 @@ nx = {
 
 (function (nx, global) {
 
-  var undefined;
-  var camelCaseRE = /[-_]+(.)?/g;
-  var emptyArray = [], slice = emptyArray.slice;
-  var dasherizeRE1 = /::/g,
-    dasherizeRE2 = /([A-Z]+)([A-Z][a-z])/g,
-    dasherizeRE3 = /([a-z\d])([A-Z])/g,
-    dasherizeRE4 = /_/g,
-    dasherizeREPLACER = '$1_$2';
-
   nx.noop = function () {
   };
 
@@ -36,7 +27,7 @@ nx = {
         return inTarget.each(inCallback, inContext);
       } else {
         length = inTarget.length;
-        if (nx.isArrayLike(inTarget)) {
+        if (typeof length === 'number') {
           for (key = 0; key < length; key++) {
             if (iterator(key, inTarget[key])) {
               break;
@@ -55,28 +46,6 @@ nx = {
     }
   };
 
-  nx.camelize = function (inStr) {
-    return (inStr || '').replace(camelCaseRE, function (match, chr) {
-      return chr ? chr.toUpperCase() : '';
-    });
-  };
-
-  nx.dasherize = function (inStr) {
-    return inStr.replace(dasherizeRE1, '/')
-      .replace(dasherizeRE2, dasherizeREPLACER)
-      .replace(dasherizeRE3, dasherizeREPLACER)
-      .replace(dasherizeRE4, '-')
-      .toLowerCase()
-  };
-
-  nx.trim = function (inStr) {
-    return inStr == null ? '' : inStr.trim();
-  };
-
-  nx.capitalize = function (inStr) {
-    return inStr.charAt(0).toUpperCase() + inStr.slice(1);
-  };
-
   nx.mix = function (inTarget) {
     var target = inTarget || {};
     var i, length;
@@ -87,79 +56,6 @@ nx = {
       });
     }
     return target;
-  };
-
-  nx.isUndefined = function (inObj) {
-    return inObj === undefined;
-  };
-
-  nx.isNull = function (inObj) {
-    return inObj === null;
-  };
-
-  nx.isNil = function (inObj) {
-    return inObj == null;
-  };
-
-  nx.isNumber = function (inObj) {
-    return !isNaN(inObj) && typeof(inObj) == 'number';
-  };
-
-  nx.isBoolean = function (inObj) {
-    return typeof(inObj) == 'boolean';
-  };
-
-  nx.isString = function (inObj) {
-    return typeof(inObj) == 'string';
-  };
-
-  nx.isArray = Array.isArray || function (inObj) {
-      return inObj instanceof Array;
-    };
-
-  nx.isArrayLike = function (inObj) {
-    return typeof inObj.length == 'number';
-  };
-
-  nx.isFunction = function (inObj) {
-    return typeof(inObj) == 'function';
-  };
-
-  nx.isObject = function (inObj) {
-    return nx.type(inObj) == 'object';
-  };
-
-  nx.isDocument = function (inObj) {
-    return inObj != null && inObj.nodeType == 9;
-  };
-
-  nx.isWindow = function (inObj) {
-    return inObj != null && inObj == inObj.global;
-  };
-
-  nx.isPlainObject = function (inObj) {
-    return nx.isObject(inObj) && !nx.isWindow(inObj) && Object.getPrototypeOf(inObj) == Object.prototype;
-  };
-
-  nx.isEmptyObject = function (inObj) {
-    var key;
-    for (key in inObj) return false;
-    return true;
-  };
-
-  nx.isServer = function () {
-    return typeof module !== 'undefined' && module.exports
-  };
-
-  nx.has = function (inTarget, inName) {
-    if (inTarget) {
-      if (inTarget.has) {
-        return inTarget.has(inName);
-      } else {
-        return inName in inTarget;
-      }
-    }
-    return false;
   };
 
   nx.get = function (inTarget, inName) {
@@ -183,9 +79,9 @@ nx = {
   };
 
   nx.path = function (inTarget, inPath, inValue) {
-    var paths = inPath.split('.'),
-      result = inTarget || nx.global,
-      last;
+    var paths = inPath.split('.');
+    var result = inTarget || nx.global;
+    var last;
 
     if (undefined === inValue) {
       nx.each(paths, function (_, path) {
@@ -229,7 +125,7 @@ if (typeof module !== 'undefined' && module.exports) {
     off: function (inName, inHandler, inContext) {
       var listeners = this.__listeners__[inName];
       if (inHandler) {
-        nx.each(listeners, function (index,listener) {
+        nx.each(listeners, function (index, listener) {
           if (listener.handler === inHandler && (!inContext || listener.context === inContext )) {
             listeners.splice(index, 1);
           }
@@ -241,7 +137,7 @@ if (typeof module !== 'undefined' && module.exports) {
     fire: function (inName, inArgs) {
       var listeners = this.__listeners__[inName];
       if (listeners) {
-        nx.each(listeners, function (_,listener) {
+        nx.each(listeners, function (_, listener) {
           if (listener && listener.handler) {
             if (listener.handler.call(listener.context || listener.owner, listener.owner, inArgs) === false) {
               return nx.BREAKER;
@@ -266,7 +162,6 @@ if (typeof module !== 'undefined' && module.exports) {
     __classId__: 0,
     __type__: 'nx.RootClass',
     __base__: Object,
-    __module__: 'root',
     __meta__: {},
     __init__: nx.noop,
     __static_init__: nx.noop,
@@ -278,6 +173,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
   var prototype = classMeta.__methods__ = RootClass.prototype = {
     constructor: RootClass,
+    init: nx.noop,
+    destroy: nx.noop,
     base: function () {
       var callerName, method;
       var args, stackes;
@@ -290,71 +187,17 @@ if (typeof module !== 'undefined' && module.exports) {
         stackes = e.stack.split('\n')[2];
         callerName = (stackes.match(callStackRE1) || stackes.match(callStackRE2))[1];
         method = this.$base[callerName];
-        args = nx.toArray(arguments);
+        args = [].slice.call(arguments, 0);
         return method.apply(this, args);
       }
     },
-    setMeta: function (inName, inValue) {
-      this['__' + inName + '__'] = inValue;
-    },
-    getMeta: function (inName) {
-      return this['__' + inName + '__'];
-    },
-    is: function (inType) {
-      var type = this.__type__;
-      if (type === inType) {
-        return true;
-      } else {
-        var base = this.__base__;
-        if (base) {
-          //todo: remove is
-          return nx.is(base.prototype, inType);
-        } else {
-          return false;
-        }
-      }
-    },
-    type: function () {
-      return this.__type__;
-    },
-    has: function (inName) {
-      return inName in this;
-    },
-    get: function (inName) {
-      var type = this.memberType(inName);
-      switch (type) {
-        case 'method':
-        case 'property':
-        case 'undefined':
-          return this[inName];
-        case 'static':
-          return this.constructor[inName];
-      }
-    },
-    set: function (inName, inValue) {
-      this[inName] = inValue;
-    },
-    member: function (inName) {
-      return this['@' + inName];
-    },
-    memberMeta: function (inName) {
-      var member = this.member(inName);
-      return member && member.__meta__;
-    },
-    memberType: function (inName) {
-      var member = this.member(inName);
-      return (member && member.__type__) || 'undefined';
-    },
-    init: nx.noop,
-    destroy: nx.noop,
     toString: function () {
       return '[Class@' + this.__type__ + ']';
     }
   };
 
   nx.mix(RootClass, classMeta);
-  nx.mix(prototype, classMeta);
-  nx.mix(prototype, nx.event);
+  nx.mix(prototype, classMeta, nx.event);
 
   nx.RootClass = RootClass;
 
@@ -364,24 +207,18 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.defineProperty = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var valType;
-    var meta = nx.isObject(inMeta) ? inMeta : {
-      value: inMeta
-    };
     var getter, setter, descriptor;
     var value, filed;
+    var meta = (typeof inMeta === 'object') ? inMeta : {
+        value: inMeta
+      };
 
     if ('value' in meta) {
       value = meta.value;
       filed = '_' + inName;
-      valType = nx.type(value);
 
       getter = function () {
-        if (filed in this) {
-          return this[filed];
-        } else {
-          return nx.isFunction(valType) ? value.call(this) : value;
-        }
+        return filed in this ? this[filed] : (typeof value === 'function') ? value.call(this) : value;
       };
 
       setter = function (inValue) {
@@ -425,14 +262,21 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
-    var descriptor = {
+    var key = '@' + inName;
+    var descriptor = inTarget[key] = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
-    //nx.isFunction(inMeta) && nx.mix(inMeta, descriptor);
     inTarget[inName] = inMeta;
     return descriptor;
+  };
+
+  nx.defineMembers = function (inMember, inTarget, inObject) {
+    var memberAction = 'define' + inMember.charAt(0).toUpperCase() + inMember.slice(1);
+    nx.each(inObject, function (key, val) {
+      nx[memberAction](inTarget, key, val);
+    });
   };
 
 }(nx, nx.GLOBAL));
@@ -440,39 +284,28 @@ if (typeof module !== 'undefined' && module.exports) {
 (function (nx, global) {
 
   var classId = 1,
-    instanceId = 0,
-    instanceMap = {};
+    instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
+  var arrayProto = Array.prototype;
+  var slice = arrayProto.slice;
+  var concat = arrayProto.concat;
 
-  var __ = {
-    distinct: function (inArray) {
-      var result = [],
-        map = {},
-        key;
-
-      inArray.forEach(function (val) {
-        key = val.__type__;
-        if (!map[key]) {
-          map[key] = true;
-          result.push(val);
-        }
-      });
-      return result || inArray;
-    },
-    union: function () {
-      var result = [];
-      nx.each(arguments, function (_, item) {
-        result = result.concat(item || []);
-      });
-      return __.distinct(result);
-    }
-  };
+  /**
+   * Private
+   * @returns {Array|Array.<T>|*}
+   */
+  function union() {
+    var map = {};
+    var result = concat.apply(arrayProto, arguments);
+    return result.filter(function (val) {
+      return !map[val.__type__] && (map[val.__type__] = true);
+    });
+  }
 
   function LifeCycle(inType, inMeta) {
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extends || nx.RootClass;
-    this.module = nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -488,25 +321,24 @@ if (typeof module !== 'undefined' && module.exports) {
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
-        __module__: this.module,
         __classId__: classId++,
-        __init__: methods.init || this.base.__init__,
-        __static_init__: statics.init || this.base.__static_init__,
-        __pure_static__: !this.meta.methods && !!this.meta.statics
+        __init__: methods.init || nx.noop,
+        __static_init__: statics.init || nx.noop,
+        __static_pure__: !this.meta.methods && !!this.meta.statics
       });
     },
     createClassProcessor: function () {
       var self = this;
       this.__Class__ = function () {
+        var args = slice.call(arguments);
         this.__id__ = ++instanceId;
         this.__listeners__ = {};
-        self.__constructor__.apply(this, nx.toArray(arguments));
-        nx.DEBUG && (instanceMap[instanceId] = this);
+        self.__constructor__.apply(this, args);
       };
     },
     mixinItemsProcessor: function () {
       var base = this.base;
-      var mixins = this.meta.mixins;
+      var mixins = this.meta.mixins || [];
       var classMeta = this.__classMeta__;
       var mixinMixins = [],
         mixinMethods = {},
@@ -530,7 +362,7 @@ if (typeof module !== 'undefined' && module.exports) {
         nx.mix(mixinStatics, mixinItemStatics);
       });
 
-      classMeta.__mixins__ = __.union(mixinMixins, base.__mixins__, mixins);
+      classMeta.__mixins__ = union(mixinMixins, base.__mixins__, mixins);
       classMeta.__methods__ = nx.mix(mixinMethods, base.__methods__);
       classMeta.__properties__ = nx.mix(mixinProperties, base.__properties__);
       classMeta.__statics__ = nx.mix(mixinStatics, base.__statics__);
@@ -579,26 +411,23 @@ if (typeof module !== 'undefined' && module.exports) {
     defineProperties: function (inClassMeta) {
       var metaProperties = this.meta.properties || {};
       var extendProperties = inClassMeta.__properties__;
-      var target = inClassMeta.__pure_static__ ? this.__Class__ : this.__Class__.prototype;
-      nx.each(metaProperties, function (name, prop) {
-        nx.defineProperty(target, name, prop);
-      });
+      var target = inClassMeta.__static_pure__ ? this.__Class__ : this.__Class__.prototype;
+      nx.defineMembers('property', target, metaProperties);
       inClassMeta.__properties__ = nx.mix(extendProperties, metaProperties);
     },
     defineStatics: function (inClassMeta) {
       var staticsMembers = nx.mix(inClassMeta.__statics__, this.meta.statics);
-      nx.each(staticsMembers, function (staticKey, staticMeta) {
-        nx.defineStatic(this.__Class__, staticKey, staticMeta);
-      }, this);
+      nx.defineMembers('static', this.__Class__, staticsMembers);
     },
     methodsConstructorProcessor: function () {
       var classMeta = this.__classMeta__;
       var mixins = classMeta.__mixins__;
       this.__constructor__ = function () {
-        nx.each(mixins, function (index, mixItem) {
+        var args = slice.call(arguments);
+        nx.each(mixins, function (_, mixItem) {
           mixItem.__init__.call(this);
         }, this);
-        classMeta.__init__.apply(this, nx.toArray(arguments));
+        classMeta.__init__.apply(this, args);
       };
     },
     staticsConstructorProcessor: function () {
@@ -606,16 +435,13 @@ if (typeof module !== 'undefined' && module.exports) {
       classMeta.__static_init__.call(this.__Class__);
     },
     registerNsProcessor: function () {
-      var type = this.type,
-        Class = this.__Class__;
+      var Class = this.__Class__;
+      var type = this.type;
       var classMeta = this.__classMeta__;
 
-      nx.mix(Class.prototype, classMeta, {
-        constructor: this.__Class__
-      });
-
+      nx.mix(Class.prototype, classMeta, {constructor: Class});
       nx.mix(Class, classMeta);
-      if (type !== NX_ANONYMOUS) {
+      if (type !== (NX_ANONYMOUS + classId)) {
         nx.path(global, type, Class);
       }
     }
@@ -623,7 +449,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
   nx.declare = function (inType, inMeta) {
-    var type = typeof(inType) === 'string' ? inType : NX_ANONYMOUS;
+    var type = typeof(inType) === 'string' ? inType : (NX_ANONYMOUS + classId);
     var meta = inMeta || inType;
     var lifeCycle = new LifeCycle(type, meta);
     lifeCycle.initMetaProcessor();
@@ -636,12 +462,5 @@ if (typeof module !== 'undefined' && module.exports) {
     lifeCycle.registerNsProcessor();
     return lifeCycle.__Class__;
   };
-
-
-  if (nx.DEBUG) {
-    nx.$ = function (id) {
-      return instanceMap[id];
-    };
-  }
 
 }(nx, nx.GLOBAL));

@@ -19,7 +19,7 @@
     off: function (inName, inHandler, inContext) {
       var listeners = this.__listeners__[inName];
       if (inHandler) {
-        nx.each(listeners, function (index,listener) {
+        nx.each(listeners, function (index, listener) {
           if (listener.handler === inHandler && (!inContext || listener.context === inContext )) {
             listeners.splice(index, 1);
           }
@@ -31,7 +31,7 @@
     fire: function (inName, inArgs) {
       var listeners = this.__listeners__[inName];
       if (listeners) {
-        nx.each(listeners, function (_,listener) {
+        nx.each(listeners, function (_, listener) {
           if (listener && listener.handler) {
             if (listener.handler.call(listener.context || listener.owner, listener.owner, inArgs) === false) {
               return nx.BREAKER;

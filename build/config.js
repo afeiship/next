@@ -29,7 +29,7 @@
         'src/base.js',
         'src/event.js',
         'src/oop-base.js',
-        'src/oop-define-meta.js',
+        'src/oop-reflect.js',
         'src/oop.js'
       ],
       dist: 'next-js-core2.js'

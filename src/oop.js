@@ -1,39 +1,28 @@
 (function (nx, global) {
 
   var classId = 1,
-    instanceId = 0,
-    instanceMap = {};
+    instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
+  var arrayProto = Array.prototype;
+  var slice = arrayProto.slice;
+  var concat = arrayProto.concat;
 
-  var __ = {
-    distinct: function (inArray) {
-      var result = [],
-        map = {},
-        key;
-
-      inArray.forEach(function (val) {
-        key = val.__type__;
-        if (!map[key]) {
-          map[key] = true;
-          result.push(val);
-        }
-      });
-      return result || inArray;
-    },
-    union: function () {
-      var result = [];
-      nx.each(arguments, function (_, item) {
-        result = result.concat(item || []);
-      });
-      return __.distinct(result);
-    }
-  };
+  /**
+   * Private
+   * @returns {Array|Array.<T>|*}
+   */
+  function union() {
+    var map = {};
+    var result = concat.apply(arrayProto, arguments);
+    return result.filter(function (val) {
+      return !map[val.__type__] && (map[val.__type__] = true);
+    });
+  }
 
   function LifeCycle(inType, inMeta) {
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extends || nx.RootClass;
-    this.module = nx.camelCase(inMeta.module);
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -49,25 +38,24 @@
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
-        __module__: this.module,
         __classId__: classId++,
-        __init__: methods.init || this.base.__init__,
-        __static_init__: statics.init || this.base.__static_init__,
-        __pure_static__: !this.meta.methods && !!this.meta.statics
+        __init__: methods.init || nx.noop,
+        __static_init__: statics.init || nx.noop,
+        __static_pure__: !this.meta.methods && !!this.meta.statics
       });
     },
     createClassProcessor: function () {
       var self = this;
       this.__Class__ = function () {
+        var args = slice.call(arguments);
         this.__id__ = ++instanceId;
         this.__listeners__ = {};
-        self.__constructor__.apply(this, nx.toArray(arguments));
-        nx.DEBUG && (instanceMap[instanceId] = this);
+        self.__constructor__.apply(this, args);
       };
     },
     mixinItemsProcessor: function () {
       var base = this.base;
-      var mixins = this.meta.mixins;
+      var mixins = this.meta.mixins || [];
       var classMeta = this.__classMeta__;
       var mixinMixins = [],
         mixinMethods = {},
@@ -91,7 +79,7 @@
         nx.mix(mixinStatics, mixinItemStatics);
       });
 
-      classMeta.__mixins__ = __.union(mixinMixins, base.__mixins__, mixins);
+      classMeta.__mixins__ = union(mixinMixins, base.__mixins__, mixins);
       classMeta.__methods__ = nx.mix(mixinMethods, base.__methods__);
       classMeta.__properties__ = nx.mix(mixinProperties, base.__properties__);
       classMeta.__statics__ = nx.mix(mixinStatics, base.__statics__);
@@ -140,26 +128,23 @@
     defineProperties: function (inClassMeta) {
       var metaProperties = this.meta.properties || {};
       var extendProperties = inClassMeta.__properties__;
-      var target = inClassMeta.__pure_static__ ? this.__Class__ : this.__Class__.prototype;
-      nx.each(metaProperties, function (name, prop) {
-        nx.defineProperty(target, name, prop);
-      });
+      var target = inClassMeta.__static_pure__ ? this.__Class__ : this.__Class__.prototype;
+      nx.defineMembers('property', target, metaProperties);
       inClassMeta.__properties__ = nx.mix(extendProperties, metaProperties);
     },
     defineStatics: function (inClassMeta) {
       var staticsMembers = nx.mix(inClassMeta.__statics__, this.meta.statics);
-      nx.each(staticsMembers, function (staticKey, staticMeta) {
-        nx.defineStatic(this.__Class__, staticKey, staticMeta);
-      }, this);
+      nx.defineMembers('static', this.__Class__, staticsMembers);
     },
     methodsConstructorProcessor: function () {
       var classMeta = this.__classMeta__;
       var mixins = classMeta.__mixins__;
       this.__constructor__ = function () {
-        nx.each(mixins, function (index, mixItem) {
+        var args = slice.call(arguments);
+        nx.each(mixins, function (_, mixItem) {
           mixItem.__init__.call(this);
         }, this);
-        classMeta.__init__.apply(this, nx.toArray(arguments));
+        classMeta.__init__.apply(this, args);
       };
     },
     staticsConstructorProcessor: function () {
@@ -167,16 +152,13 @@
       classMeta.__static_init__.call(this.__Class__);
     },
     registerNsProcessor: function () {
-      var type = this.type,
-        Class = this.__Class__;
+      var Class = this.__Class__;
+      var type = this.type;
       var classMeta = this.__classMeta__;
 
-      nx.mix(Class.prototype, classMeta, {
-        constructor: this.__Class__
-      });
-
+      nx.mix(Class.prototype, classMeta, {constructor: Class});
       nx.mix(Class, classMeta);
-      if (type !== NX_ANONYMOUS) {
+      if (type !== (NX_ANONYMOUS + classId)) {
         nx.path(global, type, Class);
       }
     }
@@ -184,7 +166,7 @@
 
 
   nx.declare = function (inType, inMeta) {
-    var type = typeof(inType) === 'string' ? inType : NX_ANONYMOUS;
+    var type = typeof(inType) === 'string' ? inType : (NX_ANONYMOUS + classId);
     var meta = inMeta || inType;
     var lifeCycle = new LifeCycle(type, meta);
     lifeCycle.initMetaProcessor();
@@ -197,12 +179,5 @@
     lifeCycle.registerNsProcessor();
     return lifeCycle.__Class__;
   };
-
-
-  if (nx.DEBUG) {
-    nx.$ = function (id) {
-      return instanceMap[id];
-    };
-  }
 
 }(nx, nx.GLOBAL));
