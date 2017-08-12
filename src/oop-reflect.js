@@ -47,24 +47,26 @@
 
   nx.defineMethod = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var descriptor = inTarget[key] = {
+    (key in inTarget) && (inMeta.__base__ = inTarget[key].__meta__);
+
+    inTarget[inName] = inMeta;
+    return inTarget[key] = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'method'
     };
-    inTarget[inName] = inMeta;
-    return descriptor;
   };
 
   nx.defineStatic = function (inTarget, inName, inMeta) {
     var key = '@' + inName;
-    var descriptor = inTarget[key] = {
+    (key in inTarget) && (inMeta.__base__ = inTarget[key].__meta__);
+
+    inTarget[inName] = inMeta;
+    return inTarget[key] = {
       __meta__: inMeta,
       __name__: inName,
       __type__: 'static'
     };
-    inTarget[inName] = inMeta;
-    return descriptor;
   };
 
   nx.defineMembers = function (inMember, inTarget, inObject) {

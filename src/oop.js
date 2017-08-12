@@ -123,7 +123,6 @@
       });
 
       inClassMeta.__methods__ = nx.mix(extendMethods, metaMethods);
-
     },
     defineProperties: function (inClassMeta) {
       var metaProperties = this.meta.properties || {};
