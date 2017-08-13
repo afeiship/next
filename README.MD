@@ -41,8 +41,8 @@ var nx = require('next-js-core2');
 + [x] nx.binds/nx.delegates [nx.bind] on old android condition.
 
 ## size:
-+ [ default size ]: all files 23.62 kB
-+ [ minimize size ]: all files 11 kB
++ [ default size ]: all files 16 kB
++ [ minimize size ]: all files 8 kB
 
 ## test
 + test base:mocha test/test_base.js
