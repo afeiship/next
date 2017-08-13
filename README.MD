@@ -31,14 +31,14 @@ var nx = require('next-js-core2');
 ```
 
 ## todo:
-+ [ ] split base to string,array,object module.
-+ [ ] add mocha test for every module.
++ [x] split base to string,array,object module.
++ [x] add mocha test for every module.
 + [x] fix this.base issue
-+ [ ] fix touch device(wechat) this.base() thrrow errors bug. [Temp way: this.$base.init.call(this); ]
-+ [ ] split base to a standalone project?(next-js-lang)
-+ [ ] test case
-+ [ ] optimzie '__pure_static__'
-+ [ ] nx.binds/nx.delegates [nx.bind] on old android condition.
++ [x] fix touch device(wechat) this.base() thrrow errors bug. [Temp way: this.$base.init.call(this); ]
++ [x] split base to a standalone project?(next-js-lang)
++ [x] test case
++ [x] optimzie '__pure_static__'
++ [x] nx.binds/nx.delegates [nx.bind] on old android condition.
 
 ## size:
 + [ default size ]: all files 23.62 kB
