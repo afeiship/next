@@ -39,6 +39,43 @@
         return method.apply(this, args);
       }
     },
+    get: function (inName) {
+      var type = this.memberType(inName);
+      switch (type) {
+        case 'method':
+        case 'property':
+        case 'undefined':
+          return this[inName];
+        case 'static':
+          return this.constructor[inName];
+      }
+    },
+    set: function (inName, inValue) {
+      this[inName] = inValue;
+    },
+    gets: function () {
+      var result = {};
+      nx.each(this.__properties__, function (inName) {
+        result[inName] = this.get(inName);
+      }, this);
+      return result;
+    },
+    sets: function (inTarget) {
+      nx.each(inTarget, function (inName, inValue) {
+        this.set(inName, inValue);
+      }, this);
+    },
+    member: function (inName) {
+      return this['@' + inName];
+    },
+    memberMeta: function (inName) {
+      var member = this.member(inName);
+      return member && member.__meta__;
+    },
+    memberType: function (inName) {
+      var member = this.member(inName);
+      return (member && member.__type__) || 'undefined';
+    },
     toString: function () {
       return '[Class@' + this.__type__ + ']';
     }
