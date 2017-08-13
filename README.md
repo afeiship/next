@@ -16,7 +16,7 @@ var nx = require('next-js-core2');
 <script type="text/javascript">
 (function(nx, global) {
   nx.declare('myApp',{
-    methods:{
+    statics:{
       init:function(){
         alert('hello next!');
       }
