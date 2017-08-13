@@ -164,6 +164,7 @@ if (typeof module !== 'undefined' && module.exports) {
   var classMeta = {
     __classId__: 0,
     __type__: 'nx.RootClass',
+    __module__: 'root',
     __base__: Object,
     __meta__: {},
     __init__: nx.noop,
@@ -359,6 +360,7 @@ if (typeof module !== 'undefined' && module.exports) {
     this.type = inType;
     this.meta = inMeta;
     this.base = inMeta.extends || nx.RootClass;
+    this.module = inMeta.module;
     this.$base = this.base.prototype;
     this.__classMeta__ = {};
     this.__Class__ = null;
@@ -374,6 +376,7 @@ if (typeof module !== 'undefined' && module.exports) {
         __type__: this.type,
         __meta__: this.meta,
         __base__: this.base,
+        __module__: this.module,
         __classId__: classId++,
         __init__: methods.init || nx.noop,
         __static_init__: statics.init || nx.noop,
