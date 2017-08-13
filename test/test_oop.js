@@ -99,6 +99,37 @@
 
       });
 
+      it('Class multi level extend', function () {
+        var result = 0;
+        var Http = nx.declare({
+          methods: {
+            init: function () {
+              this.koa = {
+                req: 1234
+              }
+            }
+          }
+        });
+
+        var Bussiness = nx.declare({
+          extends: Http
+        });
+
+        var Example = nx.declare({
+          extends: Bussiness,
+          methods: {
+            exec: function () {
+              result = this.koa.req;
+            }
+          }
+        });
+
+        var app = new Example();
+        app.exec();
+
+        assert.equal(result, 1234);
+      });
+
 
       it('static init will auto execute', function () {
         var num1 = 1;

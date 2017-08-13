@@ -41,8 +41,8 @@
         __base__: this.base,
         __module__: this.module,
         __classId__: classId++,
-        __init__: methods.init || nx.noop,
-        __static_init__: statics.init || nx.noop,
+        __init__: methods.init || this.base.__init__,
+        __static_init__: statics.init || this.base.__static_init__,
         __static_pure__: !this.meta.methods && !!this.meta.statics
       });
     },
