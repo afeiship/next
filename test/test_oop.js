@@ -130,6 +130,22 @@
       });
 
 
+      it('props is null', function () {
+        var Class1 = nx.declare({
+          properties: {
+            prop1: null
+          },
+          methods: {
+            init: function () {
+              this.prop1 = this.prop1 + '';
+            }
+          }
+        });
+        var cls1 = new Class1();
+        assert.equal('null', cls1.prop1);
+      });
+
+
       it('props has set/get method', function () {
         var Class1 = nx.declare({
           properties: {
@@ -178,6 +194,7 @@
         var cls2 = new Class2();
         cls1.prop1 = 2;
         cls2.prop1 = 2;
+
         assert.equal(4, cls1.prop1);
         assert.equal(204, cls2.prop1);
         assert.equal('love', cls2.prop2);

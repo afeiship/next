@@ -4,7 +4,7 @@
     var key = '@' + inName;
     var getter, setter, descriptor;
     var value, filed;
-    var meta = (typeof inMeta === 'object') ? inMeta : {
+    var meta = (inMeta && typeof inMeta === 'object') ? inMeta : {
         value: inMeta
       };
 

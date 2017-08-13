@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="../dist/next-js-core2.js"></script>
+  <!--<script type="text/javascript" src="./js/App.js"></script>-->
+</head>
+<body>
+
+<script type="text/javascript">
+  nx.DEBUG = true;
+  /*  nx.config.sets({
+   baseUrl:'./js'
+   });*/
+
+  nx.require(['./js/App'], function (App) {
+    var app = new App();
+    console.log(app);
+    app.start();
+  });
+
+</script>
+</body>
+</html>
