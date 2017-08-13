@@ -103,38 +103,17 @@
       }, this);
     },
     defineMethods: function (inClassMeta) {
-      var metaMethods = this.meta.methods || {};
-      var methods = Object.keys(metaMethods);
-      var extendMethods = inClassMeta.__methods__;
-      var target = this.__Class__.prototype;
-
-      nx.each(extendMethods, function (name, method) {
-        nx.defineMethod(target, name, method);
-        if (~methods.indexOf(name)) {
-          nx.defineMethod(target, name, metaMethods[name]);
-          target[name].__base__ = method;
-        }
-      });
-
-      nx.each(metaMethods, function (name, method) {
-        if (!target[name]) {
-          nx.defineMethod(target, name, method);
-        }
-      });
-
-      inClassMeta.__methods__ = nx.mix(extendMethods, metaMethods);
+      var methods = nx.mix(inClassMeta.__methods__, this.meta.methods);
+      nx.defineMembers('method', this.__Class__.prototype, methods, inClassMeta.__mixins__);
     },
     defineProperties: function (inClassMeta) {
-      var metaProperties = this.meta.properties || {};
-      var extendProperties = inClassMeta.__properties__;
       var target = inClassMeta.__static_pure__ ? this.__Class__ : this.__Class__.prototype;
-      var properties = nx.mix(extendProperties, metaProperties);
-      nx.defineMembers('property', target, properties);
-      inClassMeta.__properties__ = properties;
+      var properties = nx.mix(inClassMeta.__properties__, this.meta.properties);
+      nx.defineMembers('property', target, properties, inClassMeta.__mixins__);
     },
     defineStatics: function (inClassMeta) {
-      var staticsMembers = nx.mix(inClassMeta.__statics__, this.meta.statics);
-      nx.defineMembers('static', this.__Class__, staticsMembers);
+      var statics = nx.mix(inClassMeta.__statics__, this.meta.statics);
+      nx.defineMembers('static', this.__Class__, statics, inClassMeta.__mixins__);
     },
     methodsConstructorProcessor: function () {
       var classMeta = this.__classMeta__;
@@ -163,7 +142,6 @@
       }
     }
   };
-
 
   nx.declare = function (inType, inMeta) {
     var type = typeof(inType) === 'string' ? inType : (NX_ANONYMOUS + classId);

@@ -9,6 +9,9 @@ nx = {
 
 (function (nx, global) {
 
+  var DOT = '.';
+  var NUMBER = 'number';
+
   nx.noop = function () {
   };
 
@@ -27,7 +30,7 @@ nx = {
         return inTarget.each(inCallback, inContext);
       } else {
         length = inTarget.length;
-        if (typeof length === 'number') {
+        if (typeof length === NUMBER) {
           for (key = 0; key < length; key++) {
             if (iterator(key, inTarget[key])) {
               break;
@@ -79,7 +82,7 @@ nx = {
   };
 
   nx.path = function (inTarget, inPath, inValue) {
-    var paths = inPath.split('.');
+    var paths = inPath.split(DOT);
     var result = inTarget || nx.global;
     var last;
 

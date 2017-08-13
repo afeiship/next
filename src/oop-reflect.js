@@ -1,6 +1,6 @@
 (function (nx, global) {
 
-  nx.defineProperty = function (inTarget, inName, inMeta) {
+  nx.defineProperty = function (inTarget, inName, inMeta, inMixins) {
     var key = '@' + inName;
     var getter, setter, descriptor;
     var value, filed;
@@ -45,9 +45,15 @@
     return descriptor;
   };
 
-  nx.defineMethod = function (inTarget, inName, inMeta) {
+  nx.defineMethod = function (inTarget, inName, inMeta, inMixins) {
     var key = '@' + inName;
-    (key in inTarget) && (inMeta.__base__ = inTarget[key].__meta__);
+
+    inMixins.forEach(function (mixin) {
+      var prototype = mixin.prototype;
+      key in prototype && (inMeta.__base__ = prototype[key].__meta__);
+    });
+
+    key in inTarget && (inMeta.__base__ = inTarget[key].__meta__);
 
     inTarget[inName] = inMeta;
     return inTarget[key] = {
@@ -57,8 +63,13 @@
     };
   };
 
-  nx.defineStatic = function (inTarget, inName, inMeta) {
+  nx.defineStatic = function (inTarget, inName, inMeta, inMixins) {
     var key = '@' + inName;
+
+    inMixins.forEach(function (mixin) {
+      key in mixin && (inMeta.__base__ = mixin[key].__meta__);
+    });
+
     (key in inTarget) && (inMeta.__base__ = inTarget[key].__meta__);
 
     inTarget[inName] = inMeta;
@@ -69,10 +80,10 @@
     };
   };
 
-  nx.defineMembers = function (inMember, inTarget, inObject) {
+  nx.defineMembers = function (inMember, inTarget, inObject, inMixins) {
     var memberAction = 'define' + inMember.charAt(0).toUpperCase() + inMember.slice(1);
     nx.each(inObject, function (key, val) {
-      nx[memberAction](inTarget, key, val);
+      nx[memberAction](inTarget, key, val, inMixins);
     });
   };
 
