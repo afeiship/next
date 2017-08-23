@@ -15,6 +15,11 @@ nx = {
   nx.noop = function () {
   };
 
+  nx.import = function(inKey){
+    if(typeof window !== 'undefined') return nx[inKey];
+    return require('next-'+inKey);
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
