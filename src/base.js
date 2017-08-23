@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.0',
+  VERSION: '1.3.1',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -13,11 +13,6 @@ nx = {
   var NUMBER = 'number';
 
   nx.noop = function () {
-  };
-
-  nx.import = function(inKey){
-    if(typeof window !== 'undefined') return nx[inKey];
-    return require('next-'+inKey);
   };
 
   nx.error = function (inMsg) {
@@ -84,6 +79,15 @@ nx = {
         return inTarget[inName] = inValue;
       }
     }
+  };
+
+  nx.import = function(inKeys){
+    var result = [];
+    var isClient = typeof window !== 'undefined';
+    nx.each(inKeys,function(index, key){
+      result.push( isClient ? nx[key] : require('next-' + key) );
+    });
+    return result;
   };
 
   nx.path = function (inTarget, inPath, inValue) {
