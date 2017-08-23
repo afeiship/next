@@ -11,6 +11,7 @@ nx = {
 
   var DOT = '.';
   var NUMBER = 'number';
+  var NOOP_ARRAY = [];
 
   nx.noop = function () {
   };
@@ -49,6 +50,18 @@ nx = {
     }
   };
 
+  nx.map = function(inTarget, inCallback, inContext){
+    var keys = typeof inTarget.length === NUMBER ? null : Object.keys( inTarget );
+    var length = (keys || inTarget).length;
+    var results = Array(length);
+
+    for (var index = 0; index < length; index++) {
+      var currentKey = keys ? keys[index] : index;
+      results[index] = inCallback(currentKey, inTarget[currentKey], inTarget );
+    }
+    return results;
+  };
+
   nx.mix = function (inTarget) {
     var target = inTarget || {};
     var i, length;
@@ -84,10 +97,9 @@ nx = {
   nx.import = function(inKeys){
     var result = [];
     var isClient = typeof window !== 'undefined';
-    nx.each(inKeys,function(index, key){
-      result.push( isClient ? nx[key] : require('next-' + key) );
+    return nx.map(inKeys,function(index, key){
+      return isClient ? nx[key] : require('next-' + key);
     });
-    return result;
   };
 
   nx.path = function (inTarget, inPath, inValue) {
