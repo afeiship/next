@@ -1,6 +1,10 @@
 var assert = require('assert');
 var nx = require('../dist/next-js-core2');
 
+// var _;
+// _ = nx.is || require('next-is');
+// _ = nx.parse || require('next-json');
+
 describe('src/base-import', function() {
   it('nx.import will return an array', function() {
     assert.equal(nx.import(['is']) instanceof Array, true);
