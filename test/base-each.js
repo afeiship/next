@@ -1,7 +1,7 @@
 var assert = require('assert');
 var nx = require('../dist/next-js-core2');
 
-describe('src/base.js', function () {
+describe('src/base-each', function () {
   it('nx.each-array/object each', function () {
     var arr = [1, 2, 3];
     var obj = {name: 'fei', email: '1290657123@qq.com', nx: 'next'};
