@@ -124,6 +124,14 @@ nx = {
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = nx;
+} else {
+  if (typeof define === 'function' && define.amd) {
+    define([], function () {
+      return nx;
+    });
+  } else {
+    window.nx = nx;
+  }
 }
 
 (function (nx, global) {
