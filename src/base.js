@@ -95,10 +95,8 @@ nx = {
   };
 
   nx.import = function(inKeys){
-    var result = [];
-    var isClient = typeof window !== 'undefined';
     return nx.map(inKeys,function(index, key){
-      return isClient ? nx[key] : require('next-' + key);
+      return nx[key] || require('next-' + key);
     });
   };
 
