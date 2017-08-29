@@ -13,6 +13,9 @@ nx = {
   var NUMBER = 'number';
   var NOOP_ARRAY = [];
 
+  //global.nx will be 'undefined' in webpack/node env:
+  global.nx = global.nx || nx;
+
   nx.noop = function () {
   };
 
