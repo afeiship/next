@@ -11,7 +11,7 @@ nx = {
 
   var DOT = '.';
   var NUMBER = 'number';
-  var NOOP_ARRAY = [];
+  var ARRAY_PROTO = Array.prototype;
 
   //global.nx will be 'undefined' in webpack/node env:
   global.nx = global.nx || nx;
@@ -97,10 +97,8 @@ nx = {
     }
   };
 
-  nx.import = function(inKeys){
-    return nx.map(inKeys,function(index, key){
-      return nx[key] || require('next-' + key);
-    });
+  nx.slice = function (inTarget, inStart, inEnd) {
+    return ARRAY_PROTO.slice(inTarget, inStart, inEnd);
   };
 
   nx.path = function (inTarget, inPath, inValue) {
