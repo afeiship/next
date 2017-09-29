@@ -98,7 +98,7 @@ nx = {
   };
 
   nx.slice = function (inTarget, inStart, inEnd) {
-    return ARRAY_PROTO.slice(inTarget, inStart, inEnd);
+    return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
   };
 
   nx.path = function (inTarget, inPath, inValue) {
