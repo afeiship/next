@@ -56,13 +56,13 @@ nx = {
   nx.map = function(inTarget, inCallback, inContext){
     var keys = typeof inTarget.length === NUMBER ? null : Object.keys( inTarget );
     var length = (keys || inTarget).length;
-    var results = Array(length);
+    var result = Array(length);
 
     for (var index = 0; index < length; index++) {
       var currentKey = keys ? keys[index] : index;
-      results[index] = inCallback(currentKey, inTarget[currentKey], inTarget );
+      result[index] = inCallback(currentKey, inTarget[currentKey], inTarget );
     }
-    return results;
+    return result;
   };
 
   nx.mix = function (inTarget) {
