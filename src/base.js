@@ -19,6 +19,10 @@ nx = {
   nx.noop = function () {
   };
 
+  nx.returnValue = function(inValue){
+    return inValue;
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
