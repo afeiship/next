@@ -9,16 +9,23 @@
 <body>
 
 <script type="text/javascript">
-  nx.DEBUG = true;
-  /*  nx.config.sets({
-   baseUrl:'./js'
-   });*/
 
-  nx.require(['./js/App'], function (App) {
-    var app = new App();
-    console.log(app);
-    app.start();
+  nx.declare('Class1', {
+    methods: {
+      request: function (inName, inData) {
+        return 'request-' + inName + inData;
+      },
+      'post,get,put': function(name){
+        return function(inData){
+          return this.request(name,inData);
+        }
+      }
+    }
   });
+
+  var cl1= new Class1();
+
+  console.log(cl1.post('post-data'));
 
 </script>
 </body>

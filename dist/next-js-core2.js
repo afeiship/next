@@ -341,6 +341,13 @@ if (typeof module !== 'undefined' && module.exports) {
     };
   };
 
+  nx.defineBombMethod = function(inTarget, inName, inMeta, inMixins){
+    var keys = inName.split(',');
+    keys.forEach(function(key){
+      nx.defineMethod(inTarget, key, inMeta.call(inTarget,key), inMixins);
+    });
+  };
+
   nx.defineStatic = function (inTarget, inName, inMeta, inMixins) {
     var key = '@' + inName;
 
@@ -361,7 +368,11 @@ if (typeof module !== 'undefined' && module.exports) {
   nx.defineMembers = function (inMember, inTarget, inObject, inMixins) {
     var memberAction = 'define' + inMember.charAt(0).toUpperCase() + inMember.slice(1);
     nx.each(inObject, function (key, val) {
-      nx[memberAction](inTarget, key, val, inMixins);
+      if (key.indexOf(',') > -1) {
+        nx.defineBombMethod(inTarget, key, val, inMixins);
+      } else {
+        nx[memberAction](inTarget, key, val, inMixins);
+      }
     });
   };
 
