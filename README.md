@@ -26,6 +26,11 @@ var nx = require('next-js-core2');
 </script>
 ```
 
+## features:
++ [x] oop 
++ [x] methods bomb
+
+
 ## todo:
 + [x] split base to string,array,object module.
 + [x] add mocha test for every module.
