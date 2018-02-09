@@ -12,6 +12,7 @@ nx = {
   var DOT = '.';
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
+  var RETURN_THEN = { then: nx.noop };
 
   //global.nx will be 'undefined' in webpack/node env:
   global.nx = global.nx || nx;
@@ -24,7 +25,7 @@ nx = {
   };
 
   nx.returnThen = function(){
-    return { then: nx.noop };
+    return RETURN_THEN;
   };
 
   nx.error = function (inMsg) {
