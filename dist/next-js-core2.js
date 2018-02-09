@@ -23,6 +23,10 @@ nx = {
     return inValue;
   };
 
+  nx.returnThen = function(){
+    return { then: nx.noop };
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
