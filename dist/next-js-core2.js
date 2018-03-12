@@ -24,6 +24,14 @@ nx = {
     return inValue;
   };
 
+  nx.returnTrue = function(){
+    return true;
+  };
+
+  nx.returnFalse = function(){
+    return false;
+  };
+
   nx.returnThen = function(){
     return RETURN_THEN;
   };
