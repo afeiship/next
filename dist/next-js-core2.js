@@ -36,6 +36,11 @@ nx = {
     return RETURN_THEN;
   };
 
+  nx.returnEventValue = function(inEvent){
+    var target = inEvent.target;
+    return target ? target.value : null;
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
