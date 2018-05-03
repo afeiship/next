@@ -124,7 +124,7 @@ nx = {
     var i, length;
     var args = arguments;
     for (i = 1, length = args.length; i < length; i++) {
-      nx.each(args[i], function (key, val) {
+      nx.forIn(args[i], function (key, val) {
         target[key] = val;
       });
     }
@@ -161,9 +161,9 @@ nx = {
     var last;
 
     if (undefined === inValue) {
-      nx.each(paths, function (_, path) {
+      paths.forEach(function(path){
         result = nx.get(result, path);
-      });
+      })
     } else {
       last = paths.pop();
       paths.forEach(function (path) {
