@@ -83,7 +83,7 @@ nx = {
   nx.each = function (inTarget, inCallback, inContext) {
     var key, length;
     var iterator = function (inKey, inValue) {
-      return inCallback.call(inContext, inKey, inValue) === nx.BREAKER;
+      return inCallback.call(inContext, inKey, inValue, inTarget) === nx.BREAKER;
     };
 
     if (inTarget) {
