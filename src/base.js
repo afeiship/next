@@ -41,6 +41,14 @@ nx = {
     return target ? target.value : null;
   };
 
+  nx.returnEventTarget = function(inValue){
+    return {
+      target:{
+        value: inValue
+      }
+    };
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };

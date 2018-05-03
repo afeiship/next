@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.4',
+  VERSION: '1.3.5',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -39,6 +39,14 @@ nx = {
   nx.returnEventValue = function(inEvent){
     var target = inEvent.target;
     return target ? target.value : null;
+  };
+
+  nx.returnEventTarget = function(inValue){
+    return {
+      target:{
+        value: inValue
+      }
+    };
   };
 
   nx.error = function (inMsg) {
