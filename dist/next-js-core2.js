@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.3',
+  VERSION: '1.3.4',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -43,6 +43,30 @@ nx = {
 
   nx.error = function (inMsg) {
     throw new Error(inMsg);
+  };
+
+  nx.forEach = function(inArray, inCallback, inContext){
+    var length = inArray.length;
+    var i;
+    var result;
+    if( typeof length === NUMBER ){
+      for(i = 0; i<length; i++){
+        result = inCallback.call(inContext, inArray[i], i, inArray );
+        if( result === nx.BREAKER){
+          break;
+        }
+      }
+    }
+  };
+
+  nx.forIn = function(inObject, inCallback, inContext){
+    for (var key in inObject) {
+      if (inObject.hasOwnProperty(key)) {
+        if (inCallback.call(inContext, key, inObject[key])) {
+          break;
+        }
+      }
+    }
   };
 
   nx.each = function (inTarget, inCallback, inContext) {
