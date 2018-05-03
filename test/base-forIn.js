@@ -11,8 +11,6 @@ describe('src/base-forIn', function () {
       result_str = result_str + '-' + value;
     });
 
-    console.log(result_str);
-
     assert.equal(result_str.indexOf('next') > -1, true);
   });
 
