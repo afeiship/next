@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.5',
+  VERSION: '1.3.6',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -104,7 +104,7 @@ nx = {
 
     for (var index = 0; index < length; index++) {
       var currentKey = keys ? keys[index] : index;
-      result[index] = inCallback(currentKey, inTarget[currentKey], inTarget );
+      result[index] = inCallback.call(inContext, currentKey, inTarget[currentKey], inTarget );
     }
     return result;
   };
