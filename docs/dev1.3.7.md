@@ -10,5 +10,5 @@
 var global = global || this || self || window;
 
 // new:
-var global = global || window || self || Function('return this')();
+var global = global || this || window || Function('return this')();
 ```
