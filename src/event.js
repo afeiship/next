@@ -18,12 +18,14 @@
     },
     off: function (inName, inHandler, inContext) {
       var listeners = this.__listeners__[inName];
+      var _listeners = nx.slice(listeners, 0);
       if (inHandler) {
         nx.each(listeners, function (index, listener) {
-          if (listener.handler === inHandler && (!inContext || listener.context === inContext )) {
-            listeners.splice(index, 1);
+          if (listener.handler === inHandler && (!inContext || listener.context === inContext)) {
+            _listeners.splice(index, 1);
           }
         });
+        this.__listeners__[inName] = _listeners;
       } else {
         listeners.length = 0;
       }
