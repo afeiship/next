@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.8',
+  VERSION: '1.3.9',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -121,26 +121,6 @@ nx = {
     return target;
   };
 
-  nx.get = function (inTarget, inName) {
-    if (inTarget) {
-      if (inTarget.get) {
-        return inTarget.get(inName);
-      } else {
-        return inTarget[inName];
-      }
-    }
-  };
-
-  nx.set = function (inTarget, inName, inValue) {
-    if (inTarget) {
-      if (inTarget.set && inTarget !== nx) {
-        return inTarget.set(inName, inValue);
-      } else {
-        return inTarget[inName] = inValue;
-      }
-    }
-  };
-
   nx.slice = function (inTarget, inStart, inEnd) {
     return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
   };
@@ -152,14 +132,14 @@ nx = {
 
     if (undefined === inValue) {
       paths.forEach(function(path){
-        result = nx.get(result, path);
+        result = result[path];
       })
     } else {
       last = paths.pop();
       paths.forEach(function (path) {
         result = result[path] = result[path] || {};
       });
-      nx.set(result, last, inValue);
+      result[last] = inValue;
     }
     return result;
   };

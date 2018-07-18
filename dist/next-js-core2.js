@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.7',
+  VERSION: '1.3.9',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -121,26 +121,6 @@ nx = {
     return target;
   };
 
-  nx.get = function (inTarget, inName) {
-    if (inTarget) {
-      if (inTarget.get) {
-        return inTarget.get(inName);
-      } else {
-        return inTarget[inName];
-      }
-    }
-  };
-
-  nx.set = function (inTarget, inName, inValue) {
-    if (inTarget) {
-      if (inTarget.set && inTarget !== nx) {
-        return inTarget.set(inName, inValue);
-      } else {
-        return inTarget[inName] = inValue;
-      }
-    }
-  };
-
   nx.slice = function (inTarget, inStart, inEnd) {
     return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
   };
@@ -152,14 +132,14 @@ nx = {
 
     if (undefined === inValue) {
       paths.forEach(function(path){
-        result = nx.get(result, path);
+        result = result[path];
       })
     } else {
       last = paths.pop();
       paths.forEach(function (path) {
         result = result[path] = result[path] || {};
       });
-      nx.set(result, last, inValue);
+      result[last] = inValue;
     }
     return result;
   };
@@ -268,43 +248,6 @@ if (typeof module !== 'undefined' && module.exports) {
         args = [].slice.call(arguments, 0);
         return method.apply(this, args);
       }
-    },
-    get: function (inName) {
-      var type = this.memberType(inName);
-      switch (type) {
-        case 'method':
-        case 'property':
-        case 'undefined':
-          return this[inName];
-        case 'static':
-          return this.constructor[inName];
-      }
-    },
-    set: function (inName, inValue) {
-      this[inName] = inValue;
-    },
-    gets: function () {
-      var result = {};
-      nx.each(this.__properties__, function (inName) {
-        result[inName] = this.get(inName);
-      }, this);
-      return result;
-    },
-    sets: function (inTarget) {
-      nx.each(inTarget, function (inName, inValue) {
-        this.set(inName, inValue);
-      }, this);
-    },
-    member: function (inName) {
-      return this['@' + inName];
-    },
-    memberMeta: function (inName) {
-      var member = this.member(inName);
-      return member && member.__meta__;
-    },
-    memberType: function (inName) {
-      var member = this.member(inName);
-      return (member && member.__type__) || 'undefined';
     },
     toString: function () {
       return '[Class@' + this.__type__ + ']';
