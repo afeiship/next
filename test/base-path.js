@@ -22,6 +22,16 @@ describe('src/base-path', function () {
 
   // });
 
+  it('nx.path - get undefined object',function(){
+    var object = {
+      obj4: {
+        description: "toto"
+      }
+    };
+
+    var result = nx.path(object,'obj4.test.it');
+    assert.equal( result , undefined );
+  });
 
 
   it('nx.path - get from deep object', function () {

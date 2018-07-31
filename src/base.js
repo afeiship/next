@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.3.9',
+  VERSION: '1.3.10',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -132,7 +132,7 @@ nx = {
 
     if (undefined === inValue) {
       paths.forEach(function(path){
-        result = result[path];
+        result = result && result[path];
       })
     } else {
       last = paths.pop();
