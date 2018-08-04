@@ -1,25 +1,31 @@
-(function() {
+(function () {
 
   'use strict';
 
   var gulp = require('gulp');
-  var config = require('./config');
-  var argv = require('yargs').argv;
   var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'gulp.*', 'del']
   });
 
+  var files = [
+    'src/base.js',
+    'src/event.js',
+    'src/oop-base.js',
+    'src/oop-reflect.js',
+    'src/oop.js'
+  ];
+
   gulp.task('scripts', function () {
-    return gulp.src(config.files.src)
-      .pipe($.concat(config.files.dist))
+    return gulp.src(files)
+      .pipe($.concat('next-js-core2.js'))
       .pipe(gulp.dest('dist'))
-      .pipe($.size({title: '[ default size ]:'}))
+      .pipe($.size({ title: '[ default size ]:' }))
       .pipe($.uglify())
       .pipe($.rename({
         extname: '.min.js'
       }))
       .pipe(gulp.dest('dist'))
-      .pipe($.size({title: '[ minimize size ]:'}));
+      .pipe($.size({ title: '[ minimize size ]:' }));
   });
 
 }());
