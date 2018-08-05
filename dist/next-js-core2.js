@@ -45,7 +45,7 @@ nx = {
     var i;
     var result;
     if( typeof length === NUMBER ){
-      for(i = 0; i<length; i++){
+      for (i = 0; i < length; i++) {
         result = inCallback.call(inContext, inArray[i], i, inArray );
         if( result === nx.BREAKER){
           break;
