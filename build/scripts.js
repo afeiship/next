@@ -3,6 +3,7 @@
   'use strict';
 
   var gulp = require('gulp');
+  var pkgJson = require('../package.json');
   var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'gulp.*', 'del']
   });
@@ -18,6 +19,7 @@
   gulp.task('scripts', function () {
     return gulp.src(files)
       .pipe($.concat('next-js-core2.js'))
+      .pipe($.replace('__VERSION__', pkgJson.version))
       .pipe(gulp.dest('dist'))
       .pipe($.size({ title: '[ default size ]:' }))
       .pipe($.uglify())
