@@ -57,7 +57,7 @@ nx = {
   nx.forIn = function(inObject, inCallback, inContext){
     var key;
     var result;
-    for (var key in inObject) {
+    for (key in inObject) {
       if (inObject.hasOwnProperty(key)) {
         result = inCallback.call(inContext, key, inObject[key], inObject );
         if (result === nx.BREAKER) {
