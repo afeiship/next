@@ -11,7 +11,7 @@
       var map = this.__listeners__;
       var listeners = map[inName] = map[inName] || [];
       listeners.push({
-        owner: this,
+        sender: this,
         handler: inHandler,
         context: inContext
       });
@@ -35,7 +35,7 @@
       if (listeners) {
         nx.each(listeners, function (_, listener) {
           if (listener && listener.handler) {
-            if (listener.handler.call(listener.context || listener.owner, listener.owner, inArgs) === false) {
+            if (listener.handler.call(listener.context || listener.sender, listener.sender, inArgs) === false) {
               return nx.BREAKER;
             }
           }
