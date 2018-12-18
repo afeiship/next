@@ -20,19 +20,19 @@ nx = {
   nx.noop = function () {
   };
 
-  nx.returnValue = function(inValue){
+  nx.stubValue = function(inValue){
     return inValue;
   };
 
-  nx.returnTrue = function(){
+  nx.stubTrue = function(){
     return true;
   };
 
-  nx.returnFalse = function(){
+  nx.stubFalse = function(){
     return false;
   };
 
-  nx.returnThen = function(){
+  nx.stubThen = function(){
     return RETURN_THEN;
   };
 
