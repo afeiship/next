@@ -1,4 +1,5 @@
 (function(nx, global) {
+
   var RootClass = function() {};
   var classMeta = {
     __classId__: 0,

@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.5.0',
+  VERSION: '1.5.1',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -12,28 +12,11 @@ nx = {
   var DOT = '.';
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
-  var RETURN_THEN = { then: nx.noop };
 
   //global.nx will be 'undefined' in webpack/node env:
   global.nx = global.nx || nx;
 
   nx.noop = function () {
-  };
-
-  nx.stubValue = function(inValue){
-    return inValue;
-  };
-
-  nx.stubTrue = function(){
-    return true;
-  };
-
-  nx.stubFalse = function(){
-    return false;
-  };
-
-  nx.stubThen = function(){
-    return RETURN_THEN;
   };
 
   nx.error = function (inMsg) {
@@ -160,6 +143,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 (function(nx, global) {
+
   var RootClass = function() {};
   var classMeta = {
     __classId__: 0,
@@ -300,6 +284,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }(nx, nx.GLOBAL));
 
 (function(nx, global) {
+
   var classId = 1,
     instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
@@ -464,4 +449,5 @@ if (typeof module !== 'undefined' && module.exports) {
     lifeCycle.registerNsProcessor();
     return lifeCycle.__Class__;
   };
+
 })(nx, nx.GLOBAL);
