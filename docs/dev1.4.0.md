@@ -1,5 +1,5 @@
 # plan:
 
 ## todos
-+ [ ] each/map -> (item,index) => {};
-+ [ ] remove nx.set/nx.get 
++ [x] each/map -> (item,index) => {};
++ [x] remove nx.set/nx.get 

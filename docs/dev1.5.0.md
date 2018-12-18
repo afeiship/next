@@ -16,8 +16,32 @@
   - 测试
 
 + 移除 oop 中 this.base 很猥琐的实现
+```js
+  // 留一下纪念吧
+  var callStackRE1 = /__Class__\.(.*) \(/;
+  var callStackRE2 = /at (.*) \(/;
+
+  // ....
+  base: function () {
+    var callerName, method;
+    var args, stackes;
+    try {
+      method = this.base.caller.__base__;
+      if (method) {
+        return method.apply(this, arguments);
+      }
+    } catch (e) {
+      stackes = e.stack.split('\n')[2];
+      callerName = (stackes.match(callStackRE1) || stackes.match(callStackRE2))[1];
+      method = this.$base[callerName];
+      args = [].slice.call(arguments, 0);
+      return method.apply(this, args);
+    }
+  },
+```
 
 + 优化 oop-reflect 写法
++ 移除 stubFunction
 
 ## returnValue/Then 等改成 stubArray/stubTrue/stubFalse
 + https://blog.csdn.net/imjaron/article/details/78421119
