@@ -1,5 +1,4 @@
 (function(nx, global) {
-
   var RootClass = function() {};
   var classMeta = {
     __classId__: 0,
@@ -26,6 +25,10 @@
         return baseMethod.apply(this, arguments);
       }
     },
+    parent: function(inName) {
+      var args = nx.slice(arguments, 1);
+      this.$base[inName].apply(this.$base, args);
+    },
     toString: function() {
       return '[Class@' + this.__type__ + ']';
     }
@@ -34,5 +37,4 @@
   //mix && export:
   nx.mix(RootClass, classMeta);
   nx.RootClass = RootClass;
-
 })(nx, nx.GLOBAL);

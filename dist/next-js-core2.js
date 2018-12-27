@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.5.1',
+  VERSION: '1.5.2',
   DEBUG: false,
   GLOBAL: (function () {
     return this;
@@ -143,7 +143,6 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 (function(nx, global) {
-
   var RootClass = function() {};
   var classMeta = {
     __classId__: 0,
@@ -170,6 +169,10 @@ if (typeof module !== 'undefined' && module.exports) {
         return baseMethod.apply(this, arguments);
       }
     },
+    parent: function(inName) {
+      var args = nx.slice(arguments, 1);
+      this.$base[inName].apply(this.$base, args);
+    },
     toString: function() {
       return '[Class@' + this.__type__ + ']';
     }
@@ -178,7 +181,6 @@ if (typeof module !== 'undefined' && module.exports) {
   //mix && export:
   nx.mix(RootClass, classMeta);
   nx.RootClass = RootClass;
-
 })(nx, nx.GLOBAL);
 
 (function (nx, global) {
