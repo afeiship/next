@@ -27,7 +27,7 @@
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
-      this.$base[inName].apply(this.$base, args);
+      this.$base[inName].apply(this, args);
     },
     toString: function() {
       return '[Class@' + this.__type__ + ']';
