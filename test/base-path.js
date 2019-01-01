@@ -32,6 +32,23 @@ describe('src/base-path', function() {
     assert.equal(result, undefined);
   });
 
+  it('nx.path - get from object with array', function() {
+    var obj = {
+      k1: {
+        items: [
+          {
+            test: 123
+          },
+          {
+            test: 245
+          }
+        ]
+      }
+    };
+
+    assert.equal(nx.path(obj, 'k1.items.1.test'), 245);
+  });
+
   it('nx.path - get from deep object', function() {
     var object = {
       obj1: {
