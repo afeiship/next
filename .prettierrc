@@ -23,6 +23,14 @@
         "tabWidth": 2,
         "parser": "json"
       }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "trailingComma": "none",
+        "tabWidth": 2,
+        "parser": "scss"
+      }
     }
   ]
 }

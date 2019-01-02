@@ -30,6 +30,8 @@ var nx = require('next-js-core2');
 + [x] oop 
 + [x] methods bomb
 
+## size:
+
 
 ## todo:
 + [x] split base to string,array,object module.
@@ -44,6 +46,7 @@ var nx = require('next-js-core2');
 ## size:
 + [ default size ]: all files 16 kB
 + [ minimize size ]: all files 8 kB
++ [real size]: 5,945 bytes (8 KB on disk)
 
 ## test
 + test base:mocha test/test_base.js
