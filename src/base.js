@@ -47,15 +47,33 @@ nx = {
   };
 
   nx.each = function(inTarget, inCallback, inContext) {
+    var key, length;
+    var iterator = function(inKey, inValue) {
+      return (
+        inCallback.call(inContext, inKey, inValue, inTarget) === nx.BREAKER
+      );
+    };
+
     if (inTarget) {
       if (inTarget.each) {
         return inTarget.each(inCallback, inContext);
       } else {
-        return nx[typeof inTarget.length === NUMBER ? 'forEach' : 'forIn'](
-          inTarget,
-          inCallback,
-          inContext
-        );
+        length = inTarget.length;
+        if (typeof length === NUMBER) {
+          for (key = 0; key < length; key++) {
+            if (iterator(key, inTarget[key])) {
+              break;
+            }
+          }
+        } else {
+          for (key in inTarget) {
+            if (inTarget.hasOwnProperty(key)) {
+              if (iterator(key, inTarget[key])) {
+                break;
+              }
+            }
+          }
+        }
       }
     }
   };
