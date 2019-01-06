@@ -1,23 +1,13 @@
 {
   "name": "next-js-core2",
-  "version": "1.5.5",
+  "version": "1.6.0",
   "description": "A javascript OOP toolkit for mobile.",
-  "main": [
-    "dist/next-js-core2.js"
-  ],
-  "authors": [
-    "afei"
-  ],
+  "main": ["dist/next-js-core2.js"],
+  "authors": ["afei"],
   "license": "MIT",
-  "keywords": [
-    "OOP",
-    "next"
-  ],
+  "keywords": ["OOP", "next"],
   "homepage": "https://github.com/afeiship/next-js-core2",
-  "moduleType": [
-    "amd",
-    "node"
-  ],
+  "moduleType": ["amd", "node"],
   "ignore": [
     "**/.*",
     "node_modules",
