@@ -46,7 +46,7 @@ var nx = require('next-js-core2');
 ## size:
 + [ default size ]: all files 16 kB
 + [ minimize size ]: all files 8 kB
-+ [real size]: 5,945 bytes (8 KB on disk)
++ [real size]: 5,945 bytes (8 KB on disk) -> 5,191 bytes
 
 ## test
 + test base:mocha test/test_base.js
