@@ -219,5 +219,28 @@
       assert.equal(204, cls2.prop1);
       assert.equal('love', cls2.prop2);
     });
+
+    it('static can be called in child class', function() {
+      var total = 1;
+      var Class1 = nx.declare({
+        statics: {
+          instance: null,
+          getInst: function() {
+            total++;
+            // console.log('get instance');
+            return this.instance;
+          }
+        }
+      });
+
+      var Class2 = nx.declare({
+        extends: Class1
+      });
+
+      Class1.getInst();
+      assert.equal(2, total);
+      Class2.getInst();
+      assert.equal(3, total);
+    });
   });
 })();
