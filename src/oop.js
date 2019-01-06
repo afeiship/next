@@ -53,28 +53,27 @@
       this.__class__.constructor = this.__class__;
     },
     defineMethods: function(inClassMeta) {
-      var methods = (this.__class__.__methods__ = nx.mix(
-        inClassMeta.__methods__,
-        this.meta.methods
-      ));
-      nx.defineMembers('Method', this.__class__.prototype, methods, false);
+      var target = this.__class__.prototype;
+      target.__methods__ = nx.mix(inClassMeta.__methods__, this.meta.methods);
+      nx.defineMembers('Method', target, target.__methods__, false);
     },
     defineProperties: function(inClassMeta) {
       var isStatic = inClassMeta.__static__;
       var target = isStatic ? this.__class__ : this.__class__.prototype;
-      var properties = (this.__class__.__properties__ = nx.mix(
+      target.__properties__ = nx.mix(
         inClassMeta.__properties__,
         this.meta.properties
-      ));
-      nx.defineMembers('Property', target, properties, isStatic);
+      );
+      nx.defineMembers('Property', target, target.__properties__, isStatic);
     },
     defineStatics: function(inClassMeta) {
-      var statics = (this.__class__.__statics__ = nx.mix(
+      var target = this.__class__;
+      target.__statics__ = nx.mix(
         inClassMeta.__statics__,
         this.base.__statics__,
         this.meta.statics
-      ));
-      nx.defineMembers('Method', this.__class__, statics, true);
+      );
+      nx.defineMembers('Method', target, target.__statics__, true);
     },
     methodsConstructorProcessor: function() {
       var classMeta = this.__class_meta__;
