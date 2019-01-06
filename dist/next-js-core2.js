@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.5.4',
+  VERSION: '1.5.5',
   DEBUG: false,
   GLOBAL: function() {
     return this;
@@ -83,9 +83,9 @@ nx = {
     var length = (keys || inTarget).length;
     var result = Array(length);
 
-    for (var index = 0; index < length; index++) {
-      var currentKey = keys ? keys[index] : index;
-      result[index] = inCallback.call(
+    for (var i = 0; i < length; i++) {
+      var currentKey = keys ? keys[i] : i;
+      result[i] = inCallback.call(
         inContext,
         currentKey,
         inTarget[currentKey],
@@ -114,9 +114,8 @@ nx = {
   nx.set = function(inTarget, inPath, inValue) {
     var paths = inPath.split(DOT);
     var result = inTarget || nx.global;
-    var last;
+    var last = paths.pop();
 
-    last = paths.pop();
     paths.forEach(function(path) {
       result = result[path] = result[path] || {};
     });
@@ -135,18 +134,16 @@ nx = {
   };
 
   nx.sets = function(inTarget, inObject) {
-    nx.each(inObject, function(key, value) {
+    nx.forIn(inObject, function(key, value) {
       nx.set(inTarget, key, value);
     });
   };
 
   nx.gets = function(inTarget) {
     var result = {};
-    for (var key in inTarget) {
-      if (inTarget.hasOwnProperty(key)) {
-        result[key] = inTarget[key];
-      }
-    }
+    nx.forIn(inTarget, function(key, value) {
+      result[key] = value;
+    });
     return result;
   };
 
