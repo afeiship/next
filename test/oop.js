@@ -268,5 +268,42 @@
 
       assert.equal(6, total);
     });
+
+    it('test __methods__', function() {
+      var Class1 = nx.declare({
+        methods: {
+          m1: function() {
+            console.log('method1');
+          },
+          m2: function() {
+            console.log('method2');
+          }
+        }
+      });
+
+      var Class2 = nx.declare({
+        properties: {
+          prop1: 'k1',
+          prop2: 'k2'
+        },
+        methods: {
+          m1: function() {
+            console.log('method1 override in child');
+          },
+          m3: function() {
+            console.log('method3 in child');
+          },
+          m4: function() {
+            console.log('method2 in child');
+          }
+        }
+      });
+
+      var cls1 = new Class1();
+      var cls2 = new Class2();
+      assert.deepEqual(Object.keys(cls1.__methods__), ['m1', 'm2']);
+      assert.deepEqual(Object.keys(cls2.__methods__), ['m1', 'm3', 'm4']);
+      // console.log(cls2.__properties__);
+    });
   });
 })();

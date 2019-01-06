@@ -332,9 +332,6 @@ if (typeof module !== 'undefined' && module.exports) {
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
     },
-    copyBaseProto: function() {
-      this.__class__.prototype.$base = this.$base;
-    },
     extendsClass: function(inClassMeta) {
       var BaseClass = function() {};
       BaseClass.prototype = this.$base;
@@ -394,7 +391,6 @@ if (typeof module !== 'undefined' && module.exports) {
     var lifeCycle = new LifeCycle(type, meta);
     lifeCycle.initMetaProcessor();
     lifeCycle.createClassProcessor();
-    lifeCycle.copyBaseProto();
     lifeCycle.inheritProcessor();
     lifeCycle.methodsConstructorProcessor();
     lifeCycle.staticsConstructorProcessor();
