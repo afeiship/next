@@ -53,13 +53,19 @@
       this.__class__.constructor = this.__class__;
     },
     defineMethods: function(inClassMeta) {
-      var methods = nx.mix(inClassMeta.__methods__, this.meta.methods);
+      var methods = (this.__class__.__methods__ = nx.mix(
+        inClassMeta.__methods__,
+        this.meta.methods
+      ));
       nx.defineMembers('Method', this.__class__.prototype, methods, false);
     },
     defineProperties: function(inClassMeta) {
       var isStatic = inClassMeta.__static__;
       var target = isStatic ? this.__class__ : this.__class__.prototype;
-      var properties = nx.mix(inClassMeta.__properties__, this.meta.properties);
+      var properties = (this.__class__.__properties__ = nx.mix(
+        inClassMeta.__properties__,
+        this.meta.properties
+      ));
       nx.defineMembers('Property', target, properties, isStatic);
     },
     defineStatics: function(inClassMeta) {
