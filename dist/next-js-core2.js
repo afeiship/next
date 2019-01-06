@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.5.3',
+  VERSION: '1.5.4',
   DEBUG: false,
   GLOBAL: function() {
     return this;
