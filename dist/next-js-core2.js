@@ -278,12 +278,11 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
   nx.defineMembers = function(inMember, inTarget, inObject, inIsStatic) {
-    var memberAction = 'define' + inMember;
     nx.each(inObject, function(key, val) {
       if (key.indexOf(',') > -1) {
         nx.defineBombMethod(inTarget, key, val, inIsStatic);
       } else {
-        nx[memberAction](inTarget, key, val, inIsStatic);
+        nx['define' + inMember](inTarget, key, val, inIsStatic);
       }
     });
   };
