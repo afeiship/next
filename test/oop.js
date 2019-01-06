@@ -1,9 +1,9 @@
-(function () {
+(function() {
   var assert = require('assert');
   var nx = require('../dist/next-js-core2');
 
-  describe('src/oop.js', function () {
-    it('Class-memeber', function () {
+  describe('src/oop.js', function() {
+    it('Class-memeber', function() {
       nx.declare('Class1', {
         statics: {
           static1: 1233,
@@ -18,7 +18,7 @@
           }
         },
         methods: {
-          init: function () {
+          init: function() {
             // console.log('method init!');
           }
         }
@@ -31,15 +31,14 @@
       assert.equal(prop_member.__type__, 'property');
       assert.equal(prop_member.__meta__, '1234');
       assert.equal(method_member.__type__, 'method');
-
     });
 
-    it('Class-methods-init', function () {
+    it('Class-methods-init', function() {
       var num1 = 1;
       var num2 = 0;
       nx.declare('Class1', {
         methods: {
-          init: function () {
+          init: function() {
             num1++;
           }
         }
@@ -47,41 +46,37 @@
 
       var Class2 = nx.declare({
         methods: {
-          init: function () {
+          init: function() {
             num2++;
           }
         }
       });
 
-
       var cls1 = new Class1();
       var cls2 = new Class2();
-
 
       assert.equal(num1, 2);
       assert.equal(num2, 1);
     });
 
-
-    it('Class extend', function () {
+    it('Class extend', function() {
       var num1 = 1;
       var Person = nx.declare({
         methods: {
-          init: function (name, age) {
+          init: function(name, age) {
             this._name = name;
             this._age = age;
           },
-          sayHi: function () {
+          sayHi: function() {
             num1++;
           }
         }
       });
 
-
       var Programmer = nx.declare({
         extends: Person,
         methods: {
-          init: function (name, age, lang) {
+          init: function(name, age, lang) {
             this.base(name, age);
             this._lang = lang;
           }
@@ -95,17 +90,16 @@
       assert.equal(true, !!~type.indexOf('nx.Anonymous'));
       assert.equal(fei._name, 'fei');
       assert.equal(2, num1);
-
     });
 
-    it('Class multi level extend', function () {
+    it('Class multi level extend', function() {
       var result = 0;
       var Http = nx.declare({
         methods: {
-          init: function () {
+          init: function() {
             this.koa = {
               req: 1234
-            }
+            };
           }
         }
       });
@@ -117,7 +111,7 @@
       var Example = nx.declare({
         extends: Bussiness,
         methods: {
-          exec: function () {
+          exec: function() {
             result = this.koa.req;
           }
         }
@@ -129,12 +123,11 @@
       assert.equal(result, 1234);
     });
 
-
-    it('static init will auto execute', function () {
+    it('static init will auto execute', function() {
       var num1 = 1;
       var StaticClass1 = nx.declare({
         statics: {
-          init: function () {
+          init: function() {
             num1++;
           }
         }
@@ -143,14 +136,13 @@
       assert.equal(num1, 2);
     });
 
-
-    it('props can be called in init', function () {
+    it('props can be called in init', function() {
       var Class1 = nx.declare({
         properties: {
           prop1: 1
         },
         methods: {
-          init: function () {
+          init: function() {
             this.prop1++;
           }
         }
@@ -159,14 +151,13 @@
       assert.equal(2, cls1.prop1);
     });
 
-
-    it('props is null', function () {
+    it('props is null', function() {
       var Class1 = nx.declare({
         properties: {
           prop1: null
         },
         methods: {
-          init: function () {
+          init: function() {
             this.prop1 = this.prop1 + '';
           }
         }
@@ -175,15 +166,14 @@
       assert.equal('null', cls1.prop1);
     });
 
-
-    it('props has set/get method', function () {
+    it('props has set/get method', function() {
       var Class1 = nx.declare({
         properties: {
           prop1: {
-            get: function () {
+            get: function() {
               return this._prop1;
             },
-            set: function (inValue) {
+            set: function(inValue) {
               this._prop1 = inValue * 2;
             }
           }
@@ -194,15 +184,14 @@
       assert.equal(4, cls1.prop1);
     });
 
-
-    it('props set/get can be inherited', function () {
+    it('props set/get can be inherited', function() {
       var Class1 = nx.declare({
         properties: {
           prop1: {
-            get: function () {
+            get: function() {
               return this._prop1;
             },
-            set: function (inValue) {
+            set: function(inValue) {
               this._prop1 = inValue * 2;
             }
           },
@@ -214,14 +203,15 @@
         extends: Class1,
         properties: {
           prop1: {
-            set: function (inValue) {
-              this.base(inValue + 100)
+            set: function(inValue) {
+              this.base(inValue + 100);
             }
           }
         }
       });
       var cls1 = new Class1();
       var cls2 = new Class2();
+
       cls1.prop1 = 2;
       cls2.prop1 = 2;
 
@@ -229,73 +219,5 @@
       assert.equal(204, cls2.prop1);
       assert.equal('love', cls2.prop2);
     });
-
-
-    it('oop mixins', function () {
-      var coding = false;
-      var study = false;
-      var fly = false;
-      var superman_init = false;
-      var superFly = false;
-
-      var Programmer = nx.declare({
-        methods: {
-          coding: function () {
-            coding = true;
-          }
-        }
-      });
-
-      var Student = nx.declare({
-        methods: {
-          study: function () {
-            study = true;
-          }
-        }
-      });
-
-      var Bird = nx.declare({
-        methods: {
-          fly: function () {
-            fly = true;
-          }
-        }
-      });
-
-      var SuperMan = nx.declare({
-        mixins: [
-          Programmer,
-          Student,
-          Bird
-        ],
-        methods: {
-          init: function () {
-            superman_init = true;
-            //console.log('I have many skills!');
-          },
-          fly: function () {
-            this.base();
-            superFly = true;
-          }
-        }
-      });
-
-      var superman = new SuperMan();
-      superman.coding();
-      superman.study();
-      superman.fly();
-
-      assert.equal(superman_init, true);
-      assert.equal(coding, true);
-      assert.equal(study, true);
-      assert.equal(fly, true);
-      assert.equal(superFly, true);
-
-
-    });
-
-
-
-
   });
-}());
+})();

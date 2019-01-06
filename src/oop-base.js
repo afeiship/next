@@ -1,17 +1,16 @@
 (function(nx, global) {
   var RootClass = function() {};
   var classMeta = {
-    __classId__: 0,
+    __class_id__: 0,
     __type__: 'nx.RootClass',
-    __module__: 'root',
     __base__: Object,
     __meta__: {},
-    __init__: nx.noop,
-    __static_init__: nx.noop,
-    __mixins__: [],
+    __static__: false,
     __statics__: {},
     __properties__: [],
-    __methods__: {}
+    __methods__: {},
+    __method_init__: nx.noop,
+    __static_init__: nx.noop
   };
 
   classMeta.__methods__ = RootClass.prototype = {
