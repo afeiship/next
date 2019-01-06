@@ -353,7 +353,11 @@ if (typeof module !== 'undefined' && module.exports) {
       nx.defineMembers('Property', target, properties, isStatic);
     },
     defineStatics: function(inClassMeta) {
-      var statics = nx.mix(inClassMeta.__statics__, this.meta.statics);
+      var statics = (this.__class__.__statics__ = nx.mix(
+        inClassMeta.__statics__,
+        this.base.__statics__,
+        this.meta.statics
+      ));
       nx.defineMembers('Method', this.__class__, statics, true);
     },
     methodsConstructorProcessor: function() {
