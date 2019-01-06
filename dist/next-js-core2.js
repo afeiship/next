@@ -134,6 +134,22 @@ nx = {
     return result;
   };
 
+  nx.sets = function(inTarget, inObject) {
+    nx.each(inObject, function(key, value) {
+      nx.set(inTarget, key, value);
+    });
+  };
+
+  nx.gets = function(inTarget) {
+    var result = {};
+    for (var key in inTarget) {
+      if (inTarget.hasOwnProperty(key)) {
+        result[key] = inTarget[key];
+      }
+    }
+    return result;
+  };
+
   nx.path = function(inTarget, inPath, inValue) {
     return inValue == null
       ? this.get(inTarget, inPath)
