@@ -49,6 +49,7 @@
       var BaseClass = function() {};
       BaseClass.prototype = this.$base;
       this.__class__.prototype = new BaseClass();
+      this.__class__.prototype.$base = this.$base;
       this.__class__.constructor = this.__class__;
     },
     defineMethods: function(inClassMeta) {

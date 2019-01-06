@@ -1,16 +1,21 @@
+var total = 2;
 var Class1 = nx.declare({
-  statics: {
-    instance: null,
-    getInst: function() {
-      console.log('get instance');
-      return this.instance;
+  methods: {
+    calc: function() {
+      total++;
     }
   }
 });
 
 var Class2 = nx.declare({
-  extends: Class1
+  extends: Class1,
+  methods: {
+    calc: function() {
+      this.parent('calc');
+      total = total * 2;
+    }
+  }
 });
 
-var cls1 = new Class1();
 var cls2 = new Class2();
+cls2.calc();
