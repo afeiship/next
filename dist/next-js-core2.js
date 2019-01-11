@@ -194,6 +194,7 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
+      console.log(this, this.__static__);
       return this.$base[inName].apply(this, args);
     },
     toString: function() {
