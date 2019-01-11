@@ -21,6 +21,12 @@ nx = {
     throw new Error(inMsg);
   };
 
+  nx.try = function(inFn) {
+    try {
+      inFn();
+    } catch (_) {}
+  };
+
   nx.forEach = function(inArray, inCallback, inContext) {
     var length = inArray.length;
     var i;

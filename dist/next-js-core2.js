@@ -21,6 +21,12 @@ nx = {
     throw new Error(inMsg);
   };
 
+  nx.try = function(inFn) {
+    try {
+      inFn();
+    } catch (_) {}
+  };
+
   nx.forEach = function(inArray, inCallback, inContext) {
     var length = inArray.length;
     var i;
@@ -194,7 +200,6 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
-      console.log(this, this.__static__);
       return this.$base[inName].apply(this, args);
     },
     toString: function() {
