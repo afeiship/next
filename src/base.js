@@ -12,9 +12,6 @@ nx = {
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
 
-  //global.nx will be 'undefined' in webpack/node env:
-  global.nx = global.nx || nx;
-
   nx.noop = function() {};
 
   nx.error = function(inMsg) {
@@ -119,7 +116,7 @@ nx = {
 
   nx.set = function(inTarget, inPath, inValue) {
     var paths = inPath.split(DOT);
-    var result = inTarget || nx.global;
+    var result = inTarget || global;
     var last = paths.pop();
 
     paths.forEach(function(path) {
@@ -168,6 +165,6 @@ if (typeof module !== 'undefined' && module.exports) {
       return nx;
     });
   } else {
-    window.nx = nx;
+    nx.GLOBAL.nx = nx;
   }
 }
