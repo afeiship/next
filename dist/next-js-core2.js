@@ -175,7 +175,18 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
-      return this.$base[inName].apply(this, args);
+      var type = this['@' + inName].__type__
+      switch(true){
+        case type === 'method':
+          return this.$base[inName].apply(this, args);
+          break;
+        case type === 'property' && args.length === 0:
+          return this.$base['@' + inName].get.apply(this)
+          break;
+        case type === 'property' && args.length === 1:
+          this.$base['@' + inName].set.apply(this,args)
+          break;
+      }
     },
     toString: function() {
       return '[Class@' + this.__type__ + ']';
