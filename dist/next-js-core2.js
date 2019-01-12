@@ -156,7 +156,7 @@ if (typeof module !== 'undefined' && module.exports) {
     __meta__: {},
     __static__: false,
     __statics__: {},
-    __properties__: [],
+    __properties__: {},
     __methods__: {},
     __method_init__: nx.noop,
     __static_init__: nx.noop
