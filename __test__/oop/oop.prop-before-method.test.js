@@ -3,22 +3,19 @@ require('../../src/oop-base');
 require('../../src/oop-reflect');
 require('../../src/oop');
 
-describe('nx.DEBUG', () => {
-  test('Class-debug', function() {
-    nx.DEBUG = true;
+describe('oop.prop-before-method.test', () => {
+  test('Class', function() {
     var Class1 = nx.declare({
+      properties: {
+        prop1: 1
+      },
       methods: {
         init: function() {
-          this.cl1 = 1;
+          this.prop1++;
         }
       }
     });
-
     var cls1 = new Class1();
-    var cls2 = new Class1();
-    var cls3 = new Class1();
-    var cls4 = new Class1();
-
-    expect(nx.__instances__.length).toBe(4);
+    expect(2).toBe(cls1.prop1);
   });
 });

@@ -31,9 +31,9 @@
     createClassProcessor: function() {
       var self = this;
       this.__class__ = function() {
-        this.__id__ = ++instanceId;
+        this.__id__ = instanceId++;
         self.__constructor__.apply(this, arguments);
-        self.registerDebug(this.__id__, this);
+        self.registerDebug(this);
       };
     },
     inheritProcessor: function() {
@@ -94,10 +94,10 @@
         nx.set(nx.GLOBAL, type, Class);
       }
     },
-    registerDebug: function(inId, inInstance) {
+    registerDebug: function(inInstance) {
       if (nx.DEBUG) {
-        nx.set(nx, '__instances__.' + inId, this.inInstance);
-        nx.set(nx, '__instances__.length', inId + 1);
+        nx.set(nx, '__instances__.' + (instanceId - 1), inInstance);
+        nx.set(nx, '__instances__.length', instanceId);
       }
     }
   };
