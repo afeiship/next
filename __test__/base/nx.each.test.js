@@ -70,7 +70,7 @@ describe('nx.each', function() {
 
     test('should pass the undefined, will not execute', function() {
       var total = 0;
-      nx.each(null, function(prop, value, obj) {
+      nx.each(undefined, function(prop, value, obj) {
         total++;
       });
       expect(total).toBe(0);
