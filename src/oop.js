@@ -96,7 +96,8 @@
     },
     registerDebug: function(inId, inInstance) {
       if (nx.DEBUG) {
-        nx.set(nx, '__instances__' + inId, this.inInstance);
+        nx.set(nx, '__instances__.' + inId, this.inInstance);
+        nx.set(nx, '__instances__.length', inId + 1);
       }
     }
   };
