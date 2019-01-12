@@ -27,16 +27,13 @@
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
       var type = this['@' + inName].__type__
-      switch(true){
-        case type === 'method':
-          return this.$base[inName].apply(this, args);
-          break;
-        case type === 'property' && args.length === 0:
-          return this.$base['@' + inName].get.apply(this)
-          break;
-        case type === 'property' && args.length === 1:
-          this.$base['@' + inName].set.apply(this,args)
-          break;
+      var base = this.$base;
+      switch(type){
+        case 'method':
+          return base[inName].apply(this, args);
+        case 'property':
+          var accessor = ['get','set'][args.length]
+          return base['@' + inName][accessor].apply(this,args)
       }
     },
     toString: function() {
