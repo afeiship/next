@@ -3,7 +3,7 @@ require('../../src/oop-base');
 require('../../src/oop-reflect');
 
 describe('nx.defineBombMethod', () => {
-  test('define boob function', () => {
+  test('define bomb function', () => {
     var obj = {
       key: '__KEY__'
     };
@@ -15,5 +15,7 @@ describe('nx.defineBombMethod', () => {
     });
 
     expect(obj.m1()).toBe('__KEY__m1');
+    expect(obj.m2()).toBe('__KEY__m2');
+    expect(obj.m3()).toBe('__KEY__m3');
   });
 });
