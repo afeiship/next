@@ -22,22 +22,27 @@ describe('Array looping', () => {
 
 describe('Array looping -- change context', () => {
   var myArray;
-  var myArrayB;
+  var myObject;
 
   beforeEach(function() {
     myArray = ['A', 'B', 'C', 'D'];
-    myArrayB = ['A1', 'B1', 'C1', 'D1'];
+    myObject = {
+      testA: 'A',
+      testB: 'B',
+      testC: 'C',
+      testD: 'D'
+    };
   });
 
   test('should pass the element', function() {
-    var result = '';
+    var result1 = '';
     nx.forEach(
       myArray,
       function(value, index) {
-        result += value;
+        result1 += value + '__' +this.testA;
       },
-      myArrayB
+      myObject
     );
-    console.log(result);
+    expect(result1).toBe('A__AB__AC__AD__A');
   });
 });

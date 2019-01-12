@@ -58,22 +58,18 @@ nx = {
     };
 
     if (inTarget) {
-      if (inTarget.each) {
-        return inTarget.each(inCallback, inContext);
+      length = inTarget.length;
+      if (typeof length === NUMBER) {
+        for (key = 0; key < length; key++) {
+          if (iterator(key, inTarget[key])) {
+            break;
+          }
+        }
       } else {
-        length = inTarget.length;
-        if (typeof length === NUMBER) {
-          for (key = 0; key < length; key++) {
+        for (key in inTarget) {
+          if (inTarget.hasOwnProperty(key)) {
             if (iterator(key, inTarget[key])) {
               break;
-            }
-          }
-        } else {
-          for (key in inTarget) {
-            if (inTarget.hasOwnProperty(key)) {
-              if (iterator(key, inTarget[key])) {
-                break;
-              }
             }
           }
         }
@@ -87,13 +83,8 @@ nx = {
     var result = Array(length);
 
     for (var i = 0; i < length; i++) {
-      var currentKey = keys ? keys[i] : i;
-      result[i] = inCallback.call(
-        inContext,
-        currentKey,
-        inTarget[currentKey],
-        inTarget
-      );
+      var key = keys ? keys[i] : i;
+      result[i] = inCallback.call(inContext, key, inTarget[key], inTarget);
     }
     return result;
   };
