@@ -16,9 +16,9 @@ describe('nx.set name/path', () => {
     });
   });
 
-  test('nx.set return undefined', () => {
+  test('nx.set return target', () => {
     var item = { name: 'afeiship', test: { k1: { abc: 'ABC' } } };
     var rst = nx.set(item, 'test.k1.abc', '__ABC__');
-    expect(rst).toBeUndefined();
+    expect(rst).toBe(item);
   });
 });

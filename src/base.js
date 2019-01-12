@@ -115,6 +115,7 @@ nx = {
       result = result[path] = result[path] || {};
     });
     result[last] = inValue;
+    return inTarget;
   };
 
   nx.get = function(inTarget, inPath) {

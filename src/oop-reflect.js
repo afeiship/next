@@ -6,8 +6,8 @@
     var key = MEMBER_PREFIX + inName;
     var getter, setter, descriptor;
     var value, filed;
-    var isObject = typeof inMeta === 'object';
-    var meta = inMeta && isObject ? inMeta : { value: inMeta };
+    var typeOfObject = typeof inMeta === 'object';
+    var meta = inMeta && typeOfObject ? inMeta : { value: inMeta };
 
     if (VALUE in meta) {
       value = meta.value;
@@ -71,7 +71,7 @@
   };
 
   nx.defineMembers = function(inMember, inTarget, inObject, inIsStatic) {
-    nx.each(inObject, function(key, val) {
+    nx.forIn(inObject, function(key, val) {
       if (key.indexOf(',') > -1) {
         nx.defineBombMethod(inTarget, key, val, inIsStatic);
       } else {
