@@ -12,9 +12,6 @@ nx = {
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
 
-  //global.nx will be 'undefined' in webpack/node env:
-  global.nx = global.nx || nx;
-
   nx.noop = function() {};
 
   nx.error = function(inMsg) {
@@ -61,22 +58,18 @@ nx = {
     };
 
     if (inTarget) {
-      if (inTarget.each) {
-        return inTarget.each(inCallback, inContext);
+      length = inTarget.length;
+      if (typeof length === NUMBER) {
+        for (key = 0; key < length; key++) {
+          if (iterator(key, inTarget[key])) {
+            break;
+          }
+        }
       } else {
-        length = inTarget.length;
-        if (typeof length === NUMBER) {
-          for (key = 0; key < length; key++) {
+        for (key in inTarget) {
+          if (inTarget.hasOwnProperty(key)) {
             if (iterator(key, inTarget[key])) {
               break;
-            }
-          }
-        } else {
-          for (key in inTarget) {
-            if (inTarget.hasOwnProperty(key)) {
-              if (iterator(key, inTarget[key])) {
-                break;
-              }
             }
           }
         }
@@ -85,19 +78,15 @@ nx = {
   };
 
   nx.map = function(inTarget, inCallback, inContext) {
-    var keys = typeof inTarget.length === NUMBER ? null : Object.keys(inTarget);
-    var length = (keys || inTarget).length;
-    var result = Array(length);
-
-    for (var i = 0; i < length; i++) {
-      var currentKey = keys ? keys[i] : i;
-      result[i] = inCallback.call(
-        inContext,
-        currentKey,
-        inTarget[currentKey],
-        inTarget
-      );
-    }
+    var result = [];
+    nx.each(inTarget, function() {
+      var item = inCallback.apply(inContext, arguments);
+      if (item !== nx.BREAKER) {
+        result.push(item);
+      } else {
+        return nx.BREAKER;
+      }
+    });
     return result;
   };
 
@@ -119,7 +108,7 @@ nx = {
 
   nx.set = function(inTarget, inPath, inValue) {
     var paths = inPath.split(DOT);
-    var result = inTarget || nx.global;
+    var result = inTarget || global;
     var last = paths.pop();
 
     paths.forEach(function(path) {
@@ -168,7 +157,7 @@ if (typeof module !== 'undefined' && module.exports) {
       return nx;
     });
   } else {
-    window.nx = nx;
+    nx.GLOBAL.nx = nx;
   }
 }
 

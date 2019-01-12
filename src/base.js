@@ -127,6 +127,26 @@ nx = {
     });
     return result;
   };
+
+  nx.sets = function(inTarget, inObject) {
+    nx.forIn(inObject, function(key, value) {
+      nx.set(inTarget, key, value);
+    });
+  };
+
+  nx.gets = function(inTarget) {
+    var result = {};
+    nx.forIn(inTarget, function(key, value) {
+      result[key] = value;
+    });
+    return result;
+  };
+
+  nx.path = function(inTarget, inPath, inValue) {
+    return inValue == null
+      ? this.get(inTarget, inPath)
+      : this.set(inTarget, inPath, inValue);
+  };
 })(nx, nx.GLOBAL);
 
 if (typeof module !== 'undefined' && module.exports) {
