@@ -175,14 +175,14 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
-      var type = this['@' + inName].__type__
       var base = this.$base;
-      switch(type){
+      var type = this['@' + inName].__type__;
+      var accessor = ['get', 'set'][args.length];
+      switch (type) {
         case 'method':
           return base[inName].apply(this, args);
         case 'property':
-          var accessor = ['get','set'][args.length]
-          return base['@' + inName][accessor].apply(this,args)
+          return base['@' + inName][accessor].apply(this, args);
       }
     },
     toString: function() {
@@ -327,10 +327,11 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     extendsClass: function(inClassMeta) {
       var SuperClass = function() {};
+      var Class = this.__class__;
       SuperClass.prototype = this.$base;
-      this.__class__.prototype = new SuperClass();
-      this.__class__.prototype.$base = this.$base;
-      this.__class__.prototype.constructor = this.__class__;
+      Class.prototype = new SuperClass();
+      Class.prototype.$base = this.$base;
+      Class.prototype.constructor = Class;
     },
     defineMethods: function(inClassMeta) {
       var target = this.__class__.prototype;

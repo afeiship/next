@@ -26,14 +26,14 @@
     },
     parent: function(inName) {
       var args = nx.slice(arguments, 1);
-      var type = this['@' + inName].__type__
       var base = this.$base;
-      switch(type){
+      var type = this['@' + inName].__type__;
+      var accessor = ['get', 'set'][args.length];
+      switch (type) {
         case 'method':
           return base[inName].apply(this, args);
         case 'property':
-          var accessor = ['get','set'][args.length]
-          return base['@' + inName][accessor].apply(this,args)
+          return base['@' + inName][accessor].apply(this, args);
       }
     },
     toString: function() {
