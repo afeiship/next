@@ -195,8 +195,8 @@ if (typeof module !== 'undefined' && module.exports) {
     var key = MEMBER_PREFIX + inName;
     var getter, setter, descriptor;
     var value, filed;
-    var isObject = typeof inMeta === 'object';
-    var meta = inMeta && isObject ? inMeta : { value: inMeta };
+    var typeOfObject = typeof inMeta === 'object';
+    var meta = inMeta && typeOfObject ? inMeta : { value: inMeta };
 
     if (VALUE in meta) {
       value = meta.value;
@@ -260,7 +260,7 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
   nx.defineMembers = function(inMember, inTarget, inObject, inIsStatic) {
-    nx.each(inObject, function(key, val) {
+    nx.forIn(inObject, function(key, val) {
       if (key.indexOf(',') > -1) {
         nx.defineBombMethod(inTarget, key, val, inIsStatic);
       } else {
@@ -303,8 +303,9 @@ if (typeof module !== 'undefined' && module.exports) {
     createClassProcessor: function() {
       var self = this;
       this.__class__ = function() {
-        this.__id__ = ++instanceId;
+        this.__id__ = instanceId++;
         self.__constructor__.apply(this, arguments);
+        self.registerDebug(this);
       };
     },
     inheritProcessor: function() {
@@ -315,15 +316,20 @@ if (typeof module !== 'undefined' && module.exports) {
       this.defineStatics(classMeta);
     },
     extendsClass: function(inClassMeta) {
-      var BaseClass = function() {};
-      BaseClass.prototype = this.$base;
-      this.__class__.prototype = new BaseClass();
+      var SuperClass = function() {};
+      SuperClass.prototype = this.$base;
+      this.__class__.prototype = new SuperClass();
       this.__class__.prototype.$base = this.$base;
       this.__class__.prototype.constructor = this.__class__;
     },
     defineMethods: function(inClassMeta) {
       var target = this.__class__.prototype;
-      target.__methods__ = nx.mix(inClassMeta.__methods__, this.meta.methods);
+      // console.log('target, prototype:', target);
+      target.__methods__ = nx.mix(
+        inClassMeta.__methods__,
+        target.__methods__,
+        this.meta.methods
+      );
       nx.defineMembers('Method', target, target.__methods__, false);
     },
     defineProperties: function(inClassMeta) {
@@ -333,6 +339,7 @@ if (typeof module !== 'undefined' && module.exports) {
         inClassMeta.__properties__,
         this.meta.properties
       );
+      console.log(target.__properties__);
       nx.defineMembers('Property', target, target.__properties__, isStatic);
     },
     defineStatics: function(inClassMeta) {
@@ -361,8 +368,14 @@ if (typeof module !== 'undefined' && module.exports) {
 
       nx.mix(Class.prototype, classMeta);
       nx.mix(Class, classMeta);
-      if (type !== NX_ANONYMOUS + classId) {
+      if (type.indexOf(NX_ANONYMOUS) === -1) {
         nx.set(nx.GLOBAL, type, Class);
+      }
+    },
+    registerDebug: function(inInstance) {
+      if (nx.DEBUG) {
+        nx.set(nx, '__instances__.' + (instanceId - 1), inInstance);
+        nx.set(nx, '__instances__.length', instanceId);
       }
     }
   };
