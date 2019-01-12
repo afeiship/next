@@ -19,3 +19,25 @@ describe('Array looping', () => {
     });
   });
 });
+
+describe('Array looping -- change context', () => {
+  var myArray;
+  var myArrayB;
+
+  beforeEach(function() {
+    myArray = ['A', 'B', 'C', 'D'];
+    myArrayB = ['A1', 'B1', 'C1', 'D1'];
+  });
+
+  test('should pass the element', function() {
+    var result = '';
+    nx.forEach(
+      myArray,
+      function(value, index) {
+        result += value;
+      },
+      myArrayB
+    );
+    console.log(result);
+  });
+});
