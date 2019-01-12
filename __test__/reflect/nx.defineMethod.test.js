@@ -1,6 +1,15 @@
 require('../../src/base');
+require('../../src/oop-base');
+require('../../src/oop-reflect');
 
 describe('nx.defineMethod', () => {
-  test('nx.set object value', () => {
+  test('define a function', () => {
+    function DataHub() {}
+    nx.defineMethod(DataHub.prototype, 'm1', function() {
+      console.log('m1 method.');
+    });
+
+    var data1 = new DataHub();
+    expect(typeof data1.m1).toBe('function');
   });
 });
