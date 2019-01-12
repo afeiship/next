@@ -16,16 +16,17 @@
   LifeCycle.prototype = {
     constructor: LifeCycle,
     initMetaProcessor: function() {
-      var methods = this.meta.methods || {};
-      var statics = this.meta.statics || {};
+      var meta = this.meta;
+      var methods = meta.methods || {};
+      var statics = meta.statics || {};
       nx.mix(this.__class_meta__, {
         __type__: this.type,
-        __meta__: this.meta,
+        __meta__: meta,
         __base__: this.base,
         __class_id__: classId++,
         __method_init__: methods.init || this.base.__method_init__,
         __static_init__: statics.init || this.base.__static_init__,
-        __static__: !this.meta.methods && !!this.meta.statics
+        __static__: !meta.methods && !!meta.statics
       });
     },
     createClassProcessor: function() {
