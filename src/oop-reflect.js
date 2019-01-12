@@ -1,5 +1,6 @@
 (function(nx, global) {
   var MEMBER_PREFIX = '@';
+  var VALUE = 'value';
 
   nx.defineProperty = function(inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
@@ -8,7 +9,7 @@
     var isObject = typeof inMeta === 'object';
     var meta = inMeta && isObject ? inMeta : { value: inMeta };
 
-    if ('value' in meta) {
+    if (VALUE in meta) {
       value = meta.value;
       filed = '_' + inName;
 
