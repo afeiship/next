@@ -33,6 +33,7 @@
       this.__class__ = function() {
         this.__id__ = ++instanceId;
         self.__constructor__.apply(this, arguments);
+        self.registerDebug(this.__id__, this);
       };
     },
     inheritProcessor: function() {
@@ -43,9 +44,9 @@
       this.defineStatics(classMeta);
     },
     extendsClass: function(inClassMeta) {
-      var BaseClass = function() {};
-      BaseClass.prototype = this.$base;
-      this.__class__.prototype = new BaseClass();
+      var SuperClass = function() {};
+      SuperClass.prototype = this.$base;
+      this.__class__.prototype = new SuperClass();
       this.__class__.prototype.$base = this.$base;
       this.__class__.prototype.constructor = this.__class__;
     },
@@ -89,8 +90,13 @@
 
       nx.mix(Class.prototype, classMeta);
       nx.mix(Class, classMeta);
-      if (type !== NX_ANONYMOUS + classId) {
+      if (type.indexOf(NX_ANONYMOUS) === -1) {
         nx.set(nx.GLOBAL, type, Class);
+      }
+    },
+    registerDebug: function(inId, inInstance) {
+      if (nx.DEBUG) {
+        nx.set(nx, '__instances__' + inId, this.inInstance);
       }
     }
   };
