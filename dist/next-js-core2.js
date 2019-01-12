@@ -190,6 +190,7 @@ if (typeof module !== 'undefined' && module.exports) {
 (function(nx, global) {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
+  var COMMA = ',';
 
   nx.defineProperty = function(inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
@@ -253,7 +254,7 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 
   nx.defineBombMethod = function(inTarget, inName, inMeta, inIsStatic) {
-    var keys = inName.split(',');
+    var keys = inName.split(COMMA);
     keys.forEach(function(key) {
       nx.defineMethod(inTarget, key, inMeta.call(inTarget, key), inIsStatic);
     });
@@ -261,7 +262,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.defineMembers = function(inMember, inTarget, inObject, inIsStatic) {
     nx.forIn(inObject, function(key, val) {
-      if (key.indexOf(',') > -1) {
+      if (key.indexOf(COMMA) > -1) {
         nx.defineBombMethod(inTarget, key, val, inIsStatic);
       } else {
         nx['define' + inMember](inTarget, key, val, inIsStatic);
