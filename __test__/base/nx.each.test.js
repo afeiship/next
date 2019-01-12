@@ -1,7 +1,7 @@
 require('../../src/base');
 
 /**
- * forEach.js
+ * nx.each
  */
 describe('nx.each', function() {
   /**
@@ -113,5 +113,36 @@ describe('nx.each', function() {
         myArray
       );
     });
+  });
+});
+
+describe('should break by nx.BREAKER', () => {
+  var myArray;
+  var myObject;
+  beforeEach(function() {
+    myArray = ['A', 'B', 'C', 'D'];
+    myObject = { testA: 'A', testB: 'B', testC: 'C', testD: 'D' };
+  });
+  test('should break by nx.BREAKER', function() {
+    var result1 = '';
+    nx.each(myArray, function (index, value) {
+      if (value === 'D') {
+        return nx.BREAKER;
+      } else {
+        result1 += value;
+      }
+    });
+    expect(result1).toBe('ABC');
+  });
+
+  test('should pass the element', function() {
+    var result1 = '';
+    nx.each(myObject, function(key, value) {
+      if (value === 'D') {
+        return nx.BREAKER;
+      }
+      result1 += value;
+    });
+    expect(result1).toBe('ABC');
   });
 });

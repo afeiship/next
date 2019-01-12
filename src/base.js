@@ -78,14 +78,15 @@ nx = {
   };
 
   nx.map = function(inTarget, inCallback, inContext) {
-    var keys = typeof inTarget.length === NUMBER ? null : Object.keys(inTarget);
-    var length = (keys || inTarget).length;
-    var result = Array(length);
-
-    for (var i = 0; i < length; i++) {
-      var key = keys ? keys[i] : i;
-      result[i] = inCallback.call(inContext, key, inTarget[key], inTarget);
-    }
+    var result = [];
+    nx.each(inTarget, function() {
+      var item = inCallback.apply(inContext, arguments);
+      if (item !== nx.BREAKER) {
+        result.push(item);
+      } else {
+        return nx.BREAKER;
+      }
+    });
     return result;
   };
 
@@ -125,26 +126,6 @@ nx = {
       result = result && result[path];
     });
     return result;
-  };
-
-  nx.sets = function(inTarget, inObject) {
-    nx.forIn(inObject, function(key, value) {
-      nx.set(inTarget, key, value);
-    });
-  };
-
-  nx.gets = function(inTarget) {
-    var result = {};
-    nx.forIn(inTarget, function(key, value) {
-      result[key] = value;
-    });
-    return result;
-  };
-
-  nx.path = function(inTarget, inPath, inValue) {
-    return inValue == null
-      ? this.get(inTarget, inPath)
-      : this.set(inTarget, inPath, inValue);
   };
 })(nx, nx.GLOBAL);
 

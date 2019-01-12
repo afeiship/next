@@ -39,10 +39,28 @@ describe('Array looping -- change context', () => {
     nx.forEach(
       myArray,
       function(value, index) {
-        result1 += value + '__' +this.testA;
+        result1 += value + '__' + this.testA;
       },
       myObject
     );
     expect(result1).toBe('A__AB__AC__AD__A');
+  });
+});
+
+describe('should break by nx.BREAKER', () => {
+  var myArray;
+  beforeEach(function() {
+    myArray = ['A', 'B', 'C', 'D'];
+  });
+  test('should break by nx.BREAKER', function() {
+    var result1 = '';
+    nx.forEach(myArray, function(value, index) {
+      if (value === 'D') {
+        return nx.BREAKER;
+      } else {
+        result1 += value;
+      }
+    });
+    expect(result1).toBe('ABC');
   });
 });

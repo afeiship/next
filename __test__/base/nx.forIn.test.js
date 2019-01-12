@@ -56,3 +56,27 @@ describe('Context changing', function() {
     );
   });
 });
+
+describe('Each can by break by nx.BREAKER', () => {
+  var myObject;
+
+  beforeEach(function() {
+    myObject = {
+      testA: 'A',
+      testB: 'B',
+      testC: 'C',
+      testD: 'D'
+    };
+  });
+
+  test('should pass the element', function() {
+    var result1 = '';
+    nx.forIn(myObject, function(key, value) {
+      if (value === 'D') {
+        return nx.BREAKER;
+      }
+      result1 += value;
+    });
+    expect(result1).toBe('ABC');
+  });
+});
