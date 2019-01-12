@@ -52,7 +52,6 @@
     },
     defineMethods: function(inClassMeta) {
       var target = this.__class__.prototype;
-      // console.log('target, prototype:', target);
       target.__methods__ = nx.mix(
         inClassMeta.__methods__,
         target.__methods__,
@@ -67,7 +66,6 @@
         inClassMeta.__properties__,
         this.meta.properties
       );
-      console.log(target.__properties__);
       nx.defineMembers('Property', target, target.__properties__, isStatic);
     },
     defineStatics: function(inClassMeta) {
