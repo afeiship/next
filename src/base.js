@@ -115,7 +115,6 @@ nx = {
       result = result[path] = result[path] || {};
     });
     result[last] = inValue;
-    return inTarget;
   };
 
   nx.get = function(inTarget, inPath) {
@@ -124,20 +123,6 @@ nx = {
 
     paths.forEach(function(path) {
       result = result && result[path];
-    });
-    return result;
-  };
-
-  nx.sets = function(inTarget, inObject) {
-    nx.forIn(inObject, function(key, value) {
-      nx.set(inTarget, key, value);
-    });
-  };
-
-  nx.gets = function(inTarget) {
-    var result = {};
-    nx.forIn(inTarget, function(key, value) {
-      result[key] = value;
     });
     return result;
   };
