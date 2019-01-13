@@ -154,5 +154,7 @@ describe('nx.DEBUG', () => {
       'm6'
     ]);
     expect(m1Rst).toBe('m1@');
+    console.log(Man.m2());
+
   });
 });
