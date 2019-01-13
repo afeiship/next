@@ -108,7 +108,7 @@ nx = {
 
   nx.set = function(inTarget, inPath, inValue) {
     var paths = inPath.split(DOT);
-    var result = inTarget || global;
+    var result = inTarget || nx.GLOBAL;
     var last = paths.pop();
 
     paths.forEach(function(path) {
@@ -120,7 +120,7 @@ nx = {
 
   nx.get = function(inTarget, inPath) {
     var paths = inPath.split(DOT);
-    var result = inTarget || nx.global;
+    var result = inTarget || nx.GLOBAL;
 
     paths.forEach(function(path) {
       result = result && result[path];
