@@ -48,6 +48,7 @@ describe('oop class es6', () => {
     expect(num1).toBe(4);
     expect(cls2.m3()).toBe(100);
 
+    // readonly prop works:
     cls2.prop1 = 123;
     expect(cls2.prop1).toBe('prop1');
   });
