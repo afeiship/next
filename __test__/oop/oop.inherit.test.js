@@ -145,17 +145,8 @@ describe('nx.DEBUG', () => {
     var manKeys = Object.keys(manStatics);
 
     expect(h1Keys).toEqual(['base', 'parent', 'm1', 'm2', 'm3']);
-    expect(manKeys).toEqual([
-      'base',
-      'parent',
-      'm1',
-      'm2',
-      'm3',
-      'm5',
-      'm6'
-    ]);
+    expect(manKeys).toEqual(['base', 'parent', 'm1', 'm2', 'm3', 'm5', 'm6']);
     expect(m1Rst).toBe('m1@');
-    console.log(Man.m2());
-
+    expect(Man.m2()).toBe('m2@');
   });
 });

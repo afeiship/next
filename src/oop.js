@@ -40,9 +40,9 @@
     inheritProcessor: function() {
       var classMeta = this.__class_meta__;
       this.inheritedClass(classMeta);
-      this.defineMethods(classMeta);
+      this.defineMethods(classMeta, true);
+      this.defineMethods(classMeta, false);
       this.defineProperties(classMeta);
-      this.defineStatics(classMeta);
     },
     inheritedClass: function(inClassMeta) {
       var SuperClass = function() {};
@@ -52,15 +52,19 @@
       Class.prototype.$base = this.$base;
       Class.prototype.constructor = Class;
     },
-    defineMethods: function(inClassMeta) {
-      var target = this.__class__.prototype;
-      // todo: has bug:
-      target.__methods__ = nx.mix(
-        inClassMeta.__methods__,
-        target.__methods__,
-        this.meta.methods
-      );
-      nx.defineMembers('Method', target, target.__methods__, false);
+    defineMethods: function(inClassMeta, inIsStatic) {
+      var key = inIsStatic ? 'statics' : 'methods';
+      var key_ = inIsStatic ? '__statics__' : '__methods__';
+      var target = inIsStatic ? this.__class__ : this.__class__.prototype;
+      var baseTarget = inIsStatic ? this.base : this.base.prototype;
+      var methods = baseTarget[key_] || {};
+      nx.forIn(this.meta[key], function(key, value) {
+        if (methods[key] && typeof value === 'function') {
+          value.__base__ = methods[key];
+        }
+      });
+      target[key_] = nx.mix(inClassMeta[key_], methods, this.meta[key]);
+      nx.defineMembers('Method', target, target[key_], inIsStatic);
     },
     defineProperties: function(inClassMeta) {
       var isStatic = inClassMeta.__static__;
@@ -70,15 +74,6 @@
         this.meta.properties
       );
       nx.defineMembers('Property', target, target.__properties__, isStatic);
-    },
-    defineStatics: function(inClassMeta) {
-      var target = this.__class__;
-      target.__statics__ = nx.mix(
-        inClassMeta.__statics__,
-        this.base.__statics__,
-        this.meta.statics
-      );
-      nx.defineMembers('Method', target, target.__statics__, true);
     },
     methodsConstructorProcessor: function() {
       var classMeta = this.__class_meta__;

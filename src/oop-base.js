@@ -22,7 +22,7 @@
       }
     },
     parent: function(inName) {
-      var isStatic = typeof this.__id__ !== 'number';
+      var isStatic = typeof this.__id__ === 'undefined';
       var args = nx.slice(arguments, 1);
       var base = isStatic ? this.__base__ : this.__base__.prototype;
       var type = this['@' + inName].__type__;
@@ -36,7 +36,6 @@
     }
   };
 
-  classMeta.__statics__ = nx.mix({}, baseMethods);
   classMeta.__methods__ = RootClass.prototype = nx.mix(
     {
       constructor: RootClass,
@@ -50,6 +49,7 @@
   );
 
   //mix && export:
+  nx.mix(classMeta.__statics__, baseMethods);
   nx.mix(RootClass, classMeta);
   nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;

@@ -53,8 +53,6 @@
 
   nx.defineMethod = function(inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
-    key in inTarget && (inMeta.__base__ = inTarget[key].__meta__);
-
     inTarget[inName] = inMeta;
     return (inTarget[key] = {
       __meta__: inMeta,

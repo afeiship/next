@@ -171,7 +171,7 @@ if (typeof module !== 'undefined' && module.exports) {
       }
     },
     parent: function(inName) {
-      var isStatic = typeof this.__id__ !== 'number';
+      var isStatic = typeof this.__id__ === 'undefined';
       var args = nx.slice(arguments, 1);
       var base = isStatic ? this.__base__ : this.__base__.prototype;
       var type = this['@' + inName].__type__;
@@ -185,7 +185,6 @@ if (typeof module !== 'undefined' && module.exports) {
     }
   };
 
-  classMeta.__statics__ = nx.mix({}, baseMethods);
   classMeta.__methods__ = RootClass.prototype = nx.mix(
     {
       constructor: RootClass,
@@ -199,6 +198,7 @@ if (typeof module !== 'undefined' && module.exports) {
   );
 
   //mix && export:
+  nx.mix(classMeta.__statics__, baseMethods);
   nx.mix(RootClass, classMeta);
   nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;
@@ -259,8 +259,6 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.defineMethod = function(inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
-    key in inTarget && (inMeta.__base__ = inTarget[key].__meta__);
-
     inTarget[inName] = inMeta;
     return (inTarget[key] = {
       __meta__: inMeta,
@@ -330,9 +328,9 @@ if (typeof module !== 'undefined' && module.exports) {
     inheritProcessor: function() {
       var classMeta = this.__class_meta__;
       this.inheritedClass(classMeta);
-      this.defineMethods(classMeta);
+      this.defineMethods(classMeta, true);
+      this.defineMethods(classMeta, false);
       this.defineProperties(classMeta);
-      this.defineStatics(classMeta);
     },
     inheritedClass: function(inClassMeta) {
       var SuperClass = function() {};
@@ -342,15 +340,19 @@ if (typeof module !== 'undefined' && module.exports) {
       Class.prototype.$base = this.$base;
       Class.prototype.constructor = Class;
     },
-    defineMethods: function(inClassMeta) {
-      var target = this.__class__.prototype;
-      // todo: has bug:
-      target.__methods__ = nx.mix(
-        inClassMeta.__methods__,
-        target.__methods__,
-        this.meta.methods
-      );
-      nx.defineMembers('Method', target, target.__methods__, false);
+    defineMethods: function(inClassMeta, inIsStatic) {
+      var key = inIsStatic ? 'statics' : 'methods';
+      var key_ = inIsStatic ? '__statics__' : '__methods__';
+      var target = inIsStatic ? this.__class__ : this.__class__.prototype;
+      var baseTarget = inIsStatic ? this.base : this.base.prototype;
+      var methods = baseTarget[key_] || {};
+      nx.forIn(this.meta[key], function(key, value) {
+        if (methods[key] && typeof value === 'function') {
+          value.__base__ = methods[key];
+        }
+      });
+      target[key_] = nx.mix(inClassMeta[key_], methods, this.meta[key]);
+      nx.defineMembers('Method', target, target[key_], inIsStatic);
     },
     defineProperties: function(inClassMeta) {
       var isStatic = inClassMeta.__static__;
@@ -360,15 +362,6 @@ if (typeof module !== 'undefined' && module.exports) {
         this.meta.properties
       );
       nx.defineMembers('Property', target, target.__properties__, isStatic);
-    },
-    defineStatics: function(inClassMeta) {
-      var target = this.__class__;
-      target.__statics__ = nx.mix(
-        inClassMeta.__statics__,
-        this.base.__statics__,
-        this.meta.statics
-      );
-      nx.defineMembers('Method', target, target.__statics__, true);
     },
     methodsConstructorProcessor: function() {
       var classMeta = this.__class_meta__;
