@@ -342,7 +342,7 @@ if (typeof module !== 'undefined' && module.exports) {
     },
     defineMethods: function(inClassMeta, inIsStatic) {
       var key = inIsStatic ? 'statics' : 'methods';
-      var key_ = inIsStatic ? '__statics__' : '__methods__';
+      var key_ = '__' + key + '__';
       var target = inIsStatic ? this.__class__ : this.__class__.prototype;
       var baseTarget = inIsStatic ? this.base : this.base.prototype;
       var methods = baseTarget[key_] || {};
