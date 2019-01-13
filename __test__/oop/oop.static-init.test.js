@@ -3,8 +3,12 @@ require('../../src/oop-base');
 require('../../src/oop-reflect');
 require('../../src/oop');
 
-describe('nx.DEBUG', () => {
-  test('Class-debug', function() {
+/**
+./node_modules/.bin/jest __test__/oop/oop.static-init.test.js
+*/
+
+describe('oop static init', () => {
+  test('static init will start automatic:', function() {
     var num1 = 1;
     var StaticClass1 = nx.declare({
       statics: {
