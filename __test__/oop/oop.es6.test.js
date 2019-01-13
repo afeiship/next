@@ -47,5 +47,8 @@ describe('oop class es6', () => {
     cls2.m2();
     expect(num1).toBe(4);
     expect(cls2.m3()).toBe(100);
+
+    cls2.prop1 = 123;
+    expect(cls2.prop1).toBe('prop1');
   });
 });
