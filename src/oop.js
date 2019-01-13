@@ -39,12 +39,12 @@
     },
     inheritProcessor: function() {
       var classMeta = this.__class_meta__;
-      this.extendsClass(classMeta);
+      this.inheritedClass(classMeta);
       this.defineMethods(classMeta);
       this.defineProperties(classMeta);
       this.defineStatics(classMeta);
     },
-    extendsClass: function(inClassMeta) {
+    inheritedClass: function(inClassMeta) {
       var SuperClass = function() {};
       var Class = this.__class__;
       SuperClass.prototype = this.$base;
@@ -54,6 +54,7 @@
     },
     defineMethods: function(inClassMeta) {
       var target = this.__class__.prototype;
+      // todo: has bug:
       target.__methods__ = nx.mix(
         inClassMeta.__methods__,
         target.__methods__,

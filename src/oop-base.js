@@ -13,10 +13,7 @@
     __static_init__: nx.noop
   };
 
-  classMeta.__methods__ = RootClass.prototype = {
-    constructor: RootClass,
-    init: nx.noop,
-    destroy: nx.noop,
+  var baseMethods = {
     base: function() {
       var caller = this.base.caller;
       var baseMethod;
@@ -25,8 +22,9 @@
       }
     },
     parent: function(inName) {
+      var isStatic = typeof this.__id__ !== 'number';
       var args = nx.slice(arguments, 1);
-      var base = this.$base;
+      var base = isStatic ? this.__base__ : this.__base__.prototype;
       var type = this['@' + inName].__type__;
       var accessor = ['get', 'set'][args.length];
       switch (type) {
@@ -35,13 +33,24 @@
         case 'property':
           return base['@' + inName][accessor].apply(this, args);
       }
-    },
-    toString: function() {
-      return '[Class@' + this.__type__ + ']';
     }
   };
 
+  classMeta.__statics__ = nx.mix({}, baseMethods);
+  classMeta.__methods__ = RootClass.prototype = nx.mix(
+    {
+      constructor: RootClass,
+      init: nx.noop,
+      destroy: nx.noop,
+      toString: function() {
+        return '[Class@' + this.__type__ + ']';
+      }
+    },
+    baseMethods
+  );
+
   //mix && export:
   nx.mix(RootClass, classMeta);
+  nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;
 })(nx, nx.GLOBAL);

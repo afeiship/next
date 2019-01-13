@@ -108,4 +108,51 @@ describe('nx.DEBUG', () => {
     expect(h1.prop1).toBe('__H1__');
     expect(m1.prop1).toBe('@__M1__@');
   });
+
+  test('__methods__', () => {
+    var Human = nx.declare({
+      statics: {
+        m1: function() {
+          return 'm1';
+        },
+        m2: function() {
+          return 'm2';
+        },
+        m3: function() {}
+      }
+    });
+
+    var Man = nx.declare({
+      extends: Human,
+      statics: {
+        m1: function() {
+          return this.parent('m1') + '@';
+        },
+        m2: function() {
+          return this.base() + '@';
+        },
+        m5: function() {},
+        m6: function() {}
+      }
+    });
+
+    var h1Statics = Human.__statics__;
+    var manStatics = Man.__statics__;
+    var m1Rst = Man.m1();
+
+    var h1Keys = Object.keys(h1Statics);
+    var manKeys = Object.keys(manStatics);
+
+    expect(h1Keys).toEqual(['base', 'parent', 'm1', 'm2', 'm3']);
+    expect(manKeys).toEqual([
+      'base',
+      'parent',
+      'm1',
+      'm2',
+      'm3',
+      'm5',
+      'm6'
+    ]);
+    expect(m1Rst).toBe('m1@');
+  });
 });

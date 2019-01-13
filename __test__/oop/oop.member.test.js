@@ -70,6 +70,11 @@ describe('nx.defineBombMethod', () => {
     var propertyKeys = Object.keys(cls1.__properties__);
     expect(methodKeys).toEqual(['init', 'm1', 'm2']);
     expect(propertyKeys).toEqual(['prop1', 'prop2']);
-    expect(Object.keys(Class1.__statics__)).toEqual(['static1','status']);
+    expect(Object.keys(Class1.__statics__)).toEqual([
+      'base',
+      'parent',
+      'static1',
+      'status'
+    ]);
   });
 });
