@@ -129,6 +129,7 @@ describe('nx.DEBUG', () => {
           return this.parent('m1') + '@';
         },
         m2: function() {
+          // failed! has bug:
           return this.base() + '@';
         },
         m5: function() {},
