@@ -12,6 +12,9 @@ nx = {
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
 
+  //global.nx will be 'undefined' in webpack/node env:
+  global.nx = global.nx || nx;
+
   nx.noop = function() {};
 
   nx.error = function(inMsg) {
