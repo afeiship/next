@@ -11,6 +11,7 @@ nx = {
   var DOT = '.';
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
+  var hasOwn = Object.prototype.hasOwnProperty;
 
   //global.nx will be 'undefined' in webpack/node/weapp env:
   global.nx = global.nx || nx;
@@ -43,7 +44,7 @@ nx = {
     var key;
     var result;
     for (key in inObject) {
-      if (inObject.hasOwnProperty(key)) {
+      if (hasOwn.call(inObject, key)) {
         result = inCallback.call(inContext, key, inObject[key], inObject);
         if (result === nx.BREAKER) {
           break;
@@ -70,7 +71,7 @@ nx = {
         }
       } else {
         for (key in inTarget) {
-          if (inTarget.hasOwnProperty(key)) {
+          if (hasOwn.call(inTarget, key)) {
             if (iterator(key, inTarget[key])) {
               break;
             }
