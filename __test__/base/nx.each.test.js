@@ -149,15 +149,15 @@ describe('should break by nx.BREAKER', () => {
 
 
 
-describe('should break by nx.BREAKER', () => {
+describe('I can know my type isArray:true/false', () => {
   var myArray;
   var myObject;
-  beforeEach(function () {
+  beforeEach(function() {
     myArray = ['A'];
-    myObject = { testA: 'A'};
+    myObject = { testA: 'A' };
   });
-  test('I can know my type isArray: true', function () {
-    nx.each(myArray, function (index, value, target, isArray) {
+  test('I can know my type isArray: true', function() {
+    nx.each(myArray, function(index, value, target, isArray) {
       expect(isArray).toBe(true);
     });
   });
