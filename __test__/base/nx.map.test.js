@@ -45,3 +45,24 @@ describe('src/base-map', function() {
     ]);
   });
 });
+
+
+describe('I can know my type isArray:true/false', () => {
+  var myArray;
+  var myObject;
+  beforeEach(function () {
+    myArray = ['A'];
+    myObject = { testA: 'A' };
+  });
+  test('I can know my type isArray: true', function () {
+    nx.map(myArray, function (index, value, target, isArray) {
+      expect(isArray).toBe(true);
+    });
+  });
+
+  test('I can know my type isObject: false', function () {
+    nx.map(myObject, function (key, value, target, isArray) {
+      expect(isArray).toBe(false);
+    });
+  });
+});
