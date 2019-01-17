@@ -55,9 +55,10 @@ nx = {
 
   nx.each = function(inTarget, inCallback, inContext) {
     var key, length;
-    var iterator = function(inKey, inValue) {
+    var iterator = function(inKey, inValue, inIsArray) {
       return (
-        inCallback.call(inContext, inKey, inValue, inTarget) === nx.BREAKER
+        inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
+        nx.BREAKER
       );
     };
 
@@ -65,14 +66,14 @@ nx = {
       length = inTarget.length;
       if (typeof length === NUMBER) {
         for (key = 0; key < length; key++) {
-          if (iterator(key, inTarget[key])) {
+          if (iterator(key, inTarget[key], true)) {
             break;
           }
         }
       } else {
         for (key in inTarget) {
           if (hasOwn.call(inTarget, key)) {
-            if (iterator(key, inTarget[key])) {
+            if (iterator(key, inTarget[key], false)) {
               break;
             }
           }

@@ -119,11 +119,11 @@ describe('nx.each', function() {
 describe('should break by nx.BREAKER', () => {
   var myArray;
   var myObject;
-  beforeEach(function() {
+  beforeEach(function () {
     myArray = ['A', 'B', 'C', 'D'];
     myObject = { testA: 'A', testB: 'B', testC: 'C', testD: 'D' };
   });
-  test('should break by nx.BREAKER', function() {
+  test('should break by nx.BREAKER', function () {
     var result1 = '';
     nx.each(myArray, function (index, value) {
       if (value === 'D') {
@@ -135,14 +135,36 @@ describe('should break by nx.BREAKER', () => {
     expect(result1).toBe('ABC');
   });
 
-  test('should pass the element', function() {
+  test('should pass the element', function () {
     var result1 = '';
-    nx.each(myObject, function(key, value) {
+    nx.each(myObject, function (key, value) {
       if (value === 'D') {
         return nx.BREAKER;
       }
       result1 += value;
     });
     expect(result1).toBe('ABC');
+  });
+});
+
+
+
+describe('should break by nx.BREAKER', () => {
+  var myArray;
+  var myObject;
+  beforeEach(function () {
+    myArray = ['A'];
+    myObject = { testA: 'A'};
+  });
+  test('I can know my type isArray: true', function () {
+    nx.each(myArray, function (index, value, target, isArray) {
+      expect(isArray).toBe(true);
+    });
+  });
+
+  test('I can know my type isObject: false', function() {
+    nx.each(myObject, function(key, value, target, isArray) {
+      expect(isArray).toBe(false);
+    });
   });
 });
