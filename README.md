@@ -11,7 +11,7 @@ npm install --save afeiship/next-js-core2
 import nx from 'next-js-core2';
 
 const MyClass = nx.declare({
-  methods:{
+  statics:{
     init: function(){
       console.log('hello next!')
     }
