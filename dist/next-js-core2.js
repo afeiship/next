@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.6.3',
+  VERSION: '1.6.4',
   DEBUG: false,
   GLOBAL: function() {
     return this;
@@ -114,11 +114,14 @@ nx = {
   nx.set = function(inTarget, inPath, inValue) {
     var paths = inPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
-    var last = paths.pop();
+    var len_ = paths.length - 1;
+    var last = paths[len_];
 
-    paths.forEach(function(path) {
-      result = result[path] = result[path] || {};
-    });
+    for (var i = 0; i < len_; i++) {
+      var path = paths[i];
+      var target = isNaN(+paths[i + 1]) ? {} : [];
+      result = result[path] = result[path] || target;
+    }
     result[last] = inValue;
     return inTarget;
   };
