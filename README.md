@@ -6,6 +6,19 @@
 npm install --save afeiship/next-js-core2
 ```
 
+## in node:
+```js
+import nx from 'next-js-core2';
+
+const MyClass = nx.declare({
+  methods:{
+    init: function(){
+      console.log('hello next!')
+    }
+  }
+})
+```
+
 ## use in browser:
 ```html
 <script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
