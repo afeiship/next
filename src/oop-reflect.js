@@ -64,8 +64,13 @@
 
   nx.defineBombMethod = function(inTarget, inName, inMeta, inIsStatic) {
     var keys = inName.split(COMMA);
-    keys.forEach(function(key) {
-      nx.defineMethod(inTarget, key, inMeta.call(inTarget, key), inIsStatic);
+    keys.forEach(function(key, index) {
+      nx.defineMethod(
+        inTarget,
+        key,
+        inMeta.call(inTarget, key, index),
+        inIsStatic
+      );
     });
   };
 

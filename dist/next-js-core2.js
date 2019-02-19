@@ -1,6 +1,6 @@
 nx = {
   BREAKER: {},
-  VERSION: '1.6.4',
+  VERSION: '1.6.5',
   DEBUG: false,
   GLOBAL: function() {
     return this;
@@ -278,8 +278,13 @@ if (typeof module !== 'undefined' && module.exports) {
 
   nx.defineBombMethod = function(inTarget, inName, inMeta, inIsStatic) {
     var keys = inName.split(COMMA);
-    keys.forEach(function(key) {
-      nx.defineMethod(inTarget, key, inMeta.call(inTarget, key), inIsStatic);
+    keys.forEach(function(key, index) {
+      nx.defineMethod(
+        inTarget,
+        key,
+        inMeta.call(inTarget, key, index),
+        inIsStatic
+      );
     });
   };
 
