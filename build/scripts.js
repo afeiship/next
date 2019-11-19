@@ -1,5 +1,4 @@
-(function () {
-
+(function() {
   'use strict';
 
   var gulp = require('gulp');
@@ -16,18 +15,16 @@
     'src/oop.js'
   ];
 
-  gulp.task('scripts', function () {
-    return gulp.src(files)
+  gulp.task('scripts', function() {
+    return gulp
+      .src(files, { allowEmpty: true })
       .pipe($.concat('next-js-core2.js'))
       .pipe($.replace('__VERSION__', pkgJson.version))
       .pipe(gulp.dest('dist'))
       .pipe($.size({ title: '[ default size ]:' }))
       .pipe($.uglify())
-      .pipe($.rename({
-        extname: '.min.js'
-      }))
+      .pipe($.rename({ extname: '.min.js' }))
       .pipe(gulp.dest('dist'))
       .pipe($.size({ title: '[ minimize size ]:' }));
   });
-
-}());
+})();

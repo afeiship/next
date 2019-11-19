@@ -1,21 +1,20 @@
 (function() {
+  'use strict';
 
-    'use strict';
+  var gulp = require('gulp');
+  var $ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'gulp.*', 'del']
+  });
 
-    var gulp = require('gulp');
-    var $ = require('gulp-load-plugins')({
-      pattern: ['gulp-*', 'gulp.*', 'del']
-    });
+  /**
+   * @thanks to:
+   * http://www.jianshu.com/p/d616d3bf391f
+   */
 
-    /**
-     * @thanks to:
-     * http://www.jianshu.com/p/d616d3bf391f
-     */
-
-    gulp.task('bump',function(){
-      gulp.src(['./*.json'])
-        .pipe($.bump())
-        .pipe(gulp.dest('./'));
-    });
-
-  }());
+  gulp.task('bump', function() {
+    return gulp
+      .src(['./*.json'])
+      .pipe($.bump())
+      .pipe(gulp.dest('./'));
+  });
+})();
