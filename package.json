@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/afeiship/next-js-core2.git"
   },
-  "keywords": ["oop", "next", "mobile"],
+  "keywords": [
+    "oop",
+    "next",
+    "mobile"
+  ],
   "author": "afei",
   "license": "MIT",
   "bugs": {
@@ -22,7 +26,7 @@
   "devDependencies": {
     "amdrequire": "0.0.3",
     "del": "^2.2.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-bump": "^2.7.0",
     "gulp-concat": "^2.6.0",
     "gulp-filter": "^3.0.1",

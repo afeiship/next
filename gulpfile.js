@@ -1,5 +1,4 @@
 (function() {
-
   'use strict';
 
   var path = require('path');
@@ -15,7 +14,5 @@
     require('./build/' + file);
   });
 
-
-  gulp.task('default',['build']);
-
-}());
+  gulp.task('default', gulp.series(['clean', 'scripts']));
+})();

@@ -1,10 +1,11 @@
 .idea
 .DS_Store
 .editorconfig
+.prettierrc
 **/npm-debug.log
 **/node_modules
 test
-__test__
+__tests__
 src
 build
 docs
