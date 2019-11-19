@@ -1,5 +1,5 @@
 {
-  "name": "next-js-core2",
+  "name": "@feizheng/next-js-core2",
   "version": "1.6.5",
   "description": "A javascript OOP toolkit for mobile.",
   "main": "dist/next-js-core2.js",
