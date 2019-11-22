@@ -1,12 +1,12 @@
 # next-js-core2
 > A javascript OOP toolkit for mobile.
 
-## install:
+## installation
 ```bash
-npm install --save afeiship/next-js-core2
+npm install --save @feizheng/next-js-core2
 ```
 
-## in node:
+## node
 ```js
 import nx from 'next-js-core2';
 
@@ -19,7 +19,7 @@ const MyClass = nx.declare({
 })
 ```
 
-## use in browser:
+## browser:
 ```html
 <script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
 <script type="text/javascript">
