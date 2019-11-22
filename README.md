@@ -19,7 +19,7 @@ const MyClass = nx.declare({
 })
 ```
 
-## browser:
+## browser
 ```html
 <script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
 <script type="text/javascript">
