@@ -6,17 +6,16 @@
   "scripts": {
     "test": "jest",
     "build": "gulp",
-    "version": "gulp bump"
+    "version": "gulp bump",
+    "release": "npm run verison && npm run build",
+    "publish": "npm publish --access=public",
+    "tagging": "rake git:tag_tagging"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/afeiship/next-js-core2.git"
   },
-  "keywords": [
-    "oop",
-    "next",
-    "mobile"
-  ],
+  "keywords": ["oop", "next", "mobile"],
   "author": "afei",
   "license": "MIT",
   "bugs": {
