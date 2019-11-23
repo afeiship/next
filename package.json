@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/afeiship/next-js-core2#readme",
   "devDependencies": {
+    "@feizheng/rake-git": "^1.2.0",
     "amdrequire": "0.0.3",
     "del": "^2.2.0",
     "gulp": "^4.0.2",
