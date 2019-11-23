@@ -20,7 +20,7 @@ var root =
 var nx = root.nx || {
   GLOBAL: root,
   BREAKER: {},
-  VERSION: '2.0.1',
+  VERSION: '2.0.2',
   DEBUG: false
 };
 
@@ -142,12 +142,6 @@ nx.get = function(inTarget, inPath) {
     result = result && result[path];
   });
   return result;
-};
-
-nx.path = function(inTarget, inPath, inValue) {
-  return inValue == null
-    ? this.get(inTarget, inPath)
-    : this.set(inTarget, inPath, inValue);
 };
 
 (function(nx) {

@@ -134,9 +134,3 @@ nx.get = function(inTarget, inPath) {
   });
   return result;
 };
-
-nx.path = function(inTarget, inPath, inValue) {
-  return inValue == null
-    ? this.get(inTarget, inPath)
-    : this.set(inTarget, inPath, inValue);
-};

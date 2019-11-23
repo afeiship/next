@@ -1,13 +1,13 @@
 {
   "name": "@feizheng/next-js-core2",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A javascript OOP toolkit for mobile.",
   "main": "dist/next-js-core2.js",
   "scripts": {
     "test": "jest",
     "build": "gulp",
     "version": "gulp bump",
-    "release": "npm run verison && npm run build",
+    "release": "npm run version && npm run build",
     "publish": "npm publish --access=public",
     "tagging": "rake git:tag_tagging"
   },
