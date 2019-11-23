@@ -1,4 +1,4 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 
 function compileAndroidCode() {
   nx.error('you are using the wrong nx.VERSION');

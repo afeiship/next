@@ -1,6 +1,4 @@
-require('../../src/base');
-require('../../src/oop-base');
-require('../../src/oop-reflect');
+const nx = require('../../dist/next-js-core2');
 
 describe('nx.defineBombMethod', () => {
   test('define bomb function', () => {

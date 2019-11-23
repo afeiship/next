@@ -1,4 +1,4 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 
 var total = 0;
 function compileAndroidCode() {

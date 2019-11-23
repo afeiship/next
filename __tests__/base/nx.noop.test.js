@@ -1,4 +1,4 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 var noop = function() {};
 
 test('nx.noop is a noop function ', () => {

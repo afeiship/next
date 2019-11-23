@@ -20,6 +20,7 @@
       .src(files, { allowEmpty: true })
       .pipe($.concat('next-js-core2.js'))
       .pipe($.replace('__VERSION__', pkgJson.version))
+      .pipe($.umd({ namespace: () => 'nx', exports: () => 'nx' }))
       .pipe(gulp.dest('dist'))
       .pipe($.size({ title: '[ default size ]:' }))
       .pipe($.uglify())

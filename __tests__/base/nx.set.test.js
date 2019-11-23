@@ -1,8 +1,8 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 
 /**
 
-./node_modules/.bin/jest __test__/base/nx.set.test.js
+./node_modules/.bin/jest __tests__/base/nx.set.test.js
 
 @thanks to:
 https://github.com/lukeed/dset/blob/master/test/index.js

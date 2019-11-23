@@ -1,4 +1,4 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 
 describe('src/base-mix', function() {
   test('nx.mix', function() {

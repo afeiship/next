@@ -1,4 +1,4 @@
-require('../../src/base');
+const nx = require('../../dist/next-js-core2');
 
 /**
  * nx.each
@@ -119,13 +119,13 @@ describe('nx.each', function() {
 describe('should break by nx.BREAKER', () => {
   var myArray;
   var myObject;
-  beforeEach(function () {
+  beforeEach(function() {
     myArray = ['A', 'B', 'C', 'D'];
     myObject = { testA: 'A', testB: 'B', testC: 'C', testD: 'D' };
   });
-  test('should break by nx.BREAKER', function () {
+  test('should break by nx.BREAKER', function() {
     var result1 = '';
-    nx.each(myArray, function (index, value) {
+    nx.each(myArray, function(index, value) {
       if (value === 'D') {
         return nx.BREAKER;
       } else {
@@ -135,9 +135,9 @@ describe('should break by nx.BREAKER', () => {
     expect(result1).toBe('ABC');
   });
 
-  test('should pass the element', function () {
+  test('should pass the element', function() {
     var result1 = '';
-    nx.each(myObject, function (key, value) {
+    nx.each(myObject, function(key, value) {
       if (value === 'D') {
         return nx.BREAKER;
       }
@@ -146,8 +146,6 @@ describe('should break by nx.BREAKER', () => {
     expect(result1).toBe('ABC');
   });
 });
-
-
 
 describe('I can know my type isArray:true/false', () => {
   var myArray;

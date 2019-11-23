@@ -1,15 +1,13 @@
-require('../../src/base');
-require('../../src/oop-base');
-require('../../src/oop-reflect');
-require('../../src/oop');
+const nx = require('../../dist/next-js-core2');
 
 /**
-./node_modules/.bin/jest __test__/oop/oop.inherit.test.js
+./node_modules/.bin/jest __tests__/oop/oop.inherit.test.js
 */
 
 describe('nx.DEBUG', () => {
   test('Class inherit', function() {
     var num1 = 1;
+
     var Person = nx.declare({
       methods: {
         init: function(name, age) {

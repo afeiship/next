@@ -1,7 +1,4 @@
-require('../../src/base');
-require('../../src/oop-base');
-require('../../src/oop-reflect');
-require('../../src/oop');
+const nx = require('../../dist/next-js-core2');
 
 describe('class __methods__', () => {
   test('__methods__', function() {

@@ -1,7 +1,4 @@
-require('../../src/base');
-require('../../src/oop-base');
-require('../../src/oop-reflect');
-require('../../src/oop');
+const nx = require('../../dist/next-js-core2');
 
 /**
 ./node_modules/.bin/jest __test__/oop/oop.es6.test.js
@@ -53,5 +50,4 @@ describe('oop class es6', () => {
     cls2.prop1 = 123;
     expect(cls2.prop1).toBe('prop1');
   });
-
 });
