@@ -379,11 +379,20 @@ nx.get = function(inTarget, inPath) {
       var Class = this.__class__;
       var type = this.type;
       var classMeta = this.__class_meta__;
+      var context, _type;
 
       nx.mix(Class.prototype, classMeta);
       nx.mix(Class, classMeta);
       if (type.indexOf(NX_ANONYMOUS) === -1) {
-        nx.set(nx.GLOBAL, type, Class);
+        var nxIdx = type.indexOf('nx');
+        if (nxIdx === 0) {
+          context = nx;
+          _type = type.slice(3);
+        } else {
+          context = nx.GLOBAL;
+          _type = type;
+        }
+        nx.set(context, _type, Class);
       }
     },
     registerDebug: function(inInstance) {
