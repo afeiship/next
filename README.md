@@ -3,6 +3,10 @@
 
 ## installation
 ```bash
+# window.nx
+npm install --save @feizheng/next-js-core2@1.6.5
+
+# inner context
 npm install --save @feizheng/next-js-core2
 ```
 
