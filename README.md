@@ -25,7 +25,7 @@ const MyClass = nx.declare({
 
 ## browser
 ```html
-<script type="text/javascript" src="../libs/next-js-core2/dist/next-js-core2.js"></script>
+<script type="text/javascript" src="//unpkg.com/@feizheng/next-js-core2@2.0.5/dist/next-js-core2.min.js"></script>
 <script type="text/javascript">
 (function (nx, global) {
   nx.declare('myApp', {
