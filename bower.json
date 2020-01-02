@@ -1,6 +1,6 @@
 {
   "name": "next-js-core2",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A javascript OOP toolkit for mobile.",
   "main": ["dist/next-js-core2.js"],
   "authors": ["afei"],
