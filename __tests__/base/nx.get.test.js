@@ -12,4 +12,10 @@ describe('nx.get name/path', () => {
     var rst = nx.get(item, 'test.k1.abc');
     expect(rst).toBe('ABC');
   });
+
+  test('nx.get object path with empty string', () => {
+    var item = { name: 'afeiship', test: { k1: { abc: 'ABC' } } };
+    var rst = nx.get(item, '');
+    expect(rst).toEqual({ name: 'afeiship', test: { k1: { abc: 'ABC' } } });
+  });
 });

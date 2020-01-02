@@ -126,6 +126,7 @@ nx.set = function(inTarget, inPath, inValue) {
 };
 
 nx.get = function(inTarget, inPath) {
+  if (!inPath) return inTarget;
   var paths = inPath.split(DOT);
   var result = inTarget || nx.GLOBAL;
 
