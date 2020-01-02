@@ -20,7 +20,7 @@ var root =
 var nx = root.nx || {
   GLOBAL: root,
   BREAKER: {},
-  VERSION: '2.0.6',
+  VERSION: '2.0.7',
   DEBUG: false
 };
 
