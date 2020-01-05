@@ -1,157 +1,63 @@
-nx = {
-  BREAKER: {},
-  VERSION: '__VERSION__',
-  DEBUG: false,
-  GLOBAL: function() {
-    return this;
-  }.call(null)
-};
+(function() {
+  /** Detect free variable `global` from Node.js. */
+  var freeGlobal =
+    typeof global == 'object' && global && global.Object === Object && global;
 
-(function(nx, global) {
-  var DOT = '.';
-  var NUMBER = 'number';
-  var ARRAY_PROTO = Array.prototype;
-  var hasOwn = Object.prototype.hasOwnProperty;
+  /** Detect free variable `self`. */
+  var freeSelf =
+    typeof self == 'object' && self && self.Object === Object && self;
 
-  //global.nx will be 'undefined' in webpack/node/weapp env:
-  global.nx = global.nx || nx;
+  /** Used as a reference to the global object. */
+  var root = freeGlobal || freeSelf || Function('return this')();
 
-  nx.noop = function() {};
+  /** Detect free variable `exports`. */
+  var freeExports =
+    typeof exports == 'object' && exports && !exports.nodeType && exports;
 
-  nx.error = function(inMsg) {
-    throw new Error(inMsg);
+  /** Detect free variable `module`. */
+  var freeModule =
+    freeExports &&
+    typeof module == 'object' &&
+    module &&
+    !module.nodeType &&
+    module;
+
+  // prevent multiple load
+  if (root.nx) return;
+
+  // Export lodash.
+  var nx = {
+    BREAKER: {},
+    VERSION: '__VERSION__',
+    DEBUG: false,
+    GLOBAL: root
   };
 
-  nx.try = function(inFn) {
-    try {
-      inFn();
-    } catch (_) {}
-  };
+  //force inject to global:
+  root.nx = nx;
 
-  nx.forEach = function(inArray, inCallback, inContext) {
-    var length = inArray.length;
-    var i;
-    var result;
-    for (i = 0; i < length; i++) {
-      result = inCallback.call(inContext, inArray[i], i, inArray);
-      if (result === nx.BREAKER) {
-        break;
-      }
-    }
-  };
+  // Some AMD build optimizers, like r.js, check for condition patterns like:
+  if (
+    typeof define == 'function' &&
+    typeof define.amd == 'object' &&
+    define.amd
+  ) {
+    root.nx = nx;
 
-  nx.forIn = function(inObject, inCallback, inContext) {
-    var key;
-    var result;
-    for (key in inObject) {
-      if (hasOwn.call(inObject, key)) {
-        result = inCallback.call(inContext, key, inObject[key], inObject);
-        if (result === nx.BREAKER) {
-          break;
-        }
-      }
-    }
-  };
-
-  nx.each = function(inTarget, inCallback, inContext) {
-    var key, length;
-    var iterator = function(inKey, inValue, inIsArray) {
-      return (
-        inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
-        nx.BREAKER
-      );
-    };
-
-    if (inTarget) {
-      length = inTarget.length;
-      if (typeof length === NUMBER) {
-        for (key = 0; key < length; key++) {
-          if (iterator(key, inTarget[key], true)) {
-            break;
-          }
-        }
-      } else {
-        for (key in inTarget) {
-          if (hasOwn.call(inTarget, key)) {
-            if (iterator(key, inTarget[key], false)) {
-              break;
-            }
-          }
-        }
-      }
-    }
-  };
-
-  nx.map = function(inTarget, inCallback, inContext) {
-    var result = [];
-    nx.each(inTarget, function() {
-      var item = inCallback.apply(inContext, arguments);
-      if (item !== nx.BREAKER) {
-        result.push(item);
-      } else {
-        return nx.BREAKER;
-      }
-    });
-    return result;
-  };
-
-  nx.mix = function(inTarget) {
-    var target = inTarget || {};
-    var i, length;
-    var args = arguments;
-    for (i = 1, length = args.length; i < length; i++) {
-      nx.forIn(args[i], function(key, val) {
-        target[key] = val;
-      });
-    }
-    return target;
-  };
-
-  nx.slice = function(inTarget, inStart, inEnd) {
-    return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
-  };
-
-  nx.set = function(inTarget, inPath, inValue) {
-    var paths = inPath.split(DOT);
-    var result = inTarget || nx.GLOBAL;
-    var len_ = paths.length - 1;
-    var last = paths[len_];
-
-    for (var i = 0; i < len_; i++) {
-      var path = paths[i];
-      var target = isNaN(+paths[i + 1]) ? {} : [];
-      result = result[path] = result[path] || target;
-    }
-    result[last] = inValue;
-    return inTarget;
-  };
-
-  nx.get = function(inTarget, inPath) {
-    if (!inPath) return inTarget;
-    var paths = inPath.split(DOT);
-    var result = inTarget || nx.GLOBAL;
-
-    paths.forEach(function(path) {
-      result = result && result[path];
-    });
-    return result;
-  };
-
-  nx.path = function(inTarget, inPath, inValue) {
-    return inValue == null
-      ? this.get(inTarget, inPath)
-      : this.set(inTarget, inPath, inValue);
-  };
-})(nx, nx.GLOBAL);
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = nx;
-} else {
-  if (typeof define === 'function' && define.amd) {
-    define([], function() {
+    // Define as an anonymous module so, through path mapping, it can be
+    // referenced as the "underscore" module.
+    define(function() {
       return nx;
     });
-  } else {
-    nx.GLOBAL.nx = nx;
   }
-}
+  // Check for `exports` after `define` in case a build optimizer adds it.
+  else if (freeModule) {
+    // Export for Node.js.
+    (freeModule.exports = nx).nx = nx;
+    // Export for CommonJS support.
+    freeExports.nx = nx;
+  } else {
+    // Export to the global object.
+    root.nx = nx;
+  }
+}.call(this));

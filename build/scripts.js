@@ -9,6 +9,7 @@
 
   var files = [
     'src/base.js',
+    'src/core.js',
     'src/event.js',
     'src/oop-base.js',
     'src/oop-reflect.js',
