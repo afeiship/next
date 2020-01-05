@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "gulp",
-    "version": "gulp bump",
+    "bump": "gulp bump",
     "release": "npm run version && npm run build",
     "tagging": "rake git:tag_tagging"
   },
