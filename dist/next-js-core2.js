@@ -1,151 +1,162 @@
-;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory);
-  } else if (typeof exports === 'object') {
-    module.exports = factory();
-  } else {
-    root.nx = factory();
-  }
-}(this, function() {
-var DOT = '.';
-var NUMBER = 'number';
-var ARRAY_PROTO = Array.prototype;
-var hasOwn = Object.prototype.hasOwnProperty;
-var root =
-  (typeof self == 'object' && self.self === self && self) ||
-  (typeof global == 'object' && global.global === global && global) ||
-  this ||
-  {};
-
-var nx = root.nx || {
-  GLOBAL: root,
+nx = {
   BREAKER: {},
-  VERSION: '2.0.7',
-  DEBUG: false
+  VERSION: '2.1.0',
+  DEBUG: false,
+  GLOBAL: function() {
+    return this;
+  }.call(null)
 };
 
-nx.noop = function() {};
+(function(nx, global) {
+  var DOT = '.';
+  var NUMBER = 'number';
+  var ARRAY_PROTO = Array.prototype;
+  var hasOwn = Object.prototype.hasOwnProperty;
 
-nx.error = function(inMsg) {
-  throw new Error(inMsg);
-};
+  //global.nx will be 'undefined' in webpack/node/weapp env:
+  global.nx = global.nx || nx;
 
-nx.try = function(inFn) {
-  try {
-    inFn();
-  } catch (_) {}
-};
+  nx.noop = function() {};
 
-nx.forEach = function(inArray, inCallback, inContext) {
-  var length = inArray.length;
-  var i;
-  var result;
-  for (i = 0; i < length; i++) {
-    result = inCallback.call(inContext, inArray[i], i, inArray);
-    if (result === nx.BREAKER) {
-      break;
-    }
-  }
-};
+  nx.error = function(inMsg) {
+    throw new Error(inMsg);
+  };
 
-nx.forIn = function(inObject, inCallback, inContext) {
-  var key;
-  var result;
-  for (key in inObject) {
-    if (hasOwn.call(inObject, key)) {
-      result = inCallback.call(inContext, key, inObject[key], inObject);
+  nx.try = function(inFn) {
+    try {
+      inFn();
+    } catch (_) {}
+  };
+
+  nx.forEach = function(inArray, inCallback, inContext) {
+    var length = inArray.length;
+    var i;
+    var result;
+    for (i = 0; i < length; i++) {
+      result = inCallback.call(inContext, inArray[i], i, inArray);
       if (result === nx.BREAKER) {
         break;
       }
     }
-  }
-};
-
-nx.each = function(inTarget, inCallback, inContext) {
-  var key, length;
-  var iterator = function(inKey, inValue, inIsArray) {
-    return (
-      inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
-      nx.BREAKER
-    );
   };
 
-  if (inTarget) {
-    length = inTarget.length;
-    if (typeof length === NUMBER) {
-      for (key = 0; key < length; key++) {
-        if (iterator(key, inTarget[key], true)) {
+  nx.forIn = function(inObject, inCallback, inContext) {
+    var key;
+    var result;
+    for (key in inObject) {
+      if (hasOwn.call(inObject, key)) {
+        result = inCallback.call(inContext, key, inObject[key], inObject);
+        if (result === nx.BREAKER) {
           break;
         }
       }
-    } else {
-      for (key in inTarget) {
-        if (hasOwn.call(inTarget, key)) {
-          if (iterator(key, inTarget[key], false)) {
+    }
+  };
+
+  nx.each = function(inTarget, inCallback, inContext) {
+    var key, length;
+    var iterator = function(inKey, inValue, inIsArray) {
+      return (
+        inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
+        nx.BREAKER
+      );
+    };
+
+    if (inTarget) {
+      length = inTarget.length;
+      if (typeof length === NUMBER) {
+        for (key = 0; key < length; key++) {
+          if (iterator(key, inTarget[key], true)) {
             break;
+          }
+        }
+      } else {
+        for (key in inTarget) {
+          if (hasOwn.call(inTarget, key)) {
+            if (iterator(key, inTarget[key], false)) {
+              break;
+            }
           }
         }
       }
     }
-  }
-};
+  };
 
-nx.map = function(inTarget, inCallback, inContext) {
-  var result = [];
-  nx.each(inTarget, function() {
-    var item = inCallback.apply(inContext, arguments);
-    if (item !== nx.BREAKER) {
-      result.push(item);
-    } else {
-      return nx.BREAKER;
-    }
-  });
-  return result;
-};
-
-nx.mix = function(inTarget) {
-  var target = inTarget || {};
-  var i, length;
-  var args = arguments;
-  for (i = 1, length = args.length; i < length; i++) {
-    nx.forIn(args[i], function(key, val) {
-      target[key] = val;
+  nx.map = function(inTarget, inCallback, inContext) {
+    var result = [];
+    nx.each(inTarget, function() {
+      var item = inCallback.apply(inContext, arguments);
+      if (item !== nx.BREAKER) {
+        result.push(item);
+      } else {
+        return nx.BREAKER;
+      }
     });
+    return result;
+  };
+
+  nx.mix = function(inTarget) {
+    var target = inTarget || {};
+    var i, length;
+    var args = arguments;
+    for (i = 1, length = args.length; i < length; i++) {
+      nx.forIn(args[i], function(key, val) {
+        target[key] = val;
+      });
+    }
+    return target;
+  };
+
+  nx.slice = function(inTarget, inStart, inEnd) {
+    return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
+  };
+
+  nx.set = function(inTarget, inPath, inValue) {
+    var paths = inPath.split(DOT);
+    var result = inTarget || nx.GLOBAL;
+    var len_ = paths.length - 1;
+    var last = paths[len_];
+
+    for (var i = 0; i < len_; i++) {
+      var path = paths[i];
+      var target = isNaN(+paths[i + 1]) ? {} : [];
+      result = result[path] = result[path] || target;
+    }
+    result[last] = inValue;
+    return inTarget;
+  };
+
+  nx.get = function(inTarget, inPath) {
+    if (!inPath) return inTarget;
+    var paths = inPath.split(DOT);
+    var result = inTarget || nx.GLOBAL;
+
+    paths.forEach(function(path) {
+      result = result && result[path];
+    });
+    return result;
+  };
+
+  nx.path = function(inTarget, inPath, inValue) {
+    return inValue == null
+      ? this.get(inTarget, inPath)
+      : this.set(inTarget, inPath, inValue);
+  };
+})(nx, nx.GLOBAL);
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = nx;
+} else {
+  if (typeof define === 'function' && define.amd) {
+    define([], function() {
+      return nx;
+    });
+  } else {
+    nx.GLOBAL.nx = nx;
   }
-  return target;
-};
+}
 
-nx.slice = function(inTarget, inStart, inEnd) {
-  return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
-};
-
-nx.set = function(inTarget, inPath, inValue) {
-  var paths = inPath.split(DOT);
-  var result = inTarget || nx.GLOBAL;
-  var len_ = paths.length - 1;
-  var last = paths[len_];
-
-  for (var i = 0; i < len_; i++) {
-    var path = paths[i];
-    var target = isNaN(+paths[i + 1]) ? {} : [];
-    result = result[path] = result[path] || target;
-  }
-  result[last] = inValue;
-  return inTarget;
-};
-
-nx.get = function(inTarget, inPath) {
-  if (!inPath) return inTarget;
-  var paths = inPath.split(DOT);
-  var result = inTarget || nx.GLOBAL;
-
-  paths.forEach(function(path) {
-    result = result && result[path];
-  });
-  return result;
-};
-
-(function(nx) {
+(function(nx, global) {
   var RootClass = function() {};
   var classMeta = {
     __class_id__: 0,
@@ -200,9 +211,9 @@ nx.get = function(inTarget, inPath) {
   nx.mix(RootClass, classMeta);
   nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;
-})(nx);
+})(nx, nx.GLOBAL);
 
-(function(nx) {
+(function(nx, global) {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
   var COMMA = ',';
@@ -287,9 +298,9 @@ nx.get = function(inTarget, inPath) {
       }
     });
   };
-})(nx);
+})(nx, nx.GLOBAL);
 
-(function(nx) {
+(function(nx, global) {
   var classId = 1,
     instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
@@ -380,20 +391,11 @@ nx.get = function(inTarget, inPath) {
       var Class = this.__class__;
       var type = this.type;
       var classMeta = this.__class_meta__;
-      var context, _type;
 
       nx.mix(Class.prototype, classMeta);
       nx.mix(Class, classMeta);
       if (type.indexOf(NX_ANONYMOUS) === -1) {
-        var nxIdx = type.indexOf('nx');
-        if (nxIdx === 0) {
-          context = nx;
-          _type = type.slice(3);
-        } else {
-          context = nx.GLOBAL;
-          _type = type;
-        }
-        nx.set(context, _type, Class);
+        nx.set(nx.GLOBAL, type, Class);
       }
     },
     registerDebug: function(inInstance) {
@@ -416,7 +418,4 @@ nx.get = function(inTarget, inPath) {
     lifeCycle.registerProcessor();
     return lifeCycle.__class__;
   };
-})(nx);
-
-return nx;
-}));
+})(nx, nx.GLOBAL);

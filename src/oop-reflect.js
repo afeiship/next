@@ -1,4 +1,4 @@
-(function(nx) {
+(function(nx, global) {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
   var COMMA = ',';
@@ -83,4 +83,4 @@
       }
     });
   };
-})(nx);
+})(nx, nx.GLOBAL);

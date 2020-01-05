@@ -1,4 +1,4 @@
-(function(nx) {
+(function(nx, global) {
   var RootClass = function() {};
   var classMeta = {
     __class_id__: 0,
@@ -53,4 +53,4 @@
   nx.mix(RootClass, classMeta);
   nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;
-})(nx);
+})(nx, nx.GLOBAL);
