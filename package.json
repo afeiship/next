@@ -8,7 +8,6 @@
     "build": "gulp",
     "version": "gulp bump",
     "release": "npm run version && npm run build",
-    "publish": "npm publish --access=public",
     "tagging": "rake git:tag_tagging"
   },
   "repository": {
