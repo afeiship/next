@@ -12,7 +12,7 @@ npm install --save @feizheng/next-js-core2
 
 ## node
 ```js
-import nx from 'next-js-core2';
+import nx from '@feizheng/next-js-core2';
 
 const MyClass = nx.declare({
   statics:{
