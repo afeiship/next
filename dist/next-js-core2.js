@@ -28,7 +28,7 @@
   // Export lodash.
   var nx = {
     BREAKER: {},
-    VERSION: '2.1.2',
+    VERSION: '2.2.2',
     DEBUG: false,
     GLOBAL: root
   };
