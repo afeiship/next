@@ -1,4 +1,5 @@
-(function() {/** Detect free variable `global` from Node.js. */
+(function() {
+/** Detect free variable `global` from Node.js. */
 var freeGlobal =
   typeof global == 'object' && global && global.Object === Object && global;
 
@@ -21,19 +22,13 @@ var freeModule =
   !module.nodeType &&
   module;
 
-// prevent multiple load
-if (root.nx) return;
-
-// Export lodash.
-var nx = {
+//force inject to global:
+root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '2.3.0',
+  VERSION: '2.3.1',
   DEBUG: false,
   GLOBAL: root
 };
-
-//force inject to global:
-root.nx = nx;
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
 if (

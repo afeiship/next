@@ -20,13 +20,7 @@
     return gulp
       .src(files, { allowEmpty: true })
       .pipe($.concat('next-js-core2.js'))
-      .pipe(
-        $.wrap(
-          '(function() {<%= contents %>}.call(this));',
-          {},
-          { parse: true }
-        )
-      )
+      .pipe($.wrap('(function() {\n<%= contents %>}.call(this));'))
       .pipe($.replace('__VERSION__', pkgJson.version))
       .pipe(gulp.dest('dist'))
       .pipe($.size({ title: '[ default size ]:' }))

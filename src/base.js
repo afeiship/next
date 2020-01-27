@@ -21,19 +21,13 @@ var freeModule =
   !module.nodeType &&
   module;
 
-// prevent multiple load
-if (root.nx) return;
-
-// Export lodash.
-var nx = {
+//force inject to global:
+root.nx = root.nx || {
   BREAKER: {},
   VERSION: '__VERSION__',
   DEBUG: false,
   GLOBAL: root
 };
-
-//force inject to global:
-root.nx = nx;
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
 if (
