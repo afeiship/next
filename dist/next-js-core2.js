@@ -23,12 +23,12 @@ var freeModule =
   module;
 
 //force inject to global:
-root.nx = root.nx || {
+var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '2.3.3',
+  VERSION: '2.3.4',
   DEBUG: false,
   GLOBAL: root
-};
+});
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
 if (
