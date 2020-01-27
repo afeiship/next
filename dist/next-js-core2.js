@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '2.3.1',
+  VERSION: '2.3.2',
   DEBUG: false,
   GLOBAL: root
 };
@@ -360,7 +360,7 @@ else if (freeModule) {
         __base__: this.base,
         __class_id__: classId++,
         __method_init__: methods.init || this.base.__method_init__,
-        __static_init__: statics.init || this.base.__static_init__,
+        __static_init__: statics.init || this.base.__static_init__ || nx.noop,
         __static__: !meta.methods && !!meta.statics
       });
     },

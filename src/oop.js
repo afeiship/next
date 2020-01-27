@@ -25,7 +25,7 @@
         __base__: this.base,
         __class_id__: classId++,
         __method_init__: methods.init || this.base.__method_init__,
-        __static_init__: statics.init || this.base.__static_init__,
+        __static_init__: statics.init || this.base.__static_init__ || nx.noop,
         __static__: !meta.methods && !!meta.statics
       });
     },
