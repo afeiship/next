@@ -1,4 +1,4 @@
-(function(nx, global) {
+(function() {
   var classId = 1,
     instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
@@ -116,4 +116,4 @@
     lifeCycle.registerProcessor();
     return lifeCycle.__class__;
   };
-})(nx, nx.GLOBAL);
+})();

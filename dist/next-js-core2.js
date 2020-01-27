@@ -1,75 +1,70 @@
-(function() {
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal =
-    typeof global == 'object' && global && global.Object === Object && global;
+(function() {/** Detect free variable `global` from Node.js. */
+var freeGlobal =
+  typeof global == 'object' && global && global.Object === Object && global;
 
-  /** Detect free variable `self`. */
-  var freeSelf =
-    typeof self == 'object' && self && self.Object === Object && self;
+/** Detect free variable `self`. */
+var freeSelf =
+  typeof self == 'object' && self && self.Object === Object && self;
 
-  /** Used as a reference to the global object. */
-  var root = freeGlobal || freeSelf || Function('return this')();
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
 
-  /** Detect free variable `exports`. */
-  var freeExports =
-    typeof exports == 'object' && exports && !exports.nodeType && exports;
+/** Detect free variable `exports`. */
+var freeExports =
+  typeof exports == 'object' && exports && !exports.nodeType && exports;
 
-  /** Detect free variable `module`. */
-  var freeModule =
-    freeExports &&
-    typeof module == 'object' &&
-    module &&
-    !module.nodeType &&
-    module;
+/** Detect free variable `module`. */
+var freeModule =
+  freeExports &&
+  typeof module == 'object' &&
+  module &&
+  !module.nodeType &&
+  module;
 
-  // prevent multiple load
-  if (root.nx) return;
+// prevent multiple load
+if (root.nx) return;
 
-  // Export lodash.
-  var nx = {
-    BREAKER: {},
-    VERSION: '2.2.2',
-    DEBUG: false,
-    GLOBAL: root
-  };
+// Export lodash.
+var nx = {
+  BREAKER: {},
+  VERSION: '2.3.0',
+  DEBUG: false,
+  GLOBAL: root
+};
 
-  //force inject to global:
+//force inject to global:
+root.nx = nx;
+
+// Some AMD build optimizers, like r.js, check for condition patterns like:
+if (
+  typeof define == 'function' &&
+  typeof define.amd == 'object' &&
+  define.amd
+) {
   root.nx = nx;
 
-  // Some AMD build optimizers, like r.js, check for condition patterns like:
-  if (
-    typeof define == 'function' &&
-    typeof define.amd == 'object' &&
-    define.amd
-  ) {
-    root.nx = nx;
+  // Define as an anonymous module so, through path mapping, it can be
+  // referenced as the "underscore" module.
+  define(function() {
+    return nx;
+  });
+}
+// Check for `exports` after `define` in case a build optimizer adds it.
+else if (freeModule) {
+  // Export for Node.js.
+  (freeModule.exports = nx).nx = nx;
+  // Export for CommonJS support.
+  freeExports.nx = nx;
+} else {
+  // Export to the global object.
+  root.nx = nx;
+}
 
-    // Define as an anonymous module so, through path mapping, it can be
-    // referenced as the "underscore" module.
-    define(function() {
-      return nx;
-    });
-  }
-  // Check for `exports` after `define` in case a build optimizer adds it.
-  else if (freeModule) {
-    // Export for Node.js.
-    (freeModule.exports = nx).nx = nx;
-    // Export for CommonJS support.
-    freeExports.nx = nx;
-  } else {
-    // Export to the global object.
-    root.nx = nx;
-  }
-}.call(this));
-
-(function(nx, global) {
+(function() {
   var DOT = '.';
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
-
-  //global.nx will be 'undefined' in webpack/node/weapp env:
-  global.nx = global.nx || nx;
 
   nx.noop = function() {};
 
@@ -197,9 +192,9 @@
       ? this.get(inTarget, inPath)
       : this.set(inTarget, inPath, inValue);
   };
-})(nx, nx.GLOBAL);
+})();
 
-(function(nx, global) {
+(function() {
   var RootClass = function() {};
   var classMeta = {
     __class_id__: 0,
@@ -254,9 +249,9 @@
   nx.mix(RootClass, classMeta);
   nx.mix(RootClass, classMeta.__statics__);
   nx.RootClass = RootClass;
-})(nx, nx.GLOBAL);
+})();
 
-(function(nx, global) {
+(function() {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
   var COMMA = ',';
@@ -341,9 +336,9 @@
       }
     });
   };
-})(nx, nx.GLOBAL);
+})();
 
-(function(nx, global) {
+(function() {
   var classId = 1,
     instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
@@ -461,4 +456,5 @@
     lifeCycle.registerProcessor();
     return lifeCycle.__class__;
   };
-})(nx, nx.GLOBAL);
+})();
+}.call(this));

@@ -1,6 +1,6 @@
 {
   "name": "@feizheng/next-js-core2",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "A javascript OOP toolkit for mobile.",
   "main": "dist/next-js-core2.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^1.5.3",
     "gulp-umd": "^0.2.1",
+    "gulp-wrap": "^0.15.0",
     "jest": "^23.6.0"
   },
   "publishConfig": {

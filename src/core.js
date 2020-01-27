@@ -1,11 +1,8 @@
-(function(nx, global) {
+(function() {
   var DOT = '.';
   var NUMBER = 'number';
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
-
-  //global.nx will be 'undefined' in webpack/node/weapp env:
-  global.nx = global.nx || nx;
 
   nx.noop = function() {};
 
@@ -133,4 +130,4 @@
       ? this.get(inTarget, inPath)
       : this.set(inTarget, inPath, inValue);
   };
-})(nx, nx.GLOBAL);
+})();
