@@ -18,4 +18,10 @@ describe('nx.get name/path', () => {
     var rst = nx.get(item, '');
     expect(rst).toEqual({ name: 'afeiship', test: { k1: { abc: 'ABC' } } });
   });
+
+  test('nx.get get default value should return default value', () => {
+    var item = { name: 'afei', age: null };
+    var res = nx.get(item, 'age', 20);
+    expect(res).toBe(20);
+  });
 });

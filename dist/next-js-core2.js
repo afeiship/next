@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '2.3.4',
+  VERSION: '2.4.0',
   DEBUG: false,
   GLOBAL: root
 });
@@ -58,6 +58,7 @@ else if (freeModule) {
 (function() {
   var DOT = '.';
   var NUMBER = 'number';
+  var UNDEF = 'undefined';
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
 
@@ -171,7 +172,7 @@ else if (freeModule) {
     return inTarget;
   };
 
-  nx.get = function(inTarget, inPath) {
+  nx.get = function(inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
     var paths = inPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
@@ -179,7 +180,8 @@ else if (freeModule) {
     paths.forEach(function(path) {
       result = result && result[path];
     });
-    return result;
+
+    return typeof inValue !== UNDEF ? result || inValue : result;
   };
 
   nx.path = function(inTarget, inPath, inValue) {

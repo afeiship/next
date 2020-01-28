@@ -1,6 +1,7 @@
 (function() {
   var DOT = '.';
   var NUMBER = 'number';
+  var UNDEF = 'undefined';
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
 
@@ -114,7 +115,7 @@
     return inTarget;
   };
 
-  nx.get = function(inTarget, inPath) {
+  nx.get = function(inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
     var paths = inPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
@@ -122,7 +123,8 @@
     paths.forEach(function(path) {
       result = result && result[path];
     });
-    return result;
+
+    return typeof inValue !== UNDEF ? result || inValue : result;
   };
 
   nx.path = function(inTarget, inPath, inValue) {
