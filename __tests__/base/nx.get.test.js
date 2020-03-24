@@ -24,4 +24,10 @@ describe('nx.get name/path', () => {
     var res = nx.get(item, 'age', 20);
     expect(res).toBe(20);
   });
+
+  test('nx.get get default value should return default value == false', () => {
+    var item = { name: 'afei', sex: false };
+    var res = nx.get(item, 'sex', 'yes?');
+    expect(res).toBe(false);
+  });
 });

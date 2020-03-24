@@ -181,7 +181,7 @@ else if (freeModule) {
       result = result && result[path];
     });
 
-    return typeof inValue !== UNDEF ? result || inValue : result;
+    return typeof inValue !== UNDEF && result == null ? inValue : result;
   };
 
   nx.path = function(inTarget, inPath, inValue) {
