@@ -36,4 +36,11 @@ describe('nx.set name/path', () => {
     nx.set(qux, 'a.0.b.1', 2);
     expect(qux).toEqual({ a: [{ b: [1, 2] }] });
   });
+
+  test.only('nx.set a.b.[0].c to deep array', () => {
+    var qux = {};
+    nx.set(qux, 'a.[0].b.[0]', 1);
+    nx.set(qux, 'a.[0].b.[1]', 2);
+    expect(qux).toEqual({ a: [{ b: [1, 2] }] });
+  });
 });

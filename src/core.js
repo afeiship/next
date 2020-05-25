@@ -4,6 +4,7 @@
   var UNDEF = 'undefined';
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
+  var INDEXES_PATH_RE = /\[(\w+)\]/g;
 
   nx.noop = function() {};
 
@@ -101,7 +102,8 @@
   };
 
   nx.set = function(inTarget, inPath, inValue) {
-    var paths = inPath.split(DOT);
+    var indexesPath = inPath.replace(INDEXES_PATH_RE, '$1');
+    var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
     var len_ = paths.length - 1;
     var last = paths[len_];
@@ -117,7 +119,8 @@
 
   nx.get = function(inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
-    var paths = inPath.split(DOT);
+    var indexesPath = inPath.replace(INDEXES_PATH_RE, '.$1');
+    var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
     paths.forEach(function(path) {
