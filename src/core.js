@@ -8,6 +8,18 @@
 
   nx.noop = function() {};
 
+  nx.stubTrue = function () {
+    return true;
+  };
+
+  nx.stubFalse = function () {
+    return false;
+  };
+
+  nx.stubValue = function (inValue) {
+    return inValue;
+  };
+
   nx.error = function(inMsg) {
     throw new Error(inMsg);
   };

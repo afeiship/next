@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '2.5.0',
+  VERSION: '2.6.0',
   DEBUG: false,
   GLOBAL: root
 });
@@ -64,6 +64,18 @@ else if (freeModule) {
   var INDEXES_PATH_RE = /\[(\w+)\]/g;
 
   nx.noop = function() {};
+
+  nx.stubTrue = function () {
+    return true;
+  };
+
+  nx.stubFalse = function () {
+    return false;
+  };
+
+  nx.stubValue = function (inValue) {
+    return inValue;
+  };
 
   nx.error = function(inMsg) {
     throw new Error(inMsg);
