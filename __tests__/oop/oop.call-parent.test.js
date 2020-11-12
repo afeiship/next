@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 describe('Call parent', () => {
   test('Class-call parent', function() {

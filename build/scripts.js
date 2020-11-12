@@ -19,7 +19,7 @@
   gulp.task('scripts', function() {
     return gulp
       .src(files, { allowEmpty: true })
-      .pipe($.concat('next-js-core2.js'))
+      .pipe($.concat('index.js'))
       .pipe($.wrap('(function() {\n<%= contents %>}.call(this));'))
       .pipe($.replace('__VERSION__', pkgJson.version))
       .pipe(gulp.dest('dist'))

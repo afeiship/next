@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 /**
 ./node_modules/.bin/jest __test__/oop/oop.static-init.test.js

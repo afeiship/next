@@ -1,18 +1,18 @@
-# next-js-core2
+# next
 > A javascript OOP toolkit for mobile.
 
 ## installation
 ```bash
 # window.nx
-npm install --save @feizheng/next-js-core2@1.6.5
+npm install --save @jswork/next@1.6.5
 
 # inner context
-npm install --save @feizheng/next-js-core2
+npm install --save @jswork/next
 ```
 
 ## node
 ```js
-import nx from '@feizheng/next-js-core2';
+import nx from '@jswork/next';
 
 const MyClass = nx.declare({
   statics:{
@@ -25,7 +25,7 @@ const MyClass = nx.declare({
 
 ## browser
 ```html
-<script type="text/javascript" src="//unpkg.com/@feizheng/next-js-core2@2.0.5/dist/next-js-core2.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/@jswork/next@1.0.0/dist/next.min.js"></script>
 <script type="text/javascript">
 (function (nx, global) {
   nx.declare('myApp', {

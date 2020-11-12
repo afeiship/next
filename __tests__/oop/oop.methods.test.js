@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 describe('class __methods__', () => {
   test('__methods__', function() {

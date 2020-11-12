@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 describe('nx.defineProperty: privmit/object value', () => {
   test('set primitive value, writable value', () => {

@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 // https://github.com/toddmotto/foreach/blob/master/test/spec/foreach-spec.js
 describe('Object looping', function() {

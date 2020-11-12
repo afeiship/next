@@ -1,6 +1,6 @@
 (function() {
   var assert = require('assert');
-  var nx = require('../dist/next-js-core2');
+  var nx = require('../dist/next');
 
   describe('src/oop.js', function() {
     it('Class-memeber', function() {

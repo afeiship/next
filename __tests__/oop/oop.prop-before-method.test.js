@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 describe('oop.prop-before-method.test', () => {
   test('Class', function() {

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var nx = require('../dist/next-js-core2');
+var nx = require('../dist/next');
 
 describe('src/base-mix', function () {
   it('nx.mix', function () {

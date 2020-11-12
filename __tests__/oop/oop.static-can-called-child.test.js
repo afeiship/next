@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 describe('Class static', () => {
   test('oop.static-can-called-child', function() {

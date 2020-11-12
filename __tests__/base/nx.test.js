@@ -1,4 +1,4 @@
-const nx = require('../../dist/next-js-core2');
+const nx = require('../../dist/index');
 
 test('nx attached to global', () => {
   expect(typeof nx === 'object').toBe(true);
