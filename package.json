@@ -7,8 +7,7 @@
     "test": "jest",
     "build": "gulp",
     "bump": "gulp bump",
-    "release": "npm run version && npm run build",
-    "tagging": "rake git:tag_tagging"
+    "release": "npm run version && npm run build"
   },
   "repository": {
     "type": "git",
@@ -16,9 +15,9 @@
   },
   "keywords": [
     "oop",
-    "umd",
+    "js-core",
     "next",
-    "mobile"
+    "tookit"
   ],
   "author": "afei",
   "license": "MIT",
@@ -44,6 +43,7 @@
     "release-it": "^14.2.1"
   },
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   }
 }
