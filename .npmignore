@@ -15,3 +15,4 @@ Rakefile
 Gemfile
 jest.config.js
 .history
+.release-it.json
