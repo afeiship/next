@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "gulp",
-    "bump": "gulp bump",
-    "release": "npm run version && npm run build"
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -29,7 +28,6 @@
     "amdrequire": "0.0.3",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
-    "gulp-bump": "^3.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-filter": "^6.0.0",
     "gulp-load-plugins": "^2.0.5",
