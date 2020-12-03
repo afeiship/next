@@ -69,7 +69,9 @@
     defineProperties: function(inClassMeta) {
       var isStatic = inClassMeta.__static__;
       var target = isStatic ? this.__class__ : this.__class__.prototype;
+      var baseTarget = isStatic ? this.base : this.base.prototype;
       target.__properties__ = nx.mix(
+        baseTarget.__properties__,
         inClassMeta.__properties__,
         this.meta.properties
       );
