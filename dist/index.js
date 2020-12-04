@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '1.0.3',
+  VERSION: '1.0.4',
   DEBUG: false,
   GLOBAL: root
 });
@@ -350,7 +350,7 @@ else if (freeModule) {
   };
 })();
 
-(function() {
+(function () {
   var classId = 1,
     instanceId = 0;
   var NX_ANONYMOUS = 'nx.Anonymous';
@@ -367,7 +367,7 @@ else if (freeModule) {
 
   LifeCycle.prototype = {
     constructor: LifeCycle,
-    initMetaProcessor: function() {
+    initMetaProcessor: function () {
       var meta = this.meta;
       var methods = meta.methods || {};
       var statics = meta.statics || {};
@@ -381,36 +381,36 @@ else if (freeModule) {
         __static__: !meta.methods && !!meta.statics
       });
     },
-    createClassProcessor: function() {
+    createClassProcessor: function () {
       var self = this;
-      this.__class__ = function() {
+      this.__class__ = function () {
         this.__id__ = instanceId++;
         self.__constructor__.apply(this, arguments);
         self.registerDebug(this);
       };
     },
-    inheritProcessor: function() {
+    inheritProcessor: function () {
       var classMeta = this.__class_meta__;
       this.inheritedClass(classMeta);
       this.defineMethods(classMeta, true);
       this.defineMethods(classMeta, false);
       this.defineProperties(classMeta);
     },
-    inheritedClass: function(inClassMeta) {
-      var SuperClass = function() {};
+    inheritedClass: function (inClassMeta) {
+      var SuperClass = function () {};
       var Class = this.__class__;
       SuperClass.prototype = this.$base;
       Class.prototype = new SuperClass();
       Class.prototype.$base = this.$base;
       Class.prototype.constructor = Class;
     },
-    defineMethods: function(inClassMeta, inIsStatic) {
+    defineMethods: function (inClassMeta, inIsStatic) {
       var key = inIsStatic ? 'statics' : 'methods';
       var key_ = '__' + key + '__';
       var target = inIsStatic ? this.__class__ : this.__class__.prototype;
       var baseTarget = inIsStatic ? this.base : this.base.prototype;
       var methods = baseTarget[key_] || {};
-      nx.forIn(this.meta[key], function(key, value) {
+      nx.forIn(this.meta[key], function (key, value) {
         if (methods[key] && typeof value === 'function') {
           value.__base__ = methods[key];
         }
@@ -418,7 +418,7 @@ else if (freeModule) {
       target[key_] = nx.mix(inClassMeta[key_], methods, this.meta[key]);
       nx.defineMembers('Method', target, target[key_], inIsStatic);
     },
-    defineProperties: function(inClassMeta) {
+    defineProperties: function (inClassMeta) {
       var isStatic = inClassMeta.__static__;
       var target = isStatic ? this.__class__ : this.__class__.prototype;
       var baseTarget = isStatic ? this.base : this.base.prototype;
@@ -430,17 +430,17 @@ else if (freeModule) {
       );
       nx.defineMembers('Property', target, target.__properties__, isStatic);
     },
-    methodsConstructorProcessor: function() {
+    methodsConstructorProcessor: function () {
       var classMeta = this.__class_meta__;
-      this.__constructor__ = function() {
+      this.__constructor__ = function () {
         classMeta.__method_init__.apply(this, arguments);
       };
     },
-    staticsConstructorProcessor: function() {
+    staticsConstructorProcessor: function () {
       var classMeta = this.__class_meta__;
       classMeta.__static_init__.call(this.__class__);
     },
-    registerProcessor: function() {
+    registerProcessor: function () {
       var Class = this.__class__;
       var type = this.type;
       var classMeta = this.__class_meta__;
@@ -451,7 +451,7 @@ else if (freeModule) {
         nx.set(nx.GLOBAL, type, Class);
       }
     },
-    registerDebug: function(inInstance) {
+    registerDebug: function (inInstance) {
       if (nx.DEBUG) {
         nx.set(nx, '__instances__.' + (instanceId - 1), inInstance);
         nx.set(nx, '__instances__.length', instanceId);
@@ -459,7 +459,7 @@ else if (freeModule) {
     }
   };
 
-  nx.declare = function(inType, inMeta) {
+  nx.declare = function (inType, inMeta) {
     var type = typeof inType === 'string' ? inType : NX_ANONYMOUS + classId;
     var meta = inMeta || inType;
     var lifeCycle = new LifeCycle(type, meta);

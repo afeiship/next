@@ -1,6 +1,6 @@
 {
   "name": "@jswork/next",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A javascript OOP toolkit for mobile.",
   "main": "dist/index.js",
   "scripts": {
