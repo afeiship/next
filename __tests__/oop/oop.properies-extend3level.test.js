@@ -32,12 +32,15 @@ describe.only('oop properties multiple level invalid', () => {
       }
     });
 
-    var ins = new Cls3();
-    var props = Object.keys(ins.__properties__);
+    var ins3 = new Cls3();
+    var props3 = Object.keys(ins3.__properties__);
+    var ins2 = new Cls2();
+    var props2 = Object.keys(ins2.__properties__);
 
-    expect(ins.prop1).toBe('prop1');
-    expect(ins.prop2).toBe('prop2');
-    expect(ins.prop3).toBe('prop3');
-    expect(props).toEqual(['prop1', 'prop2', 'prop3']);
+    expect(ins3.prop1).toBe('prop1');
+    expect(ins3.prop2).toBe('prop2');
+    expect(ins3.prop3).toBe('prop3');
+    expect(props3).toEqual(['prop1', 'prop2', 'prop3']);
+    expect(props2).toEqual(['prop1', 'prop2']);
   });
 });
