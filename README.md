@@ -7,11 +7,7 @@
 [![download][download-image]][download-url]
 
 ## installation
-```bash
-# window.nx
-npm install --save @jswork/next@1.0.0
-
-# inner context
+```shell
 npm install --save @jswork/next
 ```
 
