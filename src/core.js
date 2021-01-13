@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var DOT = '.';
   var NUMBER = 'number';
   var UNDEF = 'undefined';
@@ -6,7 +6,7 @@
   var hasOwn = Object.prototype.hasOwnProperty;
   var INDEXES_PATH_RE = /\[(\w+)\]/g;
 
-  nx.noop = function() {};
+  nx.noop = function () {};
 
   nx.stubTrue = function () {
     return true;
@@ -20,17 +20,17 @@
     return inValue;
   };
 
-  nx.error = function(inMsg) {
+  nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
 
-  nx.try = function(inFn) {
+  nx.try = function (inFn) {
     try {
       inFn();
     } catch (_) {}
   };
 
-  nx.forEach = function(inArray, inCallback, inContext) {
+  nx.forEach = function (inArray, inCallback, inContext) {
     var length = inArray.length;
     var i;
     var result;
@@ -42,7 +42,7 @@
     }
   };
 
-  nx.forIn = function(inObject, inCallback, inContext) {
+  nx.forIn = function (inObject, inCallback, inContext) {
     var key;
     var result;
     for (key in inObject) {
@@ -55,9 +55,9 @@
     }
   };
 
-  nx.each = function(inTarget, inCallback, inContext) {
+  nx.each = function (inTarget, inCallback, inContext) {
     var key, length;
-    var iterator = function(inKey, inValue, inIsArray) {
+    var iterator = function (inKey, inValue, inIsArray) {
       return (
         inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
         nx.BREAKER
@@ -84,9 +84,9 @@
     }
   };
 
-  nx.map = function(inTarget, inCallback, inContext) {
+  nx.map = function (inTarget, inCallback, inContext) {
     var result = [];
-    nx.each(inTarget, function() {
+    nx.each(inTarget, function () {
       var item = inCallback.apply(inContext, arguments);
       if (item !== nx.BREAKER) {
         result.push(item);
@@ -97,23 +97,23 @@
     return result;
   };
 
-  nx.mix = function(inTarget) {
+  nx.mix = function (inTarget) {
     var target = inTarget || {};
     var i, length;
     var args = arguments;
     for (i = 1, length = args.length; i < length; i++) {
-      nx.forIn(args[i], function(key, val) {
+      nx.forIn(args[i], function (key, val) {
         target[key] = val;
       });
     }
     return target;
   };
 
-  nx.slice = function(inTarget, inStart, inEnd) {
+  nx.slice = function (inTarget, inStart, inEnd) {
     return ARRAY_PROTO.slice.call(inTarget, inStart, inEnd);
   };
 
-  nx.set = function(inTarget, inPath, inValue) {
+  nx.set = function (inTarget, inPath, inValue) {
     var indexesPath = inPath.replace(INDEXES_PATH_RE, '$1');
     var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
@@ -129,20 +129,35 @@
     return inTarget;
   };
 
-  nx.get = function(inTarget, inPath, inValue) {
+  nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
     var indexesPath = inPath.replace(INDEXES_PATH_RE, '.$1');
     var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
-    paths.forEach(function(path) {
+    paths.forEach(function (path) {
       result = result && result[path];
     });
 
     return typeof inValue !== UNDEF && result == null ? inValue : result;
   };
 
-  nx.path = function(inTarget, inPath, inValue) {
+  nx.del = function (inTarget, inPath) {
+    var indexesPath = inPath.replace(INDEXES_PATH_RE, '.$1');
+    var paths = indexesPath.split(DOT);
+    for (var i = 0; i < paths.length; i++) {
+      var path = paths[i];
+
+      if (i === paths.length - 1) {
+        delete inTarget[path];
+        return true;
+      }
+      inTarget = inTarget[path];
+    }
+    return false;
+  };
+
+  nx.path = function (inTarget, inPath, inValue) {
     return inValue == null
       ? this.get(inTarget, inPath)
       : this.set(inTarget, inPath, inValue);
