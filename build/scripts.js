@@ -10,7 +10,6 @@
   var files = [
     'src/base.js',
     'src/core.js',
-    'src/event.js',
     'src/oop-base.js',
     'src/oop-reflect.js',
     'src/oop.js'
@@ -18,7 +17,7 @@
 
   gulp.task('scripts', function() {
     return gulp
-      .src(files, { allowEmpty: true })
+      .src(files)
       .pipe($.concat('index.js'))
       .pipe($.wrap('(function() {\n<%= contents %>}.call(this));'))
       .pipe($.replace('__VERSION__', pkgJson.version))
