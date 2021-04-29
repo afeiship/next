@@ -5,7 +5,8 @@ interface nx {
   GLOBAL: Window;
   noop: () => void;
   stubTrue: () => boolean;
-  stubFalse: () => any;
+  stubFalse: () => boolean;
+  stubValue: () => any;
   error: () => never;
   try: () => any | never;
   forEach: (
