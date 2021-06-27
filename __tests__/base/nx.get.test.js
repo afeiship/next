@@ -8,6 +8,8 @@ describe('nx.get name/path', () => {
     var e4 = { target: { value: 0 } };
     var e5 = { detail: { value: 123 } };
     var e6 = { target: { value: '' } };
+    var e7 = { target: { value: null } };
+    var e8 = { target: { value: undefined } };
     var elseValue = 'else-value';
 
     expect(nx.get(e1, 'target.value')).toBe(null);
@@ -18,6 +20,8 @@ describe('nx.get name/path', () => {
     // empty value
     expect(nx.get(e5, 'target.value', elseValue)).toBe(elseValue);
     expect(nx.get(e6, 'target.value', elseValue)).toBe('');
+    expect(nx.get(e7, 'target.value', elseValue)).toBe(null);
+    expect(nx.get(e8, 'target.value', elseValue)).toBe(elseValue);
   });
 
   test('nx.get object value', () => {
@@ -41,7 +45,7 @@ describe('nx.get name/path', () => {
   test('nx.get get default value should return default value', () => {
     var item = { name: 'afei', age: null };
     var res = nx.get(item, 'age', 20);
-    expect(res).toBe(20);
+    expect(res).toBe(null);
   });
 
   test('nx.get get default value should return default value == false', () => {

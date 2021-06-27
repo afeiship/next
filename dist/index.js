@@ -196,7 +196,9 @@ else if (freeModule) {
       result = result && result[path];
     });
 
-    return typeof inValue !== UNDEF && result == null ? inValue : result;
+    return typeof inValue !== UNDEF && typeof result === UNDEF
+      ? inValue
+      : result;
   };
 
   nx.del = function (inTarget, inPath) {
