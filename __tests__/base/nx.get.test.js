@@ -6,11 +6,18 @@ describe('nx.get name/path', () => {
     var e2 = { target: { value: false } };
     var e3 = { target: { value: '' } };
     var e4 = { target: { value: 0 } };
+    var e5 = { detail: { value: 123 } };
+    var e6 = { target: { value: '' } };
+    var elseValue = 'else-value';
 
     expect(nx.get(e1, 'target.value')).toBe(null);
     expect(nx.get(e2, 'target.value')).toBe(false);
     expect(nx.get(e3, 'target.value')).toBe('');
     expect(nx.get(e4, 'target.value')).toBe(0);
+
+    // empty value
+    expect(nx.get(e5, 'target.value', elseValue)).toBe(elseValue);
+    expect(nx.get(e6, 'target.value', elseValue)).toBe('');
   });
 
   test('nx.get object value', () => {
