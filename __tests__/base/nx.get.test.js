@@ -1,6 +1,18 @@
 const nx = require('../../dist/index');
 
 describe('nx.get name/path', () => {
+  test('get null/empty string', () => {
+    var e1 = { target: { value: null } };
+    var e2 = { target: { value: false } };
+    var e3 = { target: { value: '' } };
+    var e4 = { target: { value: 0 } };
+
+    expect(nx.get(e1, 'target.value')).toBe(null);
+    expect(nx.get(e2, 'target.value')).toBe(false);
+    expect(nx.get(e3, 'target.value')).toBe('');
+    expect(nx.get(e4, 'target.value')).toBe(0);
+  });
+
   test('nx.get object value', () => {
     var item = { name: 'afeiship' };
     var rst = nx.get(item, 'name');
@@ -31,44 +43,45 @@ describe('nx.get name/path', () => {
     expect(res).toBe(false);
   });
 
-  test('nx.get when object has array', ()=>{
+  test('nx.get when object has array', () => {
     var obj = {
-      'part1': {
-        'name': 'Part 1',
-        'size': '20',
-        'qty': '50'
+      part1: {
+        name: 'Part 1',
+        size: '20',
+        qty: '50'
       },
-      'part2': {
-        'name': 'Part 2',
-        'size': '15',
-        'qty': '60'
+      part2: {
+        name: 'Part 2',
+        size: '15',
+        qty: '60'
       },
-      'part3': [
+      part3: [
         {
-          'name': 'Part 3A',
-          'size': '10',
-          'qty': '20'
-        }, {
-          'name': 'Part 3B',
-          'size': '5',
-          'qty': '20'
-        }, {
-          'name': 'Part 3C',
-          'size': '7.5',
-          'qty': '20'
+          name: 'Part 3A',
+          size: '10',
+          qty: '20'
+        },
+        {
+          name: 'Part 3B',
+          size: '5',
+          qty: '20'
+        },
+        {
+          name: 'Part 3C',
+          size: '7.5',
+          qty: '20'
         }
       ]
     };
 
-    var part1name = "part1.name";
-    var part2quantity = "part2.qty";
-    var part3name1 = "part3[0].name";
-    var part3Size2 = "part3.1.size";
+    var part1name = 'part1.name';
+    var part2quantity = 'part2.qty';
+    var part3name1 = 'part3[0].name';
+    var part3Size2 = 'part3.1.size';
 
     expect(nx.get(obj, part1name)).toBe('Part 1');
     expect(nx.get(obj, part2quantity)).toBe('60');
     expect(nx.get(obj, part3name1)).toBe('Part 3A');
     expect(nx.get(obj, part3Size2)).toBe('5');
   });
-
 });
