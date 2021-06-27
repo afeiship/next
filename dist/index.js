@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '1.0.5',
+  VERSION: '1.0.6',
   DEBUG: false,
   GLOBAL: root
 });
