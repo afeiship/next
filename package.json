@@ -12,7 +12,6 @@
     "type": "git",
     "url": "git+https://github.com/afeiship/next.git"
   },
-  "typings": "./typings/index.d.ts",
   "keywords": [
     "oop",
     "js-core",
