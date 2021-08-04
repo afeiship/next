@@ -5,16 +5,16 @@ const nx = require('../../dist/index');
 */
 
 describe('nx.DEBUG', () => {
-  test('Class inherit', function() {
+  test('Class inherit', function () {
     var num1 = 1;
 
     var Person = nx.declare({
       methods: {
-        init: function(name, age) {
+        init: function (name, age) {
           this._name = name;
           this._age = age;
         },
-        plus: function() {
+        plus: function () {
           num1++;
         }
       }
@@ -23,9 +23,19 @@ describe('nx.DEBUG', () => {
     var Programmer = nx.declare({
       extends: Person,
       methods: {
-        init: function(name, age, lang) {
+        init: function (name, age, lang) {
           this.base(name, age);
           this._lang = lang;
+        }
+      }
+    });
+
+    var AdvancedProgrammer = nx.declare({
+      extends: Programmer,
+      methods: {
+        init: function (name, age, lang, job) {
+          this.base(name, age, lang);
+          this._job = job;
         }
       }
     });
@@ -34,26 +44,29 @@ describe('nx.DEBUG', () => {
     var type = fei.__type__;
     fei.plus();
 
+    var pfei = new AdvancedProgrammer('afeiship', 12, 'ruby', 'p5');
+
     expect(type.indexOf('nx.Anonymous') > -1).toBe(true);
     expect(fei._name).toBe('fei');
+    expect(pfei._name).toBe('afeiship');
     expect(num1).toBe(2);
   });
 
   test('__methods__', () => {
     var Human = nx.declare({
       methods: {
-        m1: function() {},
-        m2: function() {},
-        m3: function() {}
+        m1: function () {},
+        m2: function () {},
+        m3: function () {}
       }
     });
 
     var Man = nx.declare({
       extends: Human,
       methods: {
-        m4: function() {},
-        m5: function() {},
-        m6: function() {}
+        m4: function () {},
+        m5: function () {},
+        m6: function () {}
       }
     });
 
@@ -73,10 +86,10 @@ describe('nx.DEBUG', () => {
     var Human = nx.declare({
       properties: {
         prop1: {
-          get: function() {
+          get: function () {
             return this._prop1;
           },
-          set: function(inValue) {
+          set: function (inValue) {
             this._prop1 = '__' + inValue + '__';
           }
         },
@@ -89,7 +102,7 @@ describe('nx.DEBUG', () => {
       extends: Human,
       properties: {
         prop1: {
-          set: function(inValue) {
+          set: function (inValue) {
             this.base(inValue);
             this._prop1 = '@' + this._prop1 + '@';
           }
@@ -110,28 +123,28 @@ describe('nx.DEBUG', () => {
   test('__methods__', () => {
     var Human = nx.declare({
       statics: {
-        m1: function() {
+        m1: function () {
           return 'm1';
         },
-        m2: function() {
+        m2: function () {
           return 'm2';
         },
-        m3: function() {}
+        m3: function () {}
       }
     });
 
     var Man = nx.declare({
       extends: Human,
       statics: {
-        m1: function() {
+        m1: function () {
           return this.parent('m1') + '@';
         },
-        m2: function() {
+        m2: function () {
           // failed! has bug:
           return this.base() + '@';
         },
-        m5: function() {},
-        m6: function() {}
+        m5: function () {},
+        m6: function () {}
       }
     });
 
