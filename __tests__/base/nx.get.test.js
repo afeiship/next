@@ -87,12 +87,36 @@ describe('nx.get name/path', () => {
 
     var part1name = 'part1.name';
     var part2quantity = 'part2.qty';
-    var part3name1 = 'part3[0].name';
+    var part3name1 = 'part3.[0].name';
     var part3Size2 = 'part3.1.size';
 
     expect(nx.get(obj, part1name)).toBe('Part 1');
     expect(nx.get(obj, part2quantity)).toBe('60');
     expect(nx.get(obj, part3name1)).toBe('Part 3A');
     expect(nx.get(obj, part3Size2)).toBe('5');
+  });
+
+  test('array with [xx].path', () => {
+    var ar1 = [
+      {
+        name: 'Part 3A',
+        size: '10',
+        qty: '20'
+      },
+      {
+        name: 'Part 3B',
+        size: '5',
+        qty: '20'
+      },
+      {
+        name: 'Part 3C',
+        size: '7.5',
+        qty: '20'
+      }
+    ];
+
+    expect(nx.get(ar1, '[0].name')).toBe('Part 3A');
+    expect(nx.get(ar1, '[1].name')).toBe('Part 3B');
+    expect(nx.get(ar1, '[2].qty')).toBe('20');
   });
 });

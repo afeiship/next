@@ -131,7 +131,7 @@
 
   nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
-    var indexesPath = inPath.replace(INDEXES_PATH_RE, '.$1');
+    var indexesPath = inPath.replace(INDEXES_PATH_RE, '$1');
     var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
