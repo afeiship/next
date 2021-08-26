@@ -62,6 +62,16 @@ else if (freeModule) {
   var ARRAY_PROTO = Array.prototype;
   var hasOwn = Object.prototype.hasOwnProperty;
   var INDEXES_PATH_RE = /\[(\w+)\]/g;
+  var MULTIPLE_DOT_RE = /[.]+/g;
+  var EDGE_DOT_RE = /^\.|\.$/g;
+  var POS1 = '.$1';
+  var EMP = '';
+  var normalize = function (path) {
+    return path
+      .replace(INDEXES_PATH_RE, POS1)
+      .replace(MULTIPLE_DOT_RE, DOT)
+      .replace(EDGE_DOT_RE, EMP);
+  };
 
   nx.noop = function () {};
 
@@ -171,7 +181,7 @@ else if (freeModule) {
   };
 
   nx.set = function (inTarget, inPath, inValue) {
-    var indexesPath = inPath.replace(INDEXES_PATH_RE, '$1');
+    var indexesPath = normalize(inPath);
     var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
     var len_ = paths.length - 1;
@@ -188,7 +198,7 @@ else if (freeModule) {
 
   nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
-    var indexesPath = inPath.replace(INDEXES_PATH_RE, '$1');
+    var indexesPath = normalize(inPath);
     var paths = indexesPath.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
@@ -202,7 +212,7 @@ else if (freeModule) {
   };
 
   nx.del = function (inTarget, inPath) {
-    var indexesPath = inPath.replace(INDEXES_PATH_RE, '.$1');
+    var indexesPath = normalize(inPath);
     var paths = indexesPath.split(DOT);
     for (var i = 0; i < paths.length; i++) {
       var path = paths[i];

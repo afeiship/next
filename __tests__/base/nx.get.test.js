@@ -106,7 +106,10 @@ describe('nx.get name/path', () => {
       {
         name: 'Part 3B',
         size: '5',
-        qty: '20'
+        qty: '20',
+        student: {
+          child: '123'
+        }
       },
       {
         name: 'Part 3C',
@@ -117,6 +120,9 @@ describe('nx.get name/path', () => {
 
     expect(nx.get(ar1, '[0].name')).toBe('Part 3A');
     expect(nx.get(ar1, '[1].name')).toBe('Part 3B');
+    expect(nx.get(ar1, '[1][name]')).toBe('Part 3B');
+    expect(nx.get(ar1, '[1][student].child')).toBe('123');
+    expect(nx.get(ar1, '.[1][name]')).toBe('Part 3B');
     expect(nx.get(ar1, '[2].qty')).toBe('20');
   });
 });
