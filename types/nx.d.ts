@@ -13,4 +13,10 @@ declare namespace Nx {
     value: any,
     target: any
   ) => IteratorReturnValue;
+
+  type MapIterator = (
+    indexKey: string | number,
+    value: any,
+    target: any
+  ) => any[];
 }

@@ -59,4 +59,18 @@ interface NxStatic {
     callback: Nx.ArrayIterator | Nx.ObjectIterator,
     context?
   ): void;
+
+  /**
+   * Get mapped array.
+   * @param target
+   * @param callback
+   * @param context
+   */
+  map(target: any, callback: Nx.MapIterator, context?): void;
+
+  /**
+   * Merge object.
+   * @param args
+   */
+  mix(...args): any;
 }
