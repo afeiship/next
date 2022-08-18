@@ -3,36 +3,44 @@ interface NxStatic {
    * Current version of next.
    */
   VERSION: string;
+
   /**
    * Debug mode for next.
    */
   DEBUG: boolean;
+
   /**
    * A symbol for break.
    */
   BREAKER: {};
+
   /**
    * Stub code for void function.
    */
   noop(): void;
+
   /**
    * Stub code will get boolean true value.
    */
   stubTrue(): true;
+
   /**
    * Stub code will get boolean false value.
    */
   stubFalse(): false;
+
   /**
    * Pass value will get the same value.
    * @param v any value.
    */
   stubValue(v: any): any;
+
   /**
    * Throw a Standard error.
    * @param msg
    */
   error(msg: string): never;
+
   /**
    * ForEach but have break(nx.BREAK).
    * @param target The list target.
@@ -40,6 +48,7 @@ interface NxStatic {
    * @param context The execute context.
    */
   forEach(target: any[], callback: Nx.ArrayIterator, context?): void;
+
   /**
    * ForIn for js object with break.
    * @param target The js object.
