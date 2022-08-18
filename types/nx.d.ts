@@ -1,5 +1,5 @@
 declare namespace Nx {
-  type BREAKER = typeof nx.BREAKER;
+  type BREAKER = object;
   type IteratorReturnValue = Nx.BREAKER | undefined | void;
 
   type ArrayIterator = (
