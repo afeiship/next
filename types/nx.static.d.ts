@@ -58,7 +58,7 @@ interface NxStatic {
   forIn(target: any, callback: Nx.ObjectIterator, context?): void;
 
   /**
-   * Each for enumerate object.
+   * Each for enumerable object.
    * @param target
    * @param callback
    * @param context
@@ -82,4 +82,34 @@ interface NxStatic {
    * @param args
    */
   mix(...args): any;
+
+  /**
+   * Slice for any enumerable target.
+   * @param target
+   * @param start
+   * @param end
+   */
+  slice<T>(target: T[], start: number, end: number): T[];
+
+  /**
+   * Set value by dot path(string or dot string).
+   * @param target
+   * @param path
+   * @param value
+   */
+  set(target: any, path: string, value: any): any;
+
+  /**
+   * Get value by path(string or dot string).
+   * @param target
+   * @param path
+   */
+  get(target: any, path: string): any;
+
+  /**
+   * Delete by path(string or dot string), return boolean value.
+   * @param target
+   * @param path
+   */
+  del(target: any, path: string): boolean;
 }
