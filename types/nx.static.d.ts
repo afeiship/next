@@ -112,4 +112,13 @@ interface NxStatic {
    * @param path
    */
   del(target: any, path: string): boolean;
+
+  /**
+   * Get/set method.
+   * @deprecated Will be delete in future.
+   * @param target
+   * @param path
+   * @param value
+   */
+  path(target: any, path: string, value: any): any;
 }
