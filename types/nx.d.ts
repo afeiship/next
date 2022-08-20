@@ -19,4 +19,6 @@ declare namespace Nx {
     value: any,
     target: any
   ) => any[];
+
+  type DefinedMemember = 'Method' | 'Property' |'BombMethod';
 }
