@@ -1,6 +1,6 @@
 {
   "name": "@jswork/next",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A javascript OOP toolkit for mobile.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -46,7 +46,7 @@
     "gulp-umd": "^2.0.0",
     "gulp-wrap": "^0.15.0",
     "jest": "^26.6.3",
-    "release-it": "^14.2.1"
+    "release-it": "^15.3.0"
   },
   "publishConfig": {
     "access": "public",
