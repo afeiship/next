@@ -103,8 +103,9 @@ interface NxStatic {
    * Get value by path(string or dot string).
    * @param target
    * @param path
+   * @param default
    */
-  get(target: any, path: string): any;
+  get(target: any, path: string, defaults?: any): any;
 
   /**
    * Delete by path(string or dot string), return boolean value.
@@ -161,7 +162,7 @@ interface NxStatic {
    * @param obj
    * @param isStatic
    */
-  defineMembers(member: DefinedMemember, target: any, obj: any, isStatic: boolean ): any;
+  defineMembers(member: DefinedMemember, target: any, obj: any, isStatic: boolean): any;
 
   /**
    * Define es5 class.
