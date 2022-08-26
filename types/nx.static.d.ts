@@ -162,7 +162,7 @@ interface NxStatic {
    * @param obj
    * @param isStatic
    */
-  defineMembers(member: DefinedMemember, target: any, obj: any, isStatic: boolean): any;
+  defineMembers(member: Nx.DefinedMemember, target: any, obj: any, isStatic: boolean): any;
 
   /**
    * Define es5 class.
