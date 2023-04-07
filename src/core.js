@@ -174,4 +174,14 @@
       ? this.get(inTarget, inPath)
       : this.set(inTarget, inPath, inValue);
   };
+
+  nx.to = function (inPromise) {
+    return inPromise
+      .then(function (data) {
+        return [undefined, data];
+      })
+      .catch(function (err) {
+        return [err];
+      });
+  };
 })();

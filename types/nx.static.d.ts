@@ -124,6 +124,16 @@ interface NxStatic {
   path(target: any, path: string, value: any): any;
 
   /**
+   * Async await wrapper for easy error handling without try-catch.
+   * @param promise
+   * @example
+   * const [err, res] = await to(fetch('https://api.github.com/users/github'));
+   * if (err) throw err;
+   * console.log(res);
+   */
+  to<T>(promise: Promise<T>): Promise<[Error, undefined] | [undefined, T]>;
+
+  /**
    * Root class of nx.Class.
    */
   RootClass(): any;
@@ -153,7 +163,12 @@ interface NxStatic {
    * @param meta
    * @param isStatic
    */
-  defineBombMethod(target: any, name: string, meta: any, isStatic: boolean): any;
+  defineBombMethod(
+    target: any,
+    name: string,
+    meta: any,
+    isStatic: boolean
+  ): any;
 
   /**
    * Define a member for nx.
@@ -162,7 +177,12 @@ interface NxStatic {
    * @param obj
    * @param isStatic
    */
-  defineMembers(member: Nx.DefinedMemember, target: any, obj: any, isStatic: boolean): any;
+  defineMembers(
+    member: Nx.DefinedMemember,
+    target: any,
+    obj: any,
+    isStatic: boolean
+  ): any;
 
   /**
    * Define es5 class.
