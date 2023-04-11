@@ -89,7 +89,7 @@ interface NxStatic {
    * @param start
    * @param end
    */
-  slice<T>(target: T[], start: number, end: number): T[];
+  slice<T>(target: T[], start?: number, end?: number): T[];
 
   /**
    * Set value by dot path(string or dot string).
@@ -121,7 +121,7 @@ interface NxStatic {
    * @param path
    * @param value
    */
-  path(target: any, path: string, value: any): any;
+  path(target: any, path: string, value?: any): any;
 
   /**
    * Async await wrapper for easy error handling without try-catch.
