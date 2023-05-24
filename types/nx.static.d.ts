@@ -145,7 +145,7 @@ interface NxStatic {
    * @param meta
    * @param isStatic
    */
-  defineProperty(target: any, name: string, meta: any, isStatic: boolean): any;
+  defineProperty(target: any, name: string, meta: any, isStatic?: boolean): any;
 
   /**
    * Define method for target.
@@ -154,7 +154,7 @@ interface NxStatic {
    * @param meta
    * @param isStatic
    */
-  defineMethod(target: any, name: string, meta: any, isStatic: boolean): any;
+  defineMethod(target: any, name: string, meta: any, isStatic?: boolean): any;
 
   /**
    * Define a series method from name with comma for a target.
@@ -167,7 +167,7 @@ interface NxStatic {
     target: any,
     name: string,
     meta: any,
-    isStatic: boolean
+    isStatic?: boolean
   ): any;
 
   /**
@@ -181,7 +181,7 @@ interface NxStatic {
     member: Nx.DefinedMemember,
     target: any,
     obj: any,
-    isStatic: boolean
+    isStatic?: boolean
   ): any;
 
   /**
