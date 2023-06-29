@@ -25,7 +25,7 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
-  VERSION: '1.1.8',
+  VERSION: '1.1.9',
   DEBUG: false,
   GLOBAL: root
 });
@@ -91,10 +91,13 @@ else if (freeModule) {
     throw new Error(inMsg);
   };
 
-  nx.try = function (inFn) {
+  nx.try = function (inFn, inCatch) {
+    var cb = inCatch || nx.noop;
     try {
       inFn();
-    } catch (_) {}
+    } catch (err) {
+      cb(err);
+    }
   };
 
   nx.forEach = function (inArray, inCallback, inContext) {
