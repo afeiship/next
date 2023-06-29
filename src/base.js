@@ -24,10 +24,10 @@ var freeModule =
 //force inject to global:
 var nx = (root.nx = root.nx || {
   BREAKER: {},
+  NIL: {},
   VERSION: '__VERSION__',
   DEBUG: false,
   GLOBAL: root,
-  NIL: {}
 });
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
@@ -40,7 +40,7 @@ if (
 
   // Define as an anonymous module so, through path mapping, it can be
   // referenced as the "underscore" module.
-  define(function() {
+  define(function () {
     return nx;
   });
 }
