@@ -26,7 +26,8 @@ var nx = (root.nx = root.nx || {
   BREAKER: {},
   VERSION: '__VERSION__',
   DEBUG: false,
-  GLOBAL: root
+  GLOBAL: root,
+  NIL: {}
 });
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
