@@ -42,6 +42,13 @@ interface NxStatic {
   error(msg: string): never;
 
   /**
+   * Nice try for fn.
+   * @param fn
+   * @param cb
+   */
+  try(fn: Function, cb: (err) => void): any;
+
+  /**
    * ForEach but have break(nx.BREAK).
    * @param target The list target.
    * @param callback The iterator.
