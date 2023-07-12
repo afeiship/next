@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.1.10',
+  VERSION: '1.1.11',
   DEBUG: false,
   GLOBAL: root,
 });
