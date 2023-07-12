@@ -13,6 +13,10 @@ interface NxStatic {
    * A symbol for break.
    */
   BREAKER: {};
+  /**
+   * A symbol for nil.
+   */
+  NIL: {};
 
   /**
    * Stub code for void function.
