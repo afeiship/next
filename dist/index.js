@@ -88,6 +88,10 @@ else if (freeModule) {
     return inValue;
   };
 
+  nx.stubPromise = function (inValue) {
+    return Promise.resolve(inValue);
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
@@ -244,6 +248,32 @@ else if (freeModule) {
       .catch(function (err) {
         return [err];
       });
+  };
+
+  nx.createOverload = function () {
+    var fnCacheMap = {};
+
+    function overload() {
+      var args = Array.prototype.slice.call(arguments);
+      var key = args.map((item) => typeof item).join();
+      var fn = fnCacheMap[key];
+      if (!fn) {
+        throw new Error('No matching function, parameter type: [' + key + ']');
+      }
+      return fn.apply(this, args);
+    }
+
+    overload.add = (inOptions) => {
+      var args = inOptions.args;
+      var fn = inOptions.fn;
+      var types = args.join();
+      if (typeof fn !== 'function') {
+        throw new Error('The fn must be a function');
+      }
+      fnCacheMap[types] = fn;
+    };
+
+    return overload;
   };
 })();
 
