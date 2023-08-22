@@ -3,6 +3,7 @@
   var NUMBER = 'number';
   var UNDEF = 'undefined';
   var ARRAY_PROTO = Array.prototype;
+  var toString = Object.prototype.toString;
   var hasOwn = Object.prototype.hasOwnProperty;
   var INDEXES_PATH_RE = /\[(\w+)\]/g;
   var MULTIPLE_DOT_RE = /[.]+/g;
@@ -19,7 +20,11 @@
   nx.noop = function () {};
 
   nx.typeof = function (inTarget) {
-    return Object.prototype.toString.call(inTarget).slice(8, -1).toLowerCase();
+    var isPrimitive = inTarget == null || typeof inTarget !== 'object';
+    if (!isPrimitive) return toString.call(inTarget).slice(8, -1).toLowerCase();
+    if (inTarget === null) return 'null';
+    if (inTarget === undefined) return 'undefined';
+    return typeof inTarget;
   };
 
   nx.stubTrue = function () {
