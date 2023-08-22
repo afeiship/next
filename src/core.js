@@ -9,12 +9,6 @@
   var EDGE_DOT_RE = /^\.|\.$/g;
   var POS1 = '.$1';
   var EMP = '';
-  var getType = function (obj) {
-    return Object.prototype.toString
-      .call(obj)
-      .slice(8, -1)
-      .toLowerCase();
-  };
   var normalize = function (path) {
     return path
       .replace(INDEXES_PATH_RE, POS1)
@@ -23,6 +17,10 @@
   };
 
   nx.noop = function () {};
+
+  nx.typeof = function (inTarget) {
+    return Object.prototype.toString.call(inTarget).slice(8, -1).toLowerCase();
+  };
 
   nx.stubTrue = function () {
     return true;
@@ -70,12 +68,7 @@
     var result;
     for (key in inObject) {
       if (hasOwn.call(inObject, key)) {
-        result = inCallback.call(
-          inContext,
-          key,
-          inObject[key],
-          inObject
-        );
+        result = inCallback.call(inContext, key, inObject[key], inObject);
         if (result === nx.BREAKER) {
           break;
         }
@@ -87,13 +80,8 @@
     var key, length;
     var iterator = function (inKey, inValue, inIsArray) {
       return (
-        inCallback.call(
-          inContext,
-          inKey,
-          inValue,
-          inTarget,
-          inIsArray
-        ) === nx.BREAKER
+        inCallback.call(inContext, inKey, inValue, inTarget, inIsArray) ===
+        nx.BREAKER
       );
     };
 
@@ -211,13 +199,11 @@
   nx.createOverload = function () {
     var fnCacheMap = {};
     function overload() {
-      var args = Array.prototype.slice.call(arguments);
-      var key = args.map(getType).join();
+      var args = nx.slice(arguments);
+      var key = args.map(nx.typeof).join();
       var fn = fnCacheMap[key];
       if (!fn) {
-        throw new Error(
-          'No matching function, parameter type: [' + key + ']'
-        );
+        throw new Error('No matching function, parameter type: [' + key + ']');
       }
       return fn.apply(this, args);
     }
