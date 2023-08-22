@@ -50,7 +50,7 @@ Code released under [the MIT license](https://github.com/afeiship/next/blob/mast
 [license-url]: https://github.com/afeiship/next/blob/master/LICENSE.txt
 
 [size-image]: https://img.shields.io/bundlephobia/minzip/@jswork/next
-[size-url]: https://github.com/afeiship/next/blob/master/dist/next.min.js
+[size-url]: https://github.com/afeiship/next/blob/master/dist/index.min.js
 
 [download-image]: https://img.shields.io/npm/dm/@jswork/next
 [download-url]: https://www.npmjs.com/package/@jswork/next
