@@ -213,7 +213,7 @@
       return fn.apply(this, args);
     }
 
-    overload.add = (inOptions) => {
+    overload.add = function (inOptions) {
       var args = inOptions.args;
       var fn = inOptions.fn;
       var types = args.join();
