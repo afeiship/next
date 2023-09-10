@@ -206,7 +206,7 @@
     function overload() {
       var args = nx.slice(arguments);
       var key = args.map(nx.typeof).join();
-      var fn = fnCacheMap[key];
+      var fn = fnCacheMap[args.length] || fnCacheMap[key];
       if (!fn) {
         throw new Error('No matching function, parameter type: [' + key + ']');
       }
@@ -216,7 +216,7 @@
     overload.add = function (inOptions) {
       var args = inOptions.args;
       var fn = inOptions.fn;
-      var types = args.join();
+      var types = Array.isArray(args) ? args.join() : args;
       if (typeof fn !== 'function') {
         throw new Error('The fn must be a function');
       }
