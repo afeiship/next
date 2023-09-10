@@ -145,6 +145,11 @@ interface NxStatic {
   to<T>(promise: Promise<T>): Promise<[Error, undefined] | [undefined, T]>;
 
   /**
+   * Create overload function.
+   */
+  createOverload(): Nx.OverloadResult;
+
+  /**
    * Root class of nx.Class.
    */
   RootClass(): any;

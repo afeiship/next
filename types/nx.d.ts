@@ -1,6 +1,13 @@
 declare namespace Nx {
   type BREAKER = object;
   type IteratorReturnValue = Nx.BREAKER | undefined | void;
+  type OverloadResult = {
+    add(options: OverloadOptions): any;
+  };
+  type OverloadOptions = {
+    args: any[] | number;
+    fn: Function;
+  };
 
   type ArrayIterator = (
     value: any,
@@ -20,5 +27,5 @@ declare namespace Nx {
     target: any
   ) => any[];
 
-  type DefinedMemember = 'Method' | 'Property' |'BombMethod';
+  type DefinedMemember = 'Method' | 'Property' | 'BombMethod';
 }
