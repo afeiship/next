@@ -1,5 +1,12 @@
 
 
+## [1.2.2](https://github.com/afeiship/next/compare/v1.2.1...v1.2.2) (2023-09-24)
+
+
+### Bug Fixes
+
+* rm nx.path from nx ([dbb7fe4](https://github.com/afeiship/next/commit/dbb7fe4896da5dc422b54d73dbf5ec271682d136))
+
 ## [1.2.1](https://github.com/afeiship/next/compare/v1.2.0...v1.2.1) (2023-09-24)
 
 # [1.2.0](https://github.com/afeiship/next/compare/v1.1.16...v1.2.0) (2023-09-24)

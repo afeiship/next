@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.2.1',
+  VERSION: '1.2.2',
   DEBUG: false,
   GLOBAL: root,
 });
@@ -241,12 +241,6 @@ else if (freeModule) {
       inTarget = inTarget[path];
     }
     return false;
-  };
-
-  nx.path = function (inTarget, inPath, inValue) {
-    return inValue == null
-      ? this.get(inTarget, inPath)
-      : this.set(inTarget, inPath, inValue);
   };
 
   nx.to = function (inPromise) {
