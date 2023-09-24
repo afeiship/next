@@ -185,12 +185,6 @@
     return false;
   };
 
-  nx.path = function (inTarget, inPath, inValue) {
-    return inValue == null
-      ? this.get(inTarget, inPath)
-      : this.set(inTarget, inPath, inValue);
-  };
-
   nx.to = function (inPromise) {
     return inPromise
       .then(function (data) {
