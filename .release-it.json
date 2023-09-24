@@ -10,5 +10,13 @@
   "github": {
     "release": true,
     "proxy": "http://127.0.0.1:9090"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "angular"
+      },
+      "infile": "CHANGELOG.md"
+    }
   }
 }

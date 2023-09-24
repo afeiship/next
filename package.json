@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/afeiship/next#readme",
   "devDependencies": {
+    "@release-it/conventional-changelog": "^7.0.2",
     "amdrequire": "0.0.3",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
