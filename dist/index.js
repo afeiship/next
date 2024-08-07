@@ -235,7 +235,8 @@ else if (freeModule) {
       var path = paths[i];
 
       if (i === paths.length - 1) {
-        delete inTarget[path];
+        if (inTarget == null) return false;
+        if (typeof inTarget === 'object') delete inTarget[path];
         return true;
       }
       inTarget = inTarget[path];
