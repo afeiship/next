@@ -1,5 +1,12 @@
 
 
+## [1.2.3](https://github.com/afeiship/next/compare/v1.2.2...v1.2.3) (2024-08-07)
+
+
+### Bug Fixes
+
+* nx.del not exist value should work ([2042975](https://github.com/afeiship/next/commit/20429750d77a8f16ae4ad5ab02c5ce99a4cdf20a))
+
 ## [1.2.2](https://github.com/afeiship/next/compare/v1.2.1...v1.2.2) (2023-09-24)
 
 
