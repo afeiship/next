@@ -1,5 +1,5 @@
 const nx = require('../../dist/index');
-
+// bun test ./__tests__/base/nx.get.test.js
 describe('nx.get name/path', () => {
   test('get null/empty string', () => {
     var e1 = { target: { value: null } };
@@ -125,4 +125,10 @@ describe('nx.get name/path', () => {
     expect(nx.get(ar1, '.[1][name]')).toBe('Part 3B');
     expect(nx.get(ar1, '[2].qty')).toBe('20');
   });
+
+  test('Number key should work file', ()=>{
+    const obj = { id: 122, name: 'xiaoming', age: 18 };
+    const res = nx.get(obj, 1);
+    expect(res).toBe(undefined);
+  })
 });
