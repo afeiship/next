@@ -1,5 +1,12 @@
 
 
+## [1.2.4](https://github.com/afeiship/next/compare/v1.2.3...v1.2.4) (2024-08-08)
+
+
+### Bug Fixes
+
+* number path should work fine ([25fe454](https://github.com/afeiship/next/commit/25fe454ad05b85614383bf90584fef6a9033ec7e))
+
 ## [1.2.3](https://github.com/afeiship/next/compare/v1.2.2...v1.2.3) (2024-08-07)
 
 
