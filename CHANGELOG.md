@@ -1,5 +1,12 @@
 
 
+## [1.2.5](https://github.com/afeiship/next/compare/v1.2.4...v1.2.5) (2024-08-17)
+
+
+### Bug Fixes
+
+* typping nx.map ([301e69a](https://github.com/afeiship/next/commit/301e69ac1f65845d663a11db41fa9e418b10e4d7))
+
 ## [1.2.4](https://github.com/afeiship/next/compare/v1.2.3...v1.2.4) (2024-08-08)
 
 
