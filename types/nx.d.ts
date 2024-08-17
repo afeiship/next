@@ -25,7 +25,7 @@ declare namespace Nx {
     indexKey: string | number,
     value: any,
     target: any
-  ) => any[];
+  ) => any;
 
   type DefinedMemember = 'Method' | 'Property' | 'BombMethod';
 }
