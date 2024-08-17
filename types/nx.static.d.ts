@@ -86,7 +86,7 @@ interface NxStatic {
    * @param callback
    * @param context
    */
-  map(target: any, callback: Nx.MapIterator, context?): void;
+  map(target: any, callback: Nx.MapIterator, context?): any[];
 
   /**
    * Merge object.
