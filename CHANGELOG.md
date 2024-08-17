@@ -1,5 +1,12 @@
 
 
+## [1.2.6](https://github.com/afeiship/next/compare/v1.2.5...v1.2.6) (2024-08-17)
+
+
+### Bug Fixes
+
+* MapIterator to any ([5713f77](https://github.com/afeiship/next/commit/5713f7747928254414e60580f1abe5e6282440fd))
+
 ## [1.2.5](https://github.com/afeiship/next/compare/v1.2.4...v1.2.5) (2024-08-17)
 
 
