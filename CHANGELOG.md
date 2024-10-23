@@ -1,5 +1,12 @@
 
 
+## [1.2.7](https://github.com/afeiship/next/compare/v1.2.6...v1.2.7) (2024-10-23)
+
+
+### Bug Fixes
+
+* upt stub promise when undefined ([0a56421](https://github.com/afeiship/next/commit/0a564217a407645ff872a63257ea21931e47d0db))
+
 ## [1.2.6](https://github.com/afeiship/next/compare/v1.2.5...v1.2.6) (2024-08-17)
 
 
