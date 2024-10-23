@@ -11,7 +11,8 @@
   var POS1 = '.$1';
   var EMP = '';
   var normalize = function (path) {
-    return (path).toString()
+    return path
+      .toString()
       .replace(INDEXES_PATH_RE, POS1)
       .replace(MULTIPLE_DOT_RE, DOT)
       .replace(EDGE_DOT_RE, EMP);
@@ -40,6 +41,7 @@
   };
 
   nx.stubPromise = function (inValue) {
+    if (typeof inValue === 'undefined') return Promise.resolve();
     return Promise.resolve(inValue);
   };
 
