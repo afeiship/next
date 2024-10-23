@@ -1,5 +1,5 @@
 # next
-> A javascript OOP toolkit for mobile.
+> A javascript OOP toolkit for mobile & modern web.
 
 [![version][version-image]][version-url]
 [![license][license-image]][license-url]
