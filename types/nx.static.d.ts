@@ -142,7 +142,7 @@ interface NxStatic {
    * if (err) throw err;
    * console.log(res);
    */
-  to<T>(promise: Promise<T>): Promise<[Error, undefined] | [undefined, T]>;
+  to<T>(promise: Promise<T>): Promise<[any, undefined] | [undefined, T]>;
 
   /**
    * Create overload function.
