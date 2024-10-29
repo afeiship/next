@@ -1,5 +1,12 @@
 
 
+## [1.2.8](https://github.com/afeiship/next/compare/v1.2.7...v1.2.8) (2024-10-29)
+
+
+### Bug Fixes
+
+* to typeing error ([19dd241](https://github.com/afeiship/next/commit/19dd241587ca190740032e3615126e600856f80f))
+
 ## [1.2.7](https://github.com/afeiship/next/compare/v1.2.6...v1.2.7) (2024-10-23)
 
 
