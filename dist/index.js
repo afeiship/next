@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.2.8',
+  VERSION: '1.2.9',
   DEBUG: false,
   GLOBAL: root,
 });
@@ -252,7 +252,7 @@ else if (freeModule) {
         return [undefined, data];
       })
       .catch(function (err) {
-        return [err];
+        return [err, undefined];
       });
   };
 

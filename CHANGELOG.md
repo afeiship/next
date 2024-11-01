@@ -1,5 +1,17 @@
 
 
+## [1.2.9](https://github.com/afeiship/next/compare/v1.2.8...v1.2.9) (2024-11-01)
+
+
+### Bug Fixes
+
+* to impl ([b4ac22e](https://github.com/afeiship/next/commit/b4ac22e81e1552a2443a48c5392b60d6d3411fdf))
+
+
+### Features
+
+* add stubPromise typigns ([bddb4bd](https://github.com/afeiship/next/commit/bddb4bd8da55de9cde6b44c25b76b26ec7b737a5))
+
 ## [1.2.8](https://github.com/afeiship/next/compare/v1.2.7...v1.2.8) (2024-10-29)
 
 
