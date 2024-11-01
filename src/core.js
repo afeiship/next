@@ -194,7 +194,7 @@
         return [undefined, data];
       })
       .catch(function (err) {
-        return [err];
+        return [err, undefined];
       });
   };
 
