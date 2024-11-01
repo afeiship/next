@@ -40,6 +40,12 @@ interface NxStatic {
   stubValue(v: any): any;
 
   /**
+   * Create a promise with value.
+   * @param v any value.
+   */
+  stubPromise(v?: any): Promise<any>;
+
+  /**
    * Throw a Standard error.
    * @param msg
    */
