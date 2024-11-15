@@ -46,6 +46,50 @@ interface NxStatic {
   stubPromise(v?: any): Promise<any>;
 
   /**
+   * If value is boolean, return true, else return false.
+   * @param v
+   */
+  isBoolean(v: any): boolean;
+
+  /**
+   * If value is string, return true, else return false.
+   * @param v
+   */
+  isString(v: any): boolean;
+
+  /**
+   * If value is number, return true, else return false.
+   * NaN is not a number.
+   * @param v
+   */
+  isNumber(v: any): boolean;
+
+  /**
+   * If value is function, return true, else return false.
+   * @param v
+   */
+  isFunction(v: any): boolean;
+
+  /**
+   * If value is undefined OR null, return true, else return false.
+   * @param v
+   */
+  isNil(v: any): boolean;
+
+  /**
+   * If value is array, return true, else return false.
+   * @param v
+   */
+  isArray(v: any): boolean;
+
+  /**
+   * If value is object, return true, else return false.
+   * Array  is not a object.
+   * @param v
+   */
+  isObject(v: any): boolean;
+
+  /**
    * Throw a Standard error.
    * @param msg
    */

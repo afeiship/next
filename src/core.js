@@ -45,6 +45,35 @@
     return Promise.resolve(inValue);
   };
 
+  nx.isBoolean = function (inTarget) {
+    return typeof inTarget === 'boolean';
+  };
+
+  nx.isString = function (inTarget) {
+    return typeof inTarget === 'string';
+  };
+
+  nx.isNumber = function (inTarget) {
+    return typeof inTarget === NUMBER && !isNaN(inTarget);
+  };
+
+  nx.isFunction = function (inTarget) {
+    return typeof inTarget === 'function';
+  };
+
+  nx.isNil = function (inTarget) {
+    return inTarget == null;
+  };
+
+  nx.isArray = function (inTarget) {
+    return Array.isArray(inTarget);
+  };
+
+  nx.isObject = function (inTarget) {
+    if(Array.isArray(inTarget)) return false;
+    return typeof inTarget === 'object' && inTarget !== null;
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
