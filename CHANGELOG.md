@@ -1,5 +1,13 @@
 
 
+## [1.2.10](https://github.com/afeiship/next/compare/v1.2.9...v1.2.10) (2024-12-01)
+
+
+### Features
+
+* add is thenable ([0165a85](https://github.com/afeiship/next/commit/0165a851f155d0f83235314551de2c63c78f9281))
+* add is-xxx for next ([71fe836](https://github.com/afeiship/next/commit/71fe8368154775072cfa9a8137bc83d65d31e350))
+
 ## [1.2.9](https://github.com/afeiship/next/compare/v1.2.8...v1.2.9) (2024-11-01)
 
 
