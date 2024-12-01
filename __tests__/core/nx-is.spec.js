@@ -73,4 +73,32 @@ describe('src/core/nx.is-xxx', function () {
     expect(nx.isNil([])).toBe(false);
     expect(nx.isNil(function () {})).toBe(false);
   });
+
+  test('nx.isThenable', () => {
+    const p1 = new Promise((resolve, reject) => {
+      resolve(123);
+    });
+    // const p2 = new Promise((resolve, reject) => {
+    //   reject(new Error('error'));
+    // });
+    const p3 = 123;
+    const p4 = '123';
+    const p5 = null;
+    const p6 = undefined;
+    const p7 = function () {};
+    const p8 = { then: function () {} };
+    const p9 = { then: function () {}, catch: function () {} };
+    const p10 = { then: function () {}, catch: function () {}, finally: function () {} };
+
+    expect(nx.isThenable(p1)).toBe(true);
+    // expect(nx.isThenable(p2)).toBe(false);
+    expect(nx.isThenable(p3)).toBe(false);
+    expect(nx.isThenable(p4)).toBe(false);
+    expect(nx.isThenable(p5)).toBe(false);
+    expect(nx.isThenable(p6)).toBe(false);
+    expect(nx.isThenable(p7)).toBe(false);
+    expect(nx.isThenable(p8)).toBe(true);
+    expect(nx.isThenable(p9)).toBe(true);
+    expect(nx.isThenable(p10)).toBe(true);
+  });
 });

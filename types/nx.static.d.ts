@@ -90,6 +90,12 @@ interface NxStatic {
   isObject(v: any): boolean;
 
   /**
+   * If value is promise, return true, else return false.
+   * @param v
+   */
+  isThenable(v: any): boolean;
+
+  /**
    * Throw a Standard error.
    * @param msg
    */

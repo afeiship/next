@@ -132,6 +132,11 @@ else if (freeModule) {
     return typeof inTarget === 'object' && inTarget !== null;
   };
 
+  nx.isThenable = function (inTarget) {
+    if(!inTarget) return false;
+    return typeof inTarget === 'object' && typeof inTarget.then === 'function';
+  };
+
   nx.error = function (inMsg) {
     throw new Error(inMsg);
   };
