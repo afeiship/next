@@ -64,6 +64,12 @@ describe('src/core/nx.is-xxx', function () {
     expect(nx.isNumber(function () {})).toBe(false);
   });
 
+  test('nx.isNaN', function () {
+    expect(nx.isNaN(NaN)).toBe(true);
+    expect(nx.isNaN(123)).toBe(false);
+    expect(nx.isNaN(null)).toBe(false);
+  });
+
   test('nx.isNil', function () {
     expect(nx.isNil(null)).toBe(true);
     expect(nx.isNil(undefined)).toBe(true);
@@ -88,7 +94,11 @@ describe('src/core/nx.is-xxx', function () {
     const p7 = function () {};
     const p8 = { then: function () {} };
     const p9 = { then: function () {}, catch: function () {} };
-    const p10 = { then: function () {}, catch: function () {}, finally: function () {} };
+    const p10 = {
+      then: function () {},
+      catch: function () {},
+      finally: function () {}
+    };
 
     expect(nx.isThenable(p1)).toBe(true);
     // expect(nx.isThenable(p2)).toBe(false);

@@ -115,6 +115,10 @@ else if (freeModule) {
     return typeof inTarget === NUMBER && !isNaN(inTarget);
   };
 
+  nx.isNaN = function (inTarget) {
+    return isNaN(inTarget);
+  };
+
   nx.isFunction = function (inTarget) {
     return typeof inTarget === 'function';
   };
@@ -128,12 +132,12 @@ else if (freeModule) {
   };
 
   nx.isObject = function (inTarget) {
-    if(Array.isArray(inTarget)) return false;
+    if (Array.isArray(inTarget)) return false;
     return typeof inTarget === 'object' && inTarget !== null;
   };
 
   nx.isThenable = function (inTarget) {
-    if(!inTarget) return false;
+    if (!inTarget) return false;
     return typeof inTarget === 'object' && typeof inTarget.then === 'function';
   };
 
