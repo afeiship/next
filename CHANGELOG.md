@@ -1,5 +1,13 @@
 
 
+## [1.2.11](https://github.com/afeiship/next/compare/v1.2.10...v1.2.11) (2025-01-14)
+
+
+### Features
+
+* add isNaN method ([f093de7](https://github.com/afeiship/next/commit/f093de7cb1671414531b03224661782e36968ae8))
+* add ref for nx.to ([8402b73](https://github.com/afeiship/next/commit/8402b737f49d482b8dceca43dcc573ebfb58adee))
+
 ## [1.2.10](https://github.com/afeiship/next/compare/v1.2.9...v1.2.10) (2024-12-01)
 
 

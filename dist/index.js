@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.2.10',
+  VERSION: '1.2.11',
   DEBUG: false,
   GLOBAL: root,
 });
@@ -76,7 +76,7 @@ else if (freeModule) {
       .replace(EDGE_DOT_RE, EMP);
   };
 
-  nx.noop = function () {};
+  nx.noop = function () { };
 
   nx.typeof = function (inTarget) {
     var isPrimitive = inTarget == null || typeof inTarget !== 'object';
@@ -284,6 +284,8 @@ else if (freeModule) {
     return false;
   };
 
+
+  // @url: https://github.com/scopsy/await-to-js
   nx.to = function (inPromise) {
     return inPromise
       .then(function (data) {
