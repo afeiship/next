@@ -18,7 +18,7 @@
       .replace(EDGE_DOT_RE, EMP);
   };
 
-  nx.noop = function () {};
+  nx.noop = function () { };
 
   nx.typeof = function (inTarget) {
     var isPrimitive = inTarget == null || typeof inTarget !== 'object';
@@ -226,6 +226,8 @@
     return false;
   };
 
+
+  // @url: https://github.com/scopsy/await-to-js
   nx.to = function (inPromise) {
     return inPromise
       .then(function (data) {
