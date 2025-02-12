@@ -17,9 +17,9 @@
       getter = function() {
         return filed in this
           ? this[filed]
-          : typeof value === 'function'
-          ? value.call(this)
-          : value;
+          : nx.isFunction(value)
+            ? value.call(this)
+            : value;
       };
 
       setter = function(inValue) {
