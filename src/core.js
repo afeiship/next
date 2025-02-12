@@ -197,8 +197,8 @@
 
   nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
-    var indexesPath = normalize(inPath);
-    var paths = indexesPath.split(DOT);
+    var idx = normalize(inPath);
+    var paths = idx.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
     paths.forEach(function (path) {
