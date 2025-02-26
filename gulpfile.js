@@ -1,18 +1,9 @@
-(function() {
-  'use strict';
+const gulp = require('gulp');
+const fs = require('fs');
 
-  var path = require('path');
-  var gulp = require('gulp');
-  var argv = require('yargs').argv;
-  var fs = require('fs');
-  var $ = require('gulp-load-plugins')({
-    pattern: ['gulp-*', 'gulp.*', 'del']
-  });
+//import
+fs.readdirSync('./build').map(function (file) {
+  require('./build/' + file);
+});
 
-  //import
-  fs.readdirSync('./build').map(function(file) {
-    require('./build/' + file);
-  });
-
-  gulp.task('default', gulp.series(['clean', 'scripts']));
-})();
+gulp.task('default', gulp.series(['clean', 'scripts']));

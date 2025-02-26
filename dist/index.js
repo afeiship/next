@@ -76,7 +76,7 @@ else if (freeModule) {
       .replace(EDGE_DOT_RE, EMP);
   };
 
-  nx.noop = function () { };
+  nx.noop = function () {};
 
   nx.typeof = function (inTarget) {
     var isPrimitive = inTarget == null || typeof inTarget !== 'object';
@@ -255,8 +255,8 @@ else if (freeModule) {
 
   nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
-    var indexesPath = normalize(inPath);
-    var paths = indexesPath.split(DOT);
+    var idx = normalize(inPath);
+    var paths = idx.split(DOT);
     var result = inTarget || nx.GLOBAL;
 
     paths.forEach(function (path) {
@@ -283,7 +283,6 @@ else if (freeModule) {
     }
     return false;
   };
-
 
   // @url: https://github.com/scopsy/await-to-js
   nx.to = function (inPromise) {
@@ -312,7 +311,7 @@ else if (freeModule) {
       var args = inOptions.args;
       var fn = inOptions.fn;
       var types = Array.isArray(args) ? args.join() : args;
-      if (typeof fn !== 'function') {
+      if (!nx.isFunction(fn)) {
         throw new Error('The fn must be a function');
       }
       fnCacheMap[types] = fn;
