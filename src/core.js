@@ -151,6 +151,9 @@
   };
 
   nx.map = function (inTarget, inCallback, inContext) {
+
+    console.warn('@deprecated: nx.map is deprecated, use array.reduce instead');
+
     var result = [];
     nx.each(inTarget, function () {
       var item = inCallback.apply(inContext, arguments);
