@@ -26,9 +26,9 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.2.11',
+  VERSION: '1.2.12',
   DEBUG: false,
-  GLOBAL: root,
+  GLOBAL: root
 });
 
 // Some AMD build optimizers, like r.js, check for condition patterns like:
@@ -209,6 +209,9 @@ else if (freeModule) {
   };
 
   nx.map = function (inTarget, inCallback, inContext) {
+
+    console.warn('@deprecated: nx.map is deprecated, use array.reduce instead');
+
     var result = [];
     nx.each(inTarget, function () {
       var item = inCallback.apply(inContext, arguments);
@@ -295,30 +298,6 @@ else if (freeModule) {
       });
   };
 
-  nx.createOverload = function () {
-    var fnCacheMap = {};
-    function overload() {
-      var args = nx.slice(arguments);
-      var key = args.map(nx.typeof).join();
-      var fn = fnCacheMap[args.length] || fnCacheMap[key];
-      if (!fn) {
-        throw new Error('No matching function, parameter type: [' + key + ']');
-      }
-      return fn.apply(this, args);
-    }
-
-    overload.add = function (inOptions) {
-      var args = inOptions.args;
-      var fn = inOptions.fn;
-      var types = Array.isArray(args) ? args.join() : args;
-      if (!nx.isFunction(fn)) {
-        throw new Error('The fn must be a function');
-      }
-      fnCacheMap[types] = fn;
-    };
-
-    return overload;
-  };
 })();
 
 (function() {

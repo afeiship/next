@@ -1,5 +1,17 @@
 
 
+## [1.2.12](https://github.com/afeiship/next/compare/v1.2.11...v1.2.12) (2025-04-10)
+
+
+### Features
+
+* detect fn use isFunction ([7c81f5c](https://github.com/afeiship/next/commit/7c81f5c85dd9d00890d12b35cfb155b593789f43))
+* nx.map add waring str ([25ece2b](https://github.com/afeiship/next/commit/25ece2bba9e2b5056f5a87d2df6118674c72d721))
+* optimzie build scripts ([bf128c6](https://github.com/afeiship/next/commit/bf128c66b90c5be1aa9420e44a32006dca9da7df))
+* rm create coverlaod ([57f7991](https://github.com/afeiship/next/commit/57f79911cc753c9ca3e6f11d7cf5ea847d7d8eb3))
+* rm mirrorw ([190f17f](https://github.com/afeiship/next/commit/190f17fe7fb0c162b23021715c5929b3800b9f97))
+* rm tests ([2fe84bb](https://github.com/afeiship/next/commit/2fe84bbce455775ad358dea76f82c7fdc8ab1237))
+
 ## [1.2.11](https://github.com/afeiship/next/compare/v1.2.10...v1.2.11) (2025-01-14)
 
 
