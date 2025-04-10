@@ -240,28 +240,4 @@
       });
   };
 
-  nx.createOverload = function () {
-    var fnCacheMap = {};
-    function overload() {
-      var args = nx.slice(arguments);
-      var key = args.map(nx.typeof).join();
-      var fn = fnCacheMap[args.length] || fnCacheMap[key];
-      if (!fn) {
-        throw new Error('No matching function, parameter type: [' + key + ']');
-      }
-      return fn.apply(this, args);
-    }
-
-    overload.add = function (inOptions) {
-      var args = inOptions.args;
-      var fn = inOptions.fn;
-      var types = Array.isArray(args) ? args.join() : args;
-      if (!nx.isFunction(fn)) {
-        throw new Error('The fn must be a function');
-      }
-      fnCacheMap[types] = fn;
-    };
-
-    return overload;
-  };
 })();
