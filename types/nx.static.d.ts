@@ -172,7 +172,7 @@ interface NxStatic {
    * @param path
    * @param default
    */
-  get(target: any, path: string, defaults?: any): any;
+  get(target: any, path: string | string[], defaults?: any): any;
 
   /**
    * Delete by path(string or dot string), return boolean value.

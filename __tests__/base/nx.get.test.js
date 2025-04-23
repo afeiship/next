@@ -126,9 +126,15 @@ describe('nx.get name/path', () => {
     expect(nx.get(ar1, '[2].qty')).toBe('20');
   });
 
-  test('Number key should work file', ()=>{
+  test('Number key should work file', () => {
     const obj = { id: 122, name: 'xiaoming', age: 18 };
     const res = nx.get(obj, 1);
     expect(res).toBe(undefined);
-  })
+  });
+
+  test('get path is array', () => {
+    const obj = { id: 122, name: 'xiaoming', age: 18 };
+    const res = nx.get(obj, ['id', 'name']);
+    expect(res).toEqual([122, 'xiaoming']);
+  });
 });

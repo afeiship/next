@@ -209,7 +209,6 @@ else if (freeModule) {
   };
 
   nx.map = function (inTarget, inCallback, inContext) {
-
     console.warn('@deprecated: nx.map is deprecated, use array.reduce instead');
 
     var result = [];
@@ -258,6 +257,11 @@ else if (freeModule) {
 
   nx.get = function (inTarget, inPath, inValue) {
     if (!inPath) return inTarget;
+    if (Array.isArray(inPath))
+      return inPath.map(function (path) {
+        return nx.get(inTarget, path, inValue);
+      });
+
     var idx = normalize(inPath);
     var paths = idx.split(DOT);
     var result = inTarget || nx.GLOBAL;
@@ -297,7 +301,6 @@ else if (freeModule) {
         return [err, undefined];
       });
   };
-
 })();
 
 (function() {
