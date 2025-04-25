@@ -1,5 +1,12 @@
 
 
+## [1.2.13](https://github.com/afeiship/next/compare/v1.2.12...v1.2.13) (2025-04-25)
+
+
+### Features
+
+* add get maybe str-array ([cfaffc4](https://github.com/afeiship/next/commit/cfaffc447505f6cec6af064bc0fb3e3a79c1204a))
+
 ## [1.2.12](https://github.com/afeiship/next/compare/v1.2.11...v1.2.12) (2025-04-10)
 
 
