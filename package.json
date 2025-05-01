@@ -4,6 +4,8 @@
   "description": "A javascript OOP toolkit for mobile & modern web.",
   "main": "dist/index.js",
   "types": "./types/index.d.ts",
+  "unpkg": "dist/index.js",
+  "jsDelivr": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "gulp",
