@@ -21,10 +21,11 @@
   nx.noop = function () {};
 
   nx.typeof = function (inTarget) {
-    var isPrimitive = inTarget == null || typeof inTarget !== 'object';
-    if (!isPrimitive) return toString.call(inTarget).slice(8, -1).toLowerCase();
     if (inTarget === null) return 'null';
     if (inTarget === undefined) return 'undefined';
+    var isPrimitive = typeof inTarget !== 'object';
+
+    if (!isPrimitive) return toString.call(inTarget).slice(8, -1).toLowerCase();
     return typeof inTarget;
   };
 
