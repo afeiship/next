@@ -361,12 +361,12 @@ else if (freeModule) {
   nx.RootClass = RootClass;
 })();
 
-(function() {
+(function () {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
   var COMMA = ',';
 
-  nx.defineProperty = function(inTarget, inName, inMeta, inIsStatic) {
+  nx.defineProperty = function (inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
     var getter, setter, descriptor;
     var value, filed;
@@ -377,15 +377,15 @@ else if (freeModule) {
       value = meta.value;
       filed = '_' + inName;
 
-      getter = function() {
+      getter = function () {
         return filed in this
           ? this[filed]
           : nx.isFunction(value)
-            ? value.call(this)
-            : value;
+          ? value.call(this)
+          : value;
       };
 
-      setter = function(inValue) {
+      setter = function (inValue) {
         this[filed] = inValue;
       };
     } else {
@@ -414,7 +414,7 @@ else if (freeModule) {
     return descriptor;
   };
 
-  nx.defineMethod = function(inTarget, inName, inMeta, inIsStatic) {
+  nx.defineMethod = function (inTarget, inName, inMeta, inIsStatic) {
     var key = MEMBER_PREFIX + inName;
     inTarget[inName] = inMeta;
     return (inTarget[key] = {
@@ -425,9 +425,9 @@ else if (freeModule) {
     });
   };
 
-  nx.defineBombMethod = function(inTarget, inName, inMeta, inIsStatic) {
+  nx.defineBombMethod = function (inTarget, inName, inMeta, inIsStatic) {
     var keys = inName.split(COMMA);
-    keys.forEach(function(key, index) {
+    keys.forEach(function (key, index) {
       nx.defineMethod(
         inTarget,
         key,
@@ -437,9 +437,11 @@ else if (freeModule) {
     });
   };
 
-  nx.defineMembers = function(inMember, inTarget, inObject, inIsStatic) {
-    nx.forIn(inObject, function(key, val) {
-      if (key.indexOf(COMMA) > -1) {
+  nx.defineMembers = function (inMember, inTarget, inObject, inIsStatic) {
+    nx.forIn(inObject, function (key, val) {
+      var idx = key.indexOf(COMMA);
+      var hasComma = idx > -1;
+      if (hasComma) {
         nx.defineBombMethod(inTarget, key, val, inIsStatic);
       } else {
         nx['define' + inMember](inTarget, key, val, inIsStatic);
