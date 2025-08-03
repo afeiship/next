@@ -1,5 +1,13 @@
 
 
+## [1.3.1](https://github.com/afeiship/next/compare/v1.2.13...v1.3.1) (2025-08-03)
+
+
+### Features
+
+* add export unpkg/jsdelivr ([e513261](https://github.com/afeiship/next/commit/e513261daef111ccc41194f106f6295e61512486))
+* use nx.define insteadof nx.declare ([6b597a8](https://github.com/afeiship/next/commit/6b597a8fcc1bf6e8622242b512c8013445e237df))
+
 ## [1.2.13](https://github.com/afeiship/next/compare/v1.2.12...v1.2.13) (2025-04-25)
 
 
