@@ -107,7 +107,7 @@
     }
   };
 
-  nx.declare = function (inType, inMeta) {
+  nx.define = function (inType, inMeta) {
     var type = typeof inType === 'string' ? inType : NX_ANONYMOUS + classId;
     var meta = inMeta || inType;
     var lifeCycle = new LifeCycle(type, meta);
@@ -119,4 +119,7 @@
     lifeCycle.registerProcessor();
     return lifeCycle.__class__;
   };
+
+  // todo: will remove this in next version.
+  nx.declare = nx.define;
 })();
