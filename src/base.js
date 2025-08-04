@@ -47,7 +47,9 @@ if (
 // Check for `exports` after `define` in case a build optimizer adds it.
 else if (freeModule) {
   // Export for Node.js.
-  (freeModule.exports = nx).nx = nx;
+  freeModule.exports = nx;
+  freeModule.exports.default = nx; // 添加默认导出
+  freeModule.exports.nx = nx;
   // Export for CommonJS support.
   freeExports.nx = nx;
 } else {
