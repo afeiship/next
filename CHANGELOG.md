@@ -1,5 +1,12 @@
 
 
+## [1.3.2](https://github.com/afeiship/next/compare/v1.3.1...v1.3.2) (2025-08-04)
+
+
+### Features
+
+* add rename define ([6fa2e6c](https://github.com/afeiship/next/commit/6fa2e6c6f9aaed1a919f3f934f832e6647af8761))
+
 ## [1.3.1](https://github.com/afeiship/next/compare/v1.2.13...v1.3.1) (2025-08-03)
 
 
