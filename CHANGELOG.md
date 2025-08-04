@@ -1,5 +1,12 @@
 
 
+## [1.3.3](https://github.com/afeiship/next/compare/v1.3.2...v1.3.3) (2025-08-04)
+
+
+### Features
+
+* change export default typing ([e328bca](https://github.com/afeiship/next/commit/e328bca513a5695884c2d8b9d484057706b218f5))
+
 ## [1.3.2](https://github.com/afeiship/next/compare/v1.3.1...v1.3.2) (2025-08-04)
 
 
