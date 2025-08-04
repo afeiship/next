@@ -1,6 +1,6 @@
 {
   "name": "@jswork/next",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "A javascript OOP toolkit for mobile & modern web.",
   "main": "dist/index.js",
   "types": "./types/index.d.ts",

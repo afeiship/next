@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.3.3',
+  VERSION: '1.3.4',
   DEBUG: false,
   GLOBAL: root
 });
@@ -48,7 +48,9 @@ if (
 // Check for `exports` after `define` in case a build optimizer adds it.
 else if (freeModule) {
   // Export for Node.js.
-  (freeModule.exports = nx).nx = nx;
+  freeModule.exports = nx;
+  freeModule.exports.default = nx; // 添加默认导出
+  freeModule.exports.nx = nx;
   // Export for CommonJS support.
   freeExports.nx = nx;
 } else {

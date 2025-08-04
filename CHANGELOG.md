@@ -1,5 +1,12 @@
 
 
+## [1.3.4](https://github.com/afeiship/next/compare/v1.3.3...v1.3.4) (2025-08-04)
+
+
+### Bug Fixes
+
+* add default exports ([dd61c84](https://github.com/afeiship/next/commit/dd61c84736eb25d403f9daf73fc9dc45db385f3a))
+
 ## [1.3.3](https://github.com/afeiship/next/compare/v1.3.2...v1.3.3) (2025-08-04)
 
 
