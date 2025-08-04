@@ -258,8 +258,16 @@ interface NxStatic {
 
   /**
    * Define es5 class.
+   * @deprecated Will be delete in future.
    * @param type
    * @param meta
    */
   declare(type: string, meta?): any;
+
+  /**
+   * Define es5 class.
+   * @param type
+   * @param meta
+   */
+  define(type: string, meta?): any;
 }
