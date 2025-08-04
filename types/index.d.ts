@@ -3,3 +3,4 @@
 /// <reference path="misc.d.ts" />
 
 export = nx;
+export default nx;
