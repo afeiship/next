@@ -151,21 +151,6 @@
     }
   };
 
-  nx.map = function (inTarget, inCallback, inContext) {
-    console.warn('@deprecated: nx.map is deprecated, use array.reduce instead');
-
-    var result = [];
-    nx.each(inTarget, function () {
-      var item = inCallback.apply(inContext, arguments);
-      if (item !== nx.BREAKER) {
-        result.push(item);
-      } else {
-        return nx.BREAKER;
-      }
-    });
-    return result;
-  };
-
   nx.mix = function (inTarget) {
     var target = inTarget || {};
     var i, length;
