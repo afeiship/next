@@ -6,6 +6,10 @@
   "types": "./types/index.d.ts",
   "unpkg": "dist/index.js",
   "jsdelivr": "dist/index.js",
+  "files": [
+    "dist",
+    "types"
+  ],
   "scripts": {
     "test": "jest",
     "build": "gulp",
