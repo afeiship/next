@@ -1,5 +1,12 @@
 
 
+## [1.4.2](https://github.com/afeiship/next/compare/v1.4.1...v1.4.2) (2025-10-17)
+
+
+### Features
+
+* rm nx.err method ([ff71309](https://github.com/afeiship/next/commit/ff7130913706fb6773c1c93885f93f54bf9ce352))
+
 ## [1.4.1](https://github.com/afeiship/next/compare/v1.3.4...v1.4.1) (2025-10-17)
 
 
