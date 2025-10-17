@@ -84,9 +84,9 @@
     return typeof inTarget === 'object' && typeof inTarget.then === 'function';
   };
 
-  nx.error = function (inMsg) {
-    throw new Error(inMsg);
-  };
+  // nx.error = function (inMsg) {
+  //   throw new Error(inMsg);
+  // };
 
   nx.try = function (inFn, inCatch) {
     var cb = inCatch || nx.noop;

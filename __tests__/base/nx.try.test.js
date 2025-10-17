@@ -2,12 +2,12 @@ const nx = require('../../dist/index');
 
 var total = 0;
 function compileAndroidCode() {
-  nx.error('you are using the wrong nx.VERSION');
+  throw new Error('you are using the wrong nx.VERSION');
   total++;
 }
 function compileAndroidCodeWithTry() {
   nx.try(function() {
-    nx.error('you are using the wrong nx.VERSION');
+    throw new Error('you are using the wrong nx.VERSION');
   });
   total++;
 }
