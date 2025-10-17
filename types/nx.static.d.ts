@@ -96,12 +96,6 @@ interface NxStatic {
   isThenable(v: any): boolean;
 
   /**
-   * Throw a Standard error.
-   * @param msg
-   */
-  error(msg: string): never;
-
-  /**
    * Nice try for fn.
    * @param fn
    * @param cb
