@@ -1,5 +1,14 @@
 
 
+## [1.4.1](https://github.com/afeiship/next/compare/v1.3.4...v1.4.1) (2025-10-17)
+
+
+### Features
+
+* build dist ([fbd527d](https://github.com/afeiship/next/commit/fbd527d891a85098c36b2b559c35006a8f4eb5c7))
+* rm nx.error ([d84ebab](https://github.com/afeiship/next/commit/d84ebab101b28a36067082f315c5df58b7cad590))
+* rm nx.map method - break change ([e867d13](https://github.com/afeiship/next/commit/e867d13e67ccd9cc16af5368abea5ba74e6782dd))
+
 ## [1.3.4](https://github.com/afeiship/next/compare/v1.3.3...v1.3.4) (2025-08-04)
 
 

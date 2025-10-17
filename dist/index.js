@@ -26,7 +26,7 @@ var freeModule =
 var nx = (root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: '1.4.0',
+  VERSION: '1.4.1',
   DEBUG: false,
   GLOBAL: root
 });
@@ -144,9 +144,9 @@ else if (freeModule) {
     return typeof inTarget === 'object' && typeof inTarget.then === 'function';
   };
 
-  nx.error = function (inMsg) {
-    throw new Error(inMsg);
-  };
+  // nx.error = function (inMsg) {
+  //   throw new Error(inMsg);
+  // };
 
   nx.try = function (inFn, inCatch) {
     var cb = inCatch || nx.noop;
