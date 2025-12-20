@@ -70,6 +70,14 @@
     return inTarget == null;
   };
 
+  nx.isNull = function (inTarget) {
+    return inTarget === null;
+  };
+
+  nx.isUndefined = function (inTarget) {
+    return inTarget === undefined;
+  };
+
   nx.isArray = function (inTarget) {
     return Array.isArray(inTarget);
   };

@@ -80,6 +80,26 @@ describe('src/core/nx.is-xxx', function () {
     expect(nx.isNil(function () {})).toBe(false);
   });
 
+  test('nx.isNull', function () {
+    expect(nx.isNull(null)).toBe(true);
+    expect(nx.isNull(undefined)).toBe(false);
+    expect(nx.isNull(123)).toBe(false);
+    expect(nx.isNull('')).toBe(false);
+    expect(nx.isNull({})).toBe(false);
+    expect(nx.isNull([])).toBe(false);
+    expect(nx.isNull(function () {})).toBe(false);
+  });
+
+  test('nx.isUndefined', function () {
+    expect(nx.isUndefined(undefined)).toBe(true);
+    expect(nx.isUndefined(null)).toBe(false);
+    expect(nx.isUndefined(123)).toBe(false);
+    expect(nx.isUndefined('')).toBe(false);
+    expect(nx.isUndefined({})).toBe(false);
+    expect(nx.isUndefined([])).toBe(false);
+    expect(nx.isUndefined(function () {})).toBe(false);
+  });
+
   test('nx.isThenable', () => {
     const p1 = new Promise((resolve, reject) => {
       resolve(123);
