@@ -100,7 +100,7 @@ describe('src/core/nx.is-xxx', function () {
     expect(nx.isUndefined(function () {})).toBe(false);
   });
 
-  test('nx.isThenable', () => {
+  test('nx.isPromiseLike', () => {
     const p1 = new Promise((resolve, reject) => {
       resolve(123);
     });
@@ -120,15 +120,15 @@ describe('src/core/nx.is-xxx', function () {
       finally: function () {}
     };
 
-    expect(nx.isThenable(p1)).toBe(true);
-    // expect(nx.isThenable(p2)).toBe(false);
-    expect(nx.isThenable(p3)).toBe(false);
-    expect(nx.isThenable(p4)).toBe(false);
-    expect(nx.isThenable(p5)).toBe(false);
-    expect(nx.isThenable(p6)).toBe(false);
-    expect(nx.isThenable(p7)).toBe(false);
-    expect(nx.isThenable(p8)).toBe(true);
-    expect(nx.isThenable(p9)).toBe(true);
-    expect(nx.isThenable(p10)).toBe(true);
+    expect(nx.isPromiseLike(p1)).toBe(true);
+    // expect(nx.isPromiseLike(p2)).toBe(false);
+    expect(nx.isPromiseLike(p3)).toBe(false);
+    expect(nx.isPromiseLike(p4)).toBe(false);
+    expect(nx.isPromiseLike(p5)).toBe(false);
+    expect(nx.isPromiseLike(p6)).toBe(false);
+    expect(nx.isPromiseLike(p7)).toBe(false);
+    expect(nx.isPromiseLike(p8)).toBe(true);
+    expect(nx.isPromiseLike(p9)).toBe(true);
+    expect(nx.isPromiseLike(p10)).toBe(true);
   });
 });

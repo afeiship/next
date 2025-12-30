@@ -147,9 +147,13 @@ else if (freeModule) {
     return typeof inTarget === 'object' && inTarget !== null;
   };
 
-  nx.isThenable = function (inTarget) {
+  nx.isPromiseLike = function (inTarget) {
     if (!inTarget) return false;
     return typeof inTarget === 'object' && typeof inTarget.then === 'function';
+  };
+
+  nx.isPromise = function (inTarget) {
+    return typeof inTarget === 'object' && inTarget instanceof Promise;
   };
 
   // nx.error = function (inMsg) {
