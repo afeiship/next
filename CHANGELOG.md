@@ -1,5 +1,14 @@
 
 
+## [1.5.1](https://github.com/afeiship/next/compare/v1.4.2...v1.5.1) (2026-04-18)
+
+
+### Features
+
+* add documentation for @jswork/next ([9f4067c](https://github.com/afeiship/next/commit/9f4067c5ebaba6cf3a93b2506111f74b08a25738))
+* **core:** add new Promise type-checking utilities ([f130ebd](https://github.com/afeiship/next/commit/f130ebd48db5a7cd453eb3c6637ccd397d31f596))
+* **nx:** add null and undefined check utilities ([d8fc247](https://github.com/afeiship/next/commit/d8fc24731dfa9af9ff67a0dfc9d9bedb0250c000))
+
 ## [1.4.2](https://github.com/afeiship/next/compare/v1.4.1...v1.4.2) (2025-10-17)
 
 

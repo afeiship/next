@@ -25,3 +25,13 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('dist'))
     .pipe($.size({ title: '[ minimize size ]:' }));
 });
+
+gulp.task('scripts:esm', function () {
+  return gulp
+    .src(files)
+    .pipe($.concat('index.esm.js'))
+    .pipe($.wrap('var nx = (function() {\n<%= contents %>return nx;\n})();\n\nexport default nx;\nexport { nx };\n'))
+    .pipe($.replace('__VERSION__', pkgJson.version))
+    .pipe(gulp.dest('dist'))
+    .pipe($.size({ title: '[ esm size ]:' }));
+});

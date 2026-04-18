@@ -1,9 +1,17 @@
 {
   "name": "@jswork/next",
-  "version": "1.4.2",
+  "version": "1.5.1",
   "description": "A javascript OOP toolkit for mobile & modern web.",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "unpkg": "dist/index.js",
   "jsdelivr": "dist/index.js",
   "files": [
