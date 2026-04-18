@@ -1,0 +1,238 @@
+# @jswork/next
+> @jswork/next is a lightweight, zero-dependency JavaScript OOP toolkit for mobile & modern web. It provides an ES5-based class system with single inheritance, reflection/metadata APIs, deep path utilities, type checking, and common utility functions. Works in Node.js (CommonJS), AMD (RequireJS), and browser `<script>` environments.
+
+## Quick Start
+
+### Node.js
+```js
+const nx = require('@jswork/next');
+// or
+import nx from '@jswork/next';
+```
+
+### Browser
+```html
+<script src="https://unpkg.com/@jswork/next/dist/index.min.js"></script>
+<script>
+  console.log(nx.VERSION); // "1.4.2"
+</script>
+```
+
+### CDN
+- https://unpkg.com/@jswork/next/dist/index.js
+- https://unpkg.com/@jswork/next/dist/index.min.js
+- https://cdn.jsdelivr.net/npm/@jswork/next/dist/index.min.js
+
+## Core Concepts
+
+### Class System (`nx.define`)
+Create classes with inheritance, methods, statics, and computed properties:
+
+```js
+const Animal = nx.define('Animal', {
+  methods: {
+    init: function(name) {
+      this._name = name;
+    },
+    speak: function() {
+      return this._name + ' makes a sound';
+    }
+  },
+  properties: {
+    name: {
+      get: function() { return this._name; },
+      set: function(v) { this._name = v; }
+    }
+  },
+  statics: {
+    create: function(name) {
+      return new this(name);
+    }
+  }
+});
+
+// Inheritance
+const Dog = nx.define('Dog', {
+  extends: Animal,
+  methods: {
+    speak: function() {
+      // call parent method
+      return this.base() + ' (bark!)';
+    }
+  }
+});
+```
+
+### Property System
+Properties support value-backed (auto getter/setter with `_name` field) or custom getter/setter:
+
+```js
+nx.define('MyClass', {
+  properties: {
+    // Value-backed: auto stores in this._count, lazy init supported
+    count: { value: 0 },
+    // Custom getter/setter
+    name: {
+      get: function() { return this._name || 'default'; },
+      set: function(v) { this._name = v.trim(); }
+    }
+  }
+});
+```
+
+### Deep Path Access
+Dot-notation and bracket-notation paths for nested object access:
+
+```js
+const data = { users: [{ name: 'Alice' }, { name: 'Bob' }] };
+
+nx.get(data, 'users[0].name');        // 'Alice'
+nx.set(data, 'users[1].age', 30);     // sets Bob.age = 30
+nx.del(data, 'users[0].name');        // true, deletes Alice.name
+nx.get(data, ['users[0].name', 'users[1].name']); // ['Alice', 'Bob']
+```
+
+### Async Error Handling
+```js
+// Instead of try/catch:
+const [err, data] = await nx.to(fetchData());
+if (err) { /* handle error */ }
+```
+
+## API Reference
+
+### Constants
+
+| Name | Type | Description |
+|------|------|-------------|
+| `nx.VERSION` | `string` | Library version (e.g. `"1.4.2"`) |
+| `nx.DEBUG` | `boolean` | Debug mode. When `true`, instances tracked in `nx.__instances__` |
+| `nx.BREAKER` | `object` | Sentinel to break out of `forEach`/`forIn`/`each` loops |
+| `nx.NIL` | `object` | Sentinel representing nil/nothing |
+| `nx.GLOBAL` | `object` | Reference to global object (`global`/`self`/`window`) |
+
+### Stub Functions
+
+```js
+nx.noop()              // () => void
+nx.stubTrue()          // () => true
+nx.stubFalse()         // () => false
+nx.stubValue(v)        // (v) => v  (identity)
+nx.stubPromise(v?)     // (v?) => Promise.resolve(v)
+```
+
+### Type Checking
+
+```js
+nx.typeof(target)          // Enhanced typeof: 'null'|'array'|'date'|'regexp'|...
+nx.isBoolean(target)       // typeof === 'boolean'
+nx.isString(target)        // typeof === 'string'
+nx.isNumber(target)        // typeof === 'number' (NaN excluded)
+nx.isNaN(target)           // NaN check
+nx.isFunction(target)      // typeof === 'function'
+nx.isNil(target)           // null or undefined
+nx.isNull(target)          // strictly null
+nx.isUndefined(target)     // strictly undefined
+nx.isArray(target)         // Array.isArray
+nx.isObject(target)        // plain object (not array, not null)
+nx.isPromiseLike(target)   // has .then() method (thenable)
+nx.isPromise(target)       // instanceof Promise
+```
+
+### Iteration
+
+```js
+// Array iteration — return nx.BREAKER to break early
+nx.forEach(array, (value, index, array) => {});
+
+// Object iteration — own enumerable properties
+nx.forIn(object, (key, value, object) => {});
+
+// Universal — auto-detects array vs object
+nx.each(target, (key, value, target, isBoolean) => {});
+```
+
+### Object Utilities
+
+```js
+nx.mix(target, ...sources)       // Shallow merge into target
+nx.slice(target, start?, end?)   // Array.prototype.slice on array-like
+nx.try(fn, catchFn?)             // Try/catch wrapper
+nx.to(promise)                   // => Promise<[err, data]>
+```
+
+### Path Utilities
+
+```js
+nx.set(target, path, value)              // Deep set by dot/bracket path
+nx.get(target, path, defaultValue?)      // Deep get; path can be string or string[]
+nx.del(target, path)                     // Deep delete; returns boolean
+```
+
+### OOP Class Definition
+
+```js
+const MyClass = nx.define('MyClass', {
+  extends: ParentClass,     // optional, defaults to nx.RootClass
+  methods: {                // instance methods
+    init: function() {},    // constructor
+    destroy: function() {}, // cleanup
+    // ... custom methods
+  },
+  statics: {                // static/class members
+    init: function() {},    // static initializer (runs at define time)
+    // ... static methods/properties
+  },
+  properties: {             // computed properties
+    name: { value: 'default' },                    // value-backed
+    count: { get() { ... }, set(v) { ... } },      // custom getter/setter
+  }
+});
+```
+
+### OOP Reflection
+
+```js
+nx.defineProperty(target, name, meta, isStatic?)   // Define property with getter/setter
+nx.defineMethod(target, name, fn, isStatic?)        // Define method with metadata
+nx.defineBombMethod(target, names, factory, isStatic?)  // Batch-define methods from CSV names
+nx.defineMembers(type, target, obj, isStatic?)      // Batch define members from object
+```
+
+### RootClass Instance Methods
+
+```js
+instance.init()                  // Constructor hook (override in subclass)
+instance.destroy()               // Cleanup hook (override in subclass)
+instance.toString()              // Returns "[Class@<typeName>]"
+instance.base(...args)           // Call parent class's same-named method
+instance.parent(name, ...args)   // Call parent method by name
+```
+
+## Usage Notes for Agents
+
+- **Import**: `const nx = require('@jswork/next')` or `import nx from '@jswork/next'`
+- **UMD**: Works in Node.js, AMD, and browser globals as `window.nx`
+- **Zero dependencies**: No runtime dependencies, fully self-contained
+- **ES5 OOP**: Class system is ES5-based, not ES6 class syntax. Use `nx.define()` to create classes
+- **Super calls**: Use `this.base()` (same method) or `this.parent(name)` (specific method) in methods
+- **Property convention**: Value-backed properties auto-store in `_name` field (underscore prefix)
+- **Path syntax**: Supports `"a.b.c"` and `"a[0].b"` notation in get/set/del
+- **Breaking loops**: Return `nx.BREAKER` from iterator callbacks to break early
+- **Async pattern**: Use `const [err, data] = await nx.to(promise)` for clean error handling
+- **Debug mode**: Set `nx.DEBUG = true` to track all instances in `nx.__instances__`
+- **TypeScript**: Type definitions available in `types/` directory
+- **Type gaps**: `isNull`, `isUndefined`, `isNaN`, `typeof`, `isPromiseLike`, `isPromise` exist at runtime but lack TS declarations
+
+## Development
+
+- **Build**: `gulp` — concatenates 5 source files from `src/`, outputs to `dist/`
+- **Source files**: `base.js` → `core.js` → `oop-base.js` → `oop-reflect.js` → `oop.js`
+- **Test**: `npm test` — Jest test suite in `__tests__/`
+- **Release**: `release-it` with conventional changelog
+
+## Links
+
+- [GitHub](https://github.com/afeiship/next): Source code and issues
+- [npm](https://www.npmjs.com/package/@jswork/next): Package registry
+- [unpkg](https://unpkg.com/@jswork/next/): CDN access
