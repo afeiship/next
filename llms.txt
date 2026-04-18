@@ -1,13 +1,16 @@
 # @jswork/next
-> @jswork/next is a lightweight, zero-dependency JavaScript OOP toolkit for mobile & modern web. It provides an ES5-based class system with single inheritance, reflection/metadata APIs, deep path utilities, type checking, and common utility functions. Works in Node.js (CommonJS), AMD (RequireJS), and browser `<script>` environments.
+> @jswork/next is a lightweight, zero-dependency JavaScript OOP toolkit for mobile & modern web. It provides an ES5-based class system with single inheritance, reflection/metadata APIs, deep path utilities, type checking, and common utility functions. Supports ESM, CommonJS, AMD (RequireJS), and browser `<script>` environments.
 
 ## Quick Start
 
 ### Node.js
 ```js
-const nx = require('@jswork/next');
-// or
+// ESM
 import nx from '@jswork/next';
+import { nx } from '@jswork/next';
+
+// CommonJS
+const nx = require('@jswork/next');
 ```
 
 ### Browser
@@ -211,7 +214,8 @@ instance.parent(name, ...args)   // Call parent method by name
 
 ## Usage Notes for Agents
 
-- **Import**: `const nx = require('@jswork/next')` or `import nx from '@jswork/next'`
+- **Import**: `import nx from '@jswork/next'` (ESM) or `const nx = require('@jswork/next')` (CJS)
+- **ESM**: Supported via `package.json` `exports` field — `import` resolves to `dist/index.esm.js`, `require` resolves to `dist/index.js`
 - **UMD**: Works in Node.js, AMD, and browser globals as `window.nx`
 - **Zero dependencies**: No runtime dependencies, fully self-contained
 - **ES5 OOP**: Class system is ES5-based, not ES6 class syntax. Use `nx.define()` to create classes
@@ -226,7 +230,7 @@ instance.parent(name, ...args)   // Call parent method by name
 
 ## Development
 
-- **Build**: `gulp` — concatenates 5 source files from `src/`, outputs to `dist/`
+- **Build**: `gulp` — concatenates 5 source files from `src/`, outputs UMD (`dist/index.js`) and ESM (`dist/index.esm.js`)
 - **Source files**: `base.js` → `core.js` → `oop-base.js` → `oop-reflect.js` → `oop.js`
 - **Test**: `npm test` — Jest test suite in `__tests__/`
 - **Release**: `release-it` with conventional changelog
