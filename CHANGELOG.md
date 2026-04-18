@@ -1,5 +1,12 @@
 
 
+## [1.5.2](https://github.com/afeiship/next/compare/v1.5.1...v1.5.2) (2026-04-18)
+
+
+### Features
+
+* add esm build and exports ([3a4a053](https://github.com/afeiship/next/commit/3a4a0533c9aedd749f320b404adb593898eb00e6))
+
 ## [1.5.1](https://github.com/afeiship/next/compare/v1.4.2...v1.5.1) (2026-04-18)
 
 
