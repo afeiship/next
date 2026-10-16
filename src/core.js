@@ -1,3 +1,5 @@
+import nx from './base';
+
 (function () {
   var DOT = '.';
   var NUMBER = 'number';

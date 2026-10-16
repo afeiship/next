@@ -1,3 +1,5 @@
+import nx from './base';
+
 (function () {
   var classId = 1,
     instanceId = 0;

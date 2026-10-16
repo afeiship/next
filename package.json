@@ -1,6 +1,6 @@
 {
   "name": "@jswork/next",
-  "version": "1.5.2",
+  "version": "1.6.1",
   "description": "A javascript OOP toolkit for mobile & modern web.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "gulp",
+    "build": "tsup",
     "release": "release-it"
   },
   "repository": {
@@ -48,20 +48,10 @@
   "homepage": "https://github.com/afeiship/next#readme",
   "devDependencies": {
     "@release-it/conventional-changelog": "^7.0.2",
-    "amdrequire": "0.0.3",
-    "del": "^6.0.0",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-filter": "^6.0.0",
-    "gulp-load-plugins": "^2.0.5",
-    "gulp-rename": "^2.0.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-size": "^3.0.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-umd": "^2.0.0",
-    "gulp-wrap": "^0.15.0",
     "jest": "^26.6.3",
-    "release-it": "^16.2.0"
+    "release-it": "^16.2.0",
+    "tsup": "^9.0.0",
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public",

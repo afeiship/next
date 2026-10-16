@@ -230,8 +230,8 @@ instance.parent(name, ...args)   // Call parent method by name
 
 ## Development
 
-- **Build**: `gulp` — concatenates 5 source files from `src/`, outputs UMD (`dist/index.js`) and ESM (`dist/index.esm.js`)
-- **Source files**: `base.js` → `core.js` → `oop-base.js` → `oop-reflect.js` → `oop.js`
+- **Build**: `tsup` — builds ES/CJS bundles from `src/index.js`, outputs CJS (`dist/index.js`), ESM (`dist/index.esm.js`), and minified CJS (`dist/index.min.js`)
+- **Source files**: `src/index.js` (entry) imports `base.js`, `core.js`, `oop-base.js`, `oop-reflect.js`, `oop.js`
 - **Test**: `npm test` — Jest test suite in `__tests__/`
 - **Release**: `release-it` with conventional changelog
 

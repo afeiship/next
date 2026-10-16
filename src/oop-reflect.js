@@ -1,3 +1,5 @@
+import nx from './base';
+
 (function () {
   var MEMBER_PREFIX = '@';
   var VALUE = 'value';
