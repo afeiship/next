@@ -1,5 +1,12 @@
 
 
+## [1.6.3](https://github.com/afeiship/next/compare/v1.6.2...v1.6.3) (2026-10-18)
+
+
+### Bug Fixes
+
+* **types:** add types condition to package exports and module scope to declarations ([aaa2ba1](https://github.com/afeiship/next/commit/aaa2ba14f7247c894f3f52ff8fc71f74fb77f18f))
+
 ## [1.6.2](https://github.com/afeiship/next/compare/v1.6.1...v1.6.2) (2026-10-18)
 
 ## [1.6.1](https://github.com/afeiship/next/compare/v1.5.2...v1.6.1) (2026-10-16)
