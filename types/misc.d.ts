@@ -1,1 +1,3 @@
-declare const nx: NxStatic;
+declare global {
+  const nx: NxStatic;
+}
