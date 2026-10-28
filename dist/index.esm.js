@@ -461,12 +461,4 @@ export {
   index_default as default,
   base_default as nx
 };
-
-if (typeof module !== 'undefined' && module.exports && module.exports.default) {
-  var _nx = module.exports.default;
-  module.exports = _nx;
-  module.exports.default = _nx;
-  module.exports.nx = _nx;
-}
-
 //# sourceMappingURL=index.esm.js.map

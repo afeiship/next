@@ -13,13 +13,28 @@ if (typeof module !== 'undefined' && module.exports && module.exports.default) {
 export default defineConfig([
   {
     entry: ['src/index.js'],
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     dts: false,
     clean: true,
     sourcemap: true,
-    outExtension({ format }) {
+    outExtension() {
       return {
-        js: format === 'cjs' ? '.js' : '.esm.js'
+        js: '.esm.js'
+      };
+    },
+    define: {
+      __VERSION__: JSON.stringify(pkg.version)
+    }
+  },
+  {
+    entry: ['src/index.js'],
+    format: ['cjs'],
+    dts: false,
+    clean: false,
+    sourcemap: true,
+    outExtension() {
+      return {
+        js: '.js'
       };
     },
     define: {
