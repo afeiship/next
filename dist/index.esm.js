@@ -3,7 +3,7 @@ var root = typeof globalThis !== "undefined" ? globalThis : typeof self !== "und
 var nx = root.nx = root.nx || {
   BREAKER: {},
   NIL: {},
-  VERSION: "1.6.3",
+  VERSION: "1.6.4",
   DEBUG: false,
   GLOBAL: root
 };

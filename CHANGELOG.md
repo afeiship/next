@@ -1,5 +1,7 @@
 
 
+## [1.6.4](https://github.com/afeiship/next/compare/v1.6.3...v1.6.4) (2026-10-28)
+
 ## [1.6.3](https://github.com/afeiship/next/compare/v1.6.2...v1.6.3) (2026-10-18)
 
 
